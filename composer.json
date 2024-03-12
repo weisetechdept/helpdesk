@@ -1,0 +1,6 @@
+{
+    "require": {
+        "thingengineer/mysqli-database-class": "dev-master",
+        "bramus/router": "^1.6"
+    }
+}
