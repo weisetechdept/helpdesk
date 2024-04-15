@@ -48,7 +48,7 @@
                                         window.location.href = '/register';
                                     });
                                 } else if(response.data.status == 'success') {
-                                    swal('เข้าสู่ระบบสำเร็จ', 'ยินดีต้อนรับ', 'success',
+                                    swal('เข้าสู่ระบบสำเร็จ', 'ยินดีต้อนรับ คุณ '+response.data.name , 'success',
                                         {
                                             button: "ตกลง",
                                         }

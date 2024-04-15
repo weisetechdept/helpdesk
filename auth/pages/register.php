@@ -141,7 +141,7 @@
                                             button: "ตกลง",
                                         }
                                     ).then(() => {
-                                        window.location.href = '/emp/home';
+                                        window.location.href = '/login';
                                     });
                                     this.send.f_name = '';
                                     this.send.l_name = '';

@@ -11,7 +11,8 @@
         $_SESSION['hd_login'] = true;
         $_SESSION['hd_permission'] = $user['user_permission'];
         $api = array(
-            'status' => 'success'
+            'status' => 'success',
+            'name' => $user['user_first_name'].' '.$user['user_last_name']
         );
     } else {
         $api = array(
