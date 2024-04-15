@@ -10,6 +10,7 @@
     if($user['user_status'] == 1) {
         $_SESSION['hd_login'] = true;
         $_SESSION['hd_permission'] = $user['user_permission'];
+        $_SESSION['hd_user_id'] = $user['user_id'];
         $api = array(
             'status' => 'success',
             'name' => $user['user_first_name'].' '.$user['user_last_name']
