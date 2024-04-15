@@ -129,10 +129,9 @@
             },
             methods: {
                 branch(e) {
-                    var branch = e.target.value
-                    axios.post('/auth/system/register.api.php', { branch: branch })
+                    axios.post('/auth/system/register.api.php', { branch: e.target.value })
                         .then(response => {
-                            this.department = response.data
+                            console.log(response.data)
                         })
                 },
                 register() {

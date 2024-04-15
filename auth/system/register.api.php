@@ -5,7 +5,8 @@
     $request = json_decode(file_get_contents('php://input'));
     $branch = $request->branch;
 
-    
+    echo $branch;
+    /*
         $dept = $db->where('usrg_branch',$branch)->where('usrg_status',1)->get('user_group');
         foreach($dept as $d) {
             $api[] = array(
@@ -16,3 +17,4 @@
     
 
     echo json_encode($api);
+    */
