@@ -55,6 +55,10 @@
                                     ).then(() => {
                                         window.location.href = '/emp/home';
                                     });
+                                } else if(response.data.status == 'hold') {
+                                    swal('รอการอนุมัติ', 'บัญชีของท่านกำลังอยู่ในสถานะรออนุมัติการเข้าใช้งาน', 'warning',{
+                                            button: false
+                                    });
                                 }
                             });
 

@@ -7,12 +7,17 @@
 
     $user = $db->where('user_uid',$userId)->getOne('user');
 
-    if($user) {
+    if($user['user_status'] == 1) {
         $_SESSION['hd_login'] = true;
         $_SESSION['hd_permission'] = $user['user_permission'];
         $api = array(
             'status' => 'success',
             'name' => $user['user_first_name'].' '.$user['user_last_name']
+        );
+    } elseif($user['user_status'] == 0) {
+        $api = array(
+            'status' => 'hold',
+            'message' => 'User not verified'
         );
     } else {
         $api = array(
