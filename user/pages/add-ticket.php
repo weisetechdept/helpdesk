@@ -97,17 +97,17 @@
 
                             <div class="form-group">
                                 <label>ชื่อผู้แจ้ง</label>
-                                <p class="pl-2">ณัฐนนท์ คงศรี</p>
+                                <p class="pl-2">{{ display.name }}</p>
                             </div>
 
                             <div class="form-group">
                                 <label>สาขา</label>
-                                <p class="pl-2">สำนักงานใหญ่</p>
+                                <p class="pl-2">{{ display.department }}</p>
                             </div>
 
                             <div class="form-group">
                                 <label>แผนก / ฝ่าย</label>
-                                <p class="pl-2">ไวส์ เทคนิคคา</p>
+                                <p class="pl-2">{{ display.branch }}</p>
                             </div>
 
                             <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
@@ -161,7 +161,8 @@
                         owner: '',
                         branch: '0',
                         division: '0'
-                    }
+                    },
+                    display: []
                 }
             },
             mounted() {

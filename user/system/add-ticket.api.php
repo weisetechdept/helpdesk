@@ -16,11 +16,12 @@
         } elseif($user['user_dept'] == '2') {
             $branch = 'สาขาตลาดไท';
         }
-        
+
         $api = array(
             'name' => $user['user_first_name'].' '.$user['user_last_name'],
             'permission' => $user['user_permission'],
-            'department' => $branch
+            'department' => $user['usrg_name'],
+            'branch' => $branch
         );
 
     }
