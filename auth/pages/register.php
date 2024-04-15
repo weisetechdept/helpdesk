@@ -134,7 +134,22 @@
                     } else {
                         axios.post('/auth/system/register.ins.php', this.send)
                             .then(response => {
-                                console.log(response.data)
+                                if(response.data.status == 'error') {
+                                    swal('เกิดข้อผิดพลาด', response.data.message, 'error')
+                                    return
+                                } else if(response.data.status == 'success') {
+                                    swal('สมัครสมาชิกสำเร็จ', response.data.message, 'success',
+                                        {
+                                            button: "ตกลง",
+                                        }
+                                    ).then(() => {
+                                        window.location.href = '/emp/home';
+                                    });
+                                    this.send.f_name = '';
+                                    this.send.l_name = '';
+                                    this.send.department = '0';
+                                }
+                                
                             })
                     }
                     /*
