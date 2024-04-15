@@ -164,12 +164,19 @@
                     }
                 }
             },
+            mounted() {
+                axios.get('/user/system/add-ticket.api.php'){
+                    .then(function (response) {
+                        console.log(response.data);
+                    })
+                }
+            },
             methods: {
                 checkForm() {
                     if(ticket.ticket.type == '0' || ticket.ticket.topic == '' || ticket.ticket.detail == '') {
                         swal("แจ้งเตือน", "กรุณาเลือก และกรอกข้อมูลให้ครบถ้วน", "warning");
                     } else {
-                        axios.post('/user/system/add-ticket.api.php', this.ticket)
+                        axios.post('/user/system/add-ticket.ins.php', this.ticket)
                         .then(function (response) {
                             if(response.data.status == 'success') {
                                 swal("สำเร็จ", "แจ้งซ่อมเรียบร้อย", "success").then(function() {

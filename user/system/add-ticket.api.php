@@ -1,30 +1,19 @@
 <?php
+    session_start();
     require_once '../../db-conn.php';
-    $request = json_decode(file_get_contents('php://input'));
+    date_default_timezone_set("Asia/Bangkok");
 
-    $type = $request->type;
-    $topic = $request->topic;
-    $detail = $request->detail;
-    $owner = $request->owner;
-    $branch = $request->branch;
-    $division = $request->division;
-
-    $data = array(
-        'tick_type' => $type,
-        'tick_topic' => $topic,
-        'tick_detail' => $detail,
-        'tick_code' => '',
-        'tick_owner' => $owner,
-        'tick_branch' => $branch,
-        'tick_division' => $division,
-        'tick_status' => '1',
-        'tick_datetime' => date('Y-m-d H:i:s')
-    );
-    $id = $db->insert('ticket', $data);
-    if($id){
-        $api = array('status' => 'success', 'id' => $id);
+    if(!isset($_SESSION['hd_login'])) {
+        header('Location: /404');
     } else {
-        $api = array('status' => 'error');
+        $id = $_SESSION['hd_user_id'];
+
+        $user = $db->where('user_id',$id)->getOne('user');
+        $api = array(
+            'name' => $user['user_first_name'].' '.$user['user_last_name'],
+            'permission' => $user['user_permission']
+        );
+
     }
         
     echo json_encode($api);
