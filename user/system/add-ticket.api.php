@@ -10,10 +10,17 @@
 
         $db->join('user_group g','g.usrg_id=u.user_dept','LEFT');
         $user = $db->where('user_id',$id)->getOne('user u');
+
+        if($user['user_dept'] == '1') {
+            $branch = 'สำนักงานใหญ่';
+        } elseif($user['user_dept'] == '2') {
+            $branch = 'สาขาตลาดไท';
+        }
+        
         $api = array(
             'name' => $user['user_first_name'].' '.$user['user_last_name'],
             'permission' => $user['user_permission'],
-            'department' => $user['usrg_name']
+            'department' => $branch
         );
 
     }
