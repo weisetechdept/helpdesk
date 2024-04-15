@@ -111,19 +111,20 @@
             mounted() {
                 axios.get('/auth/system/register.api.php')
                     .then(response => {
-                        console.log(response.data),
+                        //console.log(response.data),
                         this.department = response.data
                     }),
+                    
                     liff.init({ liffId: "1654391121-baZ6dK7M" }, () => {
                         if (liff.isLoggedIn()) {
                                 liff.getProfile().then(profile => {
                                     this.send.uid = profile.userId
-                                    consola.log(this.send.uid)
                                 }).catch(err => console.error(err));
                         } else {
                             liff.login();
                         }
                     }, err => console.error(err.code, error.message));
+                    console.log(this.send.uid)
             },
             methods: {
                 register() {
