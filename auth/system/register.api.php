@@ -1,4 +1,5 @@
 <?php 
+    session_start();
     require_once '../../db-conn.php';
 
     $dept = $db->where('usrg_status',1)->get('user_group');

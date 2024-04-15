@@ -1,4 +1,5 @@
 <?php 
+    session_start();
     require_once '../../db-conn.php';
 
     $request = json_decode(file_get_contents('php://input'));
@@ -23,6 +24,7 @@
             'user_last_name' => $lname,
             'user_uid' => $uid,
             'user_permission' => 'officer',
+            'user_status' => '0',
             'user_datetime' => date('Y-m-d H:i:s')
         );
 
