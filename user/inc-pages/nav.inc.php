@@ -2,13 +2,6 @@
             <div class="navbar-header">
                 <!-- LOGO -->
                 <div class="navbar-brand-box d-flex align-items-left">
-                    <a href="index.html" class="logo">
-                        <i class="mdi mdi-album"></i>
-                        <span>
-                            Scoxe
-                        </span>
-                    </a>
-
                     <button type="button" class="btn btn-sm mr-2 d-lg-none px-3 font-size-16 header-item waves-effect waves-light" id="vertical-menu-btn">
                         <i class="fa fa-fw fa-bars"></i>
                     </button>

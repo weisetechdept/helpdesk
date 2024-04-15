@@ -64,31 +64,55 @@
                             <div class="card">
                                 <div class="card-body">
                                
-                                        <div class="form-group">
-                                            <label>ประเภทการซ่อม</label>
-                                            <select class="form-control" v-model="ticket.type">
-                                                <option value="0">= เลือกประเภทการซ่อม =</option>
-                                                <option value="1">อุปกรณ์ IT / Software</option>
-                                                <option value="2">อาคารสถานที่ / เครื่องใช้สำนักงาน</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>หัวข้อการซ่อม</label>
-                                            <input type="text" v-model="ticket.topic" class="form-control">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>อาการเสีย / ชำรุด</label>
-                                            <textarea class="form-control" v-model="ticket.detail" rows="3"></textarea>
-                                        </div>
-                                        <button @click="checkForm" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                   
-                    
-                                </div>
+                            <div class="form-group">
+                                <label>ประเภทการซ่อม</label>
+                                <select class="form-control" v-model="ticket.type">
+                                    <option value="0">= เลือกประเภทการซ่อม =</option>
+                                    <option value="1">อุปกรณ์ IT / Software</option>
+                                    <option value="2">อาคารสถานที่ / เครื่องใช้สำนักงาน</option>
+                                </select>
                             </div>
+
+                            <div class="form-group">
+                                <label>หัวข้อการซ่อม</label>
+                                <input type="text" v-model="ticket.topic" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>อาการเสีย / ชำรุด</label>
+                                <textarea class="form-control" v-model="ticket.detail" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>ชื่อผู้แจ้ง</label>
+                                <input type="text" v-model="ticket.owner" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>สาขา</label>
+                                <select class="form-control" v-model="ticket.branch">
+                                    <option value="0">= เลือกสาขา =</option>
+                                    <option value="1">สำนักงานใหญ่</option>
+                                    <option value="2">สาขาตลาดไท</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>แผนก / ฝ่าย</label>
+                                <select class="form-control" v-model="ticket.division">
+                                    <option value="0">= เลือกแผนก / ฝ่าย =</option>
+                                    <option value="1">ฝ่ายขาย</option>
+                                    <option value="2">ฝ่ายการตลาด</option>
+                                </select>
+                            </div>
+
+                            <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
+                        
+            
                         </div>
                     </div>
+                </div>
+            </div>
 
 
                 </div>
@@ -134,7 +158,10 @@
                     ticket: {
                         type: '0',
                         topic: '',
-                        detail: ''
+                        detail: '',
+                        owner: '',
+                        branch: '0',
+                        division: '0'
                     }
                 }
             },
@@ -145,7 +172,13 @@
                     } else {
                         axios.post('/user/system/add-ticket.api.php', this.ticket)
                         .then(function (response) {
-                            console.log(response);
+                            if(response.data.status == 'success') {
+                                swal("สำเร็จ", "แจ้งซ่อมเรียบร้อย", "success").then(function() {
+                                    window.location.href = '/user/list';
+                                });
+                            } else {
+                                swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                            }
                         })
                     }
                 }

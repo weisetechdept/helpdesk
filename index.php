@@ -10,10 +10,28 @@
         require '404.html';
     });
 
+    /* Auth */
+
+    $router->get( '/login', function() {
+        require 'auth/pages/login.php';
+    });
+
+    $router->get( '/register', function() {
+        require 'auth/pages/register.php';
+    });
+
     /* user section */
 
     $router->get( '/user/add-ticket', function() {
         require 'user/pages/add-ticket.php';
+    });
+
+    $router->get( '/user/list', function() {
+        require 'user/pages/list.php';
+    });
+
+    $router->get( '/user/de/(.*)', function($id) {
+        require 'user/pages/detail.php';
     });
 
 /*
