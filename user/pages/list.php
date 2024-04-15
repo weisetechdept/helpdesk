@@ -1,3 +1,10 @@
+<?php 
+    session_start();
+
+    if(!isset($_SESSION['hd_login'])) {
+        header('Location: /404');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 

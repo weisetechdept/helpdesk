@@ -53,7 +53,7 @@
                                             button: "ตกลง",
                                         }
                                     ).then(() => {
-                                        window.location.href = '/emp/home';
+                                        window.location.href = '/user/list';
                                     });
                                 } else if(response.data.status == 'hold') {
                                     swal('รอการอนุมัติ', 'บัญชีของท่านกำลังอยู่ในสถานะรออนุมัติการเข้าใช้งาน', 'warning',{
