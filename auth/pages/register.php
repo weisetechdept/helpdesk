@@ -63,7 +63,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <select class="form-control form-control-user" @change="">
+                                                <select class="form-control form-control-user" @change="branch">
                                                     <option value="0">= เลือกสาขา =</option>
                                                     <option value="1">สำนักงานใหญ่</option>
                                                     <option value="2">สาขาตลาดไท</option>
