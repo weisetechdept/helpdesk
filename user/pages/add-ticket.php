@@ -168,7 +168,7 @@
             mounted() {
                 axios.get('/user/system/add-ticket.api.php')
                     .then(function (response) {
-                        this.display = response.data;
+                        ticket.display = response.data;
                     })
                 
             },
