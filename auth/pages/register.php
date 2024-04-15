@@ -89,17 +89,22 @@
     <script src="/assets/js/theme.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
+    <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
     <script>
+        
+        
+  
         var register = new Vue({
             el: '#register',
             data: {
                 send: {
                     f_name: '',
                     l_name: '',
-                    department: '0'
+                    department: '0',
+                    uid: ''
                 },
                 department: []
             },
@@ -108,7 +113,17 @@
                     .then(response => {
                         console.log(response.data),
                         this.department = response.data
-                    })
+                    }),
+                    liff.init({ liffId: "1654391121-baZ6dK7M" }, () => {
+                        if (liff.isLoggedIn()) {
+                                liff.getProfile().then(profile => {
+                                    this.send.uid = profile.userId
+                                    consola.log(this.send.uid)
+                                }).catch(err => console.error(err));
+                        } else {
+                            liff.login();
+                        }
+                    }, err => console.error(err.code, error.message));
             },
             methods: {
                 register() {

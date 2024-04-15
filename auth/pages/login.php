@@ -41,7 +41,7 @@
                             axios.post('/auth/system/auth.api.php', {
                                 userId: profile.userId,
                             }).then(response => {
-                                console.log(response.data);
+                                //console.log(response.data);
                                 /*
                                 if(response.data.status == '200'){
                                     if(response.data.permission == 'leader'){
