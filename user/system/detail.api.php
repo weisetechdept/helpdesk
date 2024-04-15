@@ -4,17 +4,17 @@
     
     $id = $_GET['id'];
     
-    $detail = $db->where('tick_id',$id)->getOne('ticket');
+    $detail = $db->where('tick_id','13')->getOne('ticket');
 
     $api = array(
-        'tick_id' => $detail['tick_id'],
-        'tick_type' => $detail['tick_type'],
-        'tick_topic' => $detail['tick_topic'],
-        'tick_detail' => $detail['tick_detail'],
-        'tick_branch' => $detail['tick_branch'],
-        'tick_division' => $detail['tick_division'],
-        'tick_status' => $detail['tick_status'],
-        'tick_datetime' => $detail['tick_datetime']
+        'id' => $detail['tick_id'],
+        'type' => $detail['tick_type'],
+        'topic' => $detail['tick_topic'],
+        'detail' => $detail['tick_detail'],
+        'branch' => $detail['tick_branch'],
+        'division' => $detail['tick_division'],
+        'status' => $detail['tick_status'],
+        'datetime' => $detail['tick_datetime']
     );
 
     echo json_encode($api);
