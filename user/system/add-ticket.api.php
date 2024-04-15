@@ -8,10 +8,12 @@
     } else {
         $id = $_SESSION['hd_user_id'];
 
-        $user = $db->where('user_id',$id)->getOne('user');
+        $db->join('user_group g','g.usrg_id=u.user_dept','LEFT');
+        $user = $db->where('user_id',$id)->getOne('user u');
         $api = array(
             'name' => $user['user_first_name'].' '.$user['user_last_name'],
-            'permission' => $user['user_permission']
+            'permission' => $user['user_permission'],
+            'department' => $user['usrg_name']
         );
 
     }
