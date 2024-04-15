@@ -41,23 +41,21 @@
                             axios.post('/auth/system/auth.api.php', {
                                 userId: profile.userId,
                             }).then(response => {
-                                //console.log(response.data);
-                                /*
-                                if(response.data.status == '200'){
-                                    if(response.data.permission == 'leader'){
-                                        window.location.href = "/mgr/home";
-                                    }
-                                    if(response.data.permission == 'user'){
-                                        window.location.href = "/home";
-                                    }
-                                }
-                                if(response.data.status == '400'){
-                                    swal("ท่านยังไม่ได้ลงทะเบียน", "โปรดติดต่อผู้ดูแลระบบ", "warning",{ 
-                                            button: "ตกลง"
+                                if(response.data.status == 'error') {
+                                    swal('เกิดข้อผิดพลาด', 'ไม่พบข้อมูลผู้ใช้งาน', 'error',{
+                                            button: "สมัครสมาชิก"
+                                    }).then(() => {
+                                        window.location.href = '/register';
+                                    });
+                                } else if(response.data.status == 'success') {
+                                    swal('เข้าสู่ระบบสำเร็จ', 'ยินดีต้อนรับ', 'success',
+                                        {
+                                            button: "ตกลง",
                                         }
-                                    );
+                                    ).then(() => {
+                                        window.location.href = '/emp/home';
+                                    });
                                 }
-                                */
                             });
 
                         }).catch(err => console.error(err));
