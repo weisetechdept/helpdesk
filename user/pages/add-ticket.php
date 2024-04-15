@@ -86,31 +86,28 @@
                             </div>
 
                             <div class="form-group">
+                                <label>รหัสทรัพย์สิน (ถ้ามี)</label>
+                                <input type="text" class="form-control">
+                            </div>
+
+                            <div class="form-group">
                                 <label>อาการเสีย / ชำรุด</label>
                                 <textarea class="form-control" v-model="ticket.detail" rows="3"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>ชื่อผู้แจ้ง</label>
-                                <input type="text" v-model="ticket.owner" class="form-control">
+                                <p class="pl-2">ณัฐนนท์ คงศรี</p>
                             </div>
 
                             <div class="form-group">
                                 <label>สาขา</label>
-                                <select class="form-control" v-model="ticket.branch">
-                                    <option value="0">= เลือกสาขา =</option>
-                                    <option value="1">สำนักงานใหญ่</option>
-                                    <option value="2">สาขาตลาดไท</option>
-                                </select>
+                                <p class="pl-2">สำนักงานใหญ่</p>
                             </div>
 
                             <div class="form-group">
                                 <label>แผนก / ฝ่าย</label>
-                                <select class="form-control" v-model="ticket.division">
-                                    <option value="0">= เลือกแผนก / ฝ่าย =</option>
-                                    <option value="1">ฝ่ายขาย</option>
-                                    <option value="2">ฝ่ายการตลาด</option>
-                                </select>
+                                <p class="pl-2">ไวส์ เทคนิคคา</p>
                             </div>
 
                             <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
@@ -129,12 +126,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6">
-                            2019 © Scoxe.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-right d-none d-sm-block">
-                                Design & Develop by Myra
-                            </div>
+                            2024 © WeiseTech
                         </div>
                     </div>
                 </div>

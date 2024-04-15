@@ -61,11 +61,19 @@
                                                     <input type="text" class="form-control form-control-user" v-model="send.l_name" placeholder="นามสกุล">
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <select class="form-control form-control-user" @change="">
+                                                    <option value="0">= เลือกสาขา =</option>
+                                                    <option value="1">สำนักงานใหญ่</option>
+                                                    <option value="2">สาขาตลาดไท</option>
+                                                </select>
+                                            </div>
+
                                             <div class="form-group">
                                                 <select class="form-control form-control-user" v-model="send.department">
                                                     <option value="0">= เลือกแผนกที่สังกัด =</option>
                                                     <option v-for="de in department" :value="de.id" >{{ de.name }}</option>
-                                                    
                                                 </select>
                                             </div>
                                             <button @click="register" class="btn btn-success btn-block waves-effect waves-light"> สมัครใช้งาน </button>
@@ -109,11 +117,6 @@
                 department: []
             },
             mounted() {
-                axios.get('/auth/system/register.api.php')
-                    .then(response => {
-                        this.department = response.data
-                    }),
-                    
                     liff.init({ liffId: "1654391121-baZ6dK7M" }, () => {
                         if (liff.isLoggedIn()) {
                                 liff.getProfile().then(profile => {
@@ -125,6 +128,13 @@
                     }, err => console.error(err.code, error.message));
             },
             methods: {
+                branch(e) {
+                    var branch = e.target.value
+                    axios.post('/auth/system/register.api.php', { branch: branch })
+                        .then(response => {
+                            this.department = response.data
+                        })
+                },
                 register() {
                     if(this.send.f_name == '' || this.send.l_name == '' || this.send.department == '0') {
                         swal('โปรดตรวจสอบ', 'คุณยังไม่ได้กรอกข้อมูลชื่อ นามสกุล หรือ แผนกที่คุณสังกัด', 'warning')

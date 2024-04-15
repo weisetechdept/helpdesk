@@ -11,7 +11,7 @@
                             <a href="/user/add-ticket" class="waves-effect"><i class="feather-edit-3"></i><span>แจ้งซ่อม</span></a>
                         </li>
                         <li>
-                            <a href="/user/list" class="waves-effect"><i class="feather-edit-3"></i><span>รายการซ่อม</span></a>
+                            <a href="/user/list" class="waves-effect"><i class="feather-edit-3"></i><span>รายการซ่อมของฉัน</span></a>
                         </li>
                     </ul>
 
