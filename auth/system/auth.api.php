@@ -7,7 +7,12 @@
 
     $user = $db->where('user_uid',$userId)->getOne('user');
 
-    if($user['user_status'] == 1) {
+    if($user == null) {
+        $api = array(
+            'status' => 'error',
+            'message' => 'User not found'
+        );
+    } elseif($user['user_status'] == 1) {
         $_SESSION['hd_login'] = true;
         $_SESSION['hd_permission'] = $user['user_permission'];
         $_SESSION['hd_user_id'] = $user['user_id'];
@@ -19,11 +24,6 @@
         $api = array(
             'status' => 'hold',
             'message' => 'User not verified'
-        );
-    } else {
-        $api = array(
-            'status' => 'error',
-            'message' => 'User not found'
         );
     }
 
