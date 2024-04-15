@@ -33,14 +33,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+        <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
         <script>
-            liff.init({ liffId: "1654391121-dL8A0jlg" }, () => {
+            liff.init({ liffId: "1654391121-n3xgD6Aw" }, () => {
                 if (liff.isLoggedIn()) {
                         liff.getProfile().then(profile => {
                             axios.post('/auth/system/auth.api.php', {
                                 userId: profile.userId,
                             }).then(response => {
                                 console.log(response.data);
+                                /*
                                 if(response.data.status == '200'){
                                     if(response.data.permission == 'leader'){
                                         window.location.href = "/mgr/home";
@@ -55,6 +58,7 @@
                                         }
                                     );
                                 }
+                                */
                             });
 
                         }).catch(err => console.error(err));
