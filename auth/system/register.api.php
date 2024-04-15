@@ -5,8 +5,12 @@
     $request = json_decode(file_get_contents('php://input'));
     $branch = $request->branch;
 
-    echo $branch;
-    /*
+    if($branch == '0') {
+        $api[] = array(
+            'id' => '0',
+            'name' => 'โปรดเลือกแผนก'
+        );
+    } else {
         $dept = $db->where('usrg_branch',$branch)->where('usrg_status',1)->get('user_group');
         foreach($dept as $d) {
             $api[] = array(
@@ -14,7 +18,6 @@
                 'name' => $d['usrg_name']
             );
         }
-    
+    }
 
     echo json_encode($api);
-    */
