@@ -119,12 +119,12 @@
                         if (liff.isLoggedIn()) {
                                 liff.getProfile().then(profile => {
                                     this.send.uid = profile.userId
+                                    console.log(this.send.uid) // Get the uid here
                                 }).catch(err => console.error(err));
                         } else {
                             liff.login();
                         }
                     }, err => console.error(err.code, error.message));
-                    console.log(this.send.uid)
             },
             methods: {
                 register() {
