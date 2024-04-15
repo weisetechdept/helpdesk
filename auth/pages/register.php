@@ -133,7 +133,8 @@
             methods: {
                 branch(e) {
                     if(e.target.value == '0') {
-                        document.querySelector('.dept').style.display = 'none'
+                        document.querySelector('.dept').style.display = 'none',
+                        this.send.department = '0'
                         return
                     } else {
                         axios.post('/auth/system/register.api.php', { branch: e.target.value })
