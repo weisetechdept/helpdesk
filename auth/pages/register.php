@@ -131,7 +131,7 @@
                 branch(e) {
                     axios.post('/auth/system/register.api.php', { branch: e.target.value })
                         .then(response => {
-                            console.log(response.data)
+                            this.department = response.data
                         })
                 },
                 register() {
