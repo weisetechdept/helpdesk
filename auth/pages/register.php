@@ -30,6 +30,9 @@
         .swal-text {
             text-align: center;
         }
+        .dept {
+            display: none;
+        }
     </style>
 
 </head>
@@ -70,7 +73,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group dept">
                                                 <select class="form-control form-control-user" v-model="send.department">
                                                     <option value="0">= เลือกแผนกที่สังกัด =</option>
                                                     <option v-for="de in department" :value="de.id" >{{ de.name }}</option>
@@ -129,10 +132,16 @@
             },
             methods: {
                 branch(e) {
-                    axios.post('/auth/system/register.api.php', { branch: e.target.value })
+                    if(e.target.value == '0') {
+                        document.querySelector('.dept').style.display = 'none'
+                        return
+                    } else {
+                        axios.post('/auth/system/register.api.php', { branch: e.target.value })
                         .then(response => {
-                            this.department = response.data
+                            this.department = response.data,
+                            document.querySelector('.dept').style.display = 'block'
                         })
+                    }
                 },
                 register() {
                     if(this.send.f_name == '' || this.send.l_name == '' || this.send.department == '0') {
