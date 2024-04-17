@@ -6,7 +6,7 @@
     $id = $_GET['id'];
     $detail = $db->where('tick_id',$id)->getOne('ticket');
 
-    if($detail['tick_owner'] == $_SESSION['hd_user_id']){
+    if($detail['tick_owner'] == $_SESSION['hd_user_id'] || $_SESSION['hd_permission'] == 'manager'){
 
         $db->join('user_group g','u.user_dept = g.usrg_id','LEFT');
         $emp = $db->where('user_id',$detail['tick_owner'])->getOne('user u');
