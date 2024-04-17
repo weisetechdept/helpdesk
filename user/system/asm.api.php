@@ -2,7 +2,7 @@
     $code = $_GET['code'];
 
     if(!empty($code)){
-        $url = "https://asset.thaismartcontract.com/api/info?id=OF661148";
+        $url = "https://asset.thaismartcontract.com/api/info?id=".$code;
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
