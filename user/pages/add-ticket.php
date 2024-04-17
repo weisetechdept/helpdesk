@@ -87,7 +87,7 @@
 
                             <div class="form-group">
                                 <label>รหัสทรัพย์สิน (ถ้ามี)</label>
-                                <input type="text" class="form-control">
+                                <input type="text" v-model="ticket.code" class="form-control">
                             </div>
 
                             <div class="form-group">
@@ -102,12 +102,12 @@
 
                             <div class="form-group">
                                 <label>สาขา</label>
-                                <p class="pl-2">{{ display.department }}</p>
+                                <p class="pl-2">{{ display.branch }}</p>
                             </div>
 
                             <div class="form-group">
                                 <label>แผนก / ฝ่าย</label>
-                                <p class="pl-2">{{ display.branch }}</p>
+                                <p class="pl-2">{{ display.department }}</p>
                             </div>
 
                             <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
@@ -158,9 +158,8 @@
                         type: '0',
                         topic: '',
                         detail: '',
-                        owner: '',
-                        branch: '0',
-                        division: '0'
+                        code: '',
+                        owner: <?php echo $_SESSION['hd_user_id']; ?>
                     },
                     display: []
                 }
@@ -184,7 +183,7 @@
                                     window.location.href = '/user/list';
                                 });
                             } else {
-                                swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                                swal("เกิดข้อผิดพลาด",response.data.message , "error");
                             }
                         })
                     }

@@ -3,12 +3,19 @@
     require_once '../../db-conn.php';
     date_default_timezone_set("Asia/Bangkok");
 
-    if(!isset($_SESSION['hd_login'])) {
+
+    if(!isset($_SESSION['hd_login']) && $_SESSION['hd_permission'] != 'manager') {
         header('Location: /404');
     } else {
         $id = $_SESSION['hd_user_id'];
 
-        $list = $db->where('tick_owner',$id)->get('ticket');
+        $mgr = $db->where('user_id',9)->where('user_permission','manager')->getOne('user');
+        $getTeam = $db->where('user_dept',$mgr['user_dept'])->get('user');
+        foreach($getTeam as $row){
+            $team[] = $row['user_id'];
+        }
+
+        $list = $db->where('tick_owner',$team, 'IN')->get('ticket');
 
         $db->join('user_group g','u.user_dept = g.usrg_id','LEFT');
         $emp = $db->where('user_id',$id)->getOne('user u');
@@ -39,5 +46,6 @@
             );
         }
     }
+
 
     echo json_encode($api);

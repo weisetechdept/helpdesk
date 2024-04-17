@@ -34,12 +34,11 @@
         require 'user/pages/detail.php';
     });
 
-/*
-    $router->get( '/mgr/agent/(.*)', function($page) {
-        require 'mgr/pages/agent.php';
+    /* MGR */
+
+    $router->get( '/user/mgrList', function() {
+        require 'user/pages/mgrList.php';
     });
-*/
-    
 
     $router->run();
     

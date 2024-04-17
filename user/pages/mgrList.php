@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">รายการซ่อม</h4>
+                                <h4 class="mb-0 font-size-18">รายการรออนุมัติ</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -170,7 +170,7 @@
             "drawCallback": function () {
                 $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
             },
-            ajax: '/user/system/list.api.php',
+            ajax: '/user/system/mgrList.api.php',
             "columns" : [
                 {'data':'0'},
                 {'data':'1'},

@@ -78,51 +78,46 @@
                                     <table class="table mb-0">
                                         <tbody>
                                             <tr>
-                                                <td>รหัส</td>
+                                                <td width="120px">รหัส</td>
                                                 <td>{{ detail.id }}</td>
                                             </tr>
                                             <tr>
-                                                <td>ชื่อ - นามสกุล</td>
-                                                <td>{{ detail.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>โทรศัพท์</td>
-                                                <td>{{ detail.tel }} <a :href="'tel:'+detail.tel" type="button" style="float: right;" class="btn btn-info btn-sm waves-effect waves-light">โทร</button>
-                                                </td>
+                                                <td>ทรัพย์สิน (ASM)</td>
+                                                <td>{{ detail.code }}</td>
                                                 
                                             </tr>
                                             <tr>
-                                                <td>รถยนต์</td>
-                                                <td>{{ detail.car }}</td>
+                                                <td>ประเภท</td>
+                                                <td>{{ detail.type }}</td>
+                                                
                                             </tr>
                                             <tr>
-                                                <td>วันที่จอง</td>
-                                                <td>{{ detail.bk_date }}</td>
-                                            <tr>
-                                                <td>เวลาที่จอง</td>
-                                                <td>{{ detail.bk_time }}</td>
+                                                <td>หัวข้อการซ่อม</td>
+                                                <td>{{ detail.topic }}</td>
                                             </tr>
                                             <tr>
-                                                <td>หมายเหตุ</td>
-                                                <td>{{ detail.bk_note }}</td>
+                                                <td>รายละเอียดชำรุด</td>
+                                                <td>{{ detail.detail }}</td>
                                             </tr>
                                             <tr>
                                                 <td>สถานะ</td>
-                                                <td v-if="detail.status == '0'"><span class="badge badge-soft-warning">ยังไม่ทดลองขับ</span></td>
-                                                <td v-else-if="detail.status == '1'"><span class="badge badge-soft-primary">เบิกกุญแจ</span></td>
-                                                <td v-else-if="detail.status == '2'"><span class="badge badge-soft-success">สำเร็จ</span></td>
-                                                <td v-else-if="detail.status == '10'"><span class="badge badge-soft-danger">ยกเลิก</span></td>
+                                                <td v-if="detail.status == '0'"><span class="badge badge-soft-info">รออนุมัติ (ผจก.)</span></td>
+                                                <td v-if="detail.status == '1'"><span class="badge badge-soft-warning">รอกำเนินการ</span></td>
+                                                <td v-else-if="detail.status == '2'"><span class="badge badge-soft-primary">กำลังดำเนินการ</span></td>
+                                                <td v-else-if="detail.status == '3'"><span class="badge badge-soft-success">เสร็จสิ้น</span></td>
+                                                <td v-else-if="detail.status == '10'"><span class="badge badge-soft-danger">ไม่เสร็จสิ้น</span></td>
                                             </tr>
                                             <tr>
-                                                <td>วันที่ขอจอง</td>
-                                                <td>{{ detail.create }}</td>
+                                                <td>ผู้แจ้ง</td>
+                                                <td>{{ detail.owner }}</td>
                                             </tr>
                                             <tr>
-                                                <td>แหล่งที่มา</td>
-                                                <td v-if="detail.where == '1'"><span class="badge badge-soft-success">ออนไลน์</span></td>
-                                                <td v-else-if="detail.where == '2'"><span class="badge badge-soft-primary">เซลล์</span></td>
-                                                <td v-else-if="detail.where == '3'"><span class="badge badge-soft-info">TBR</span></td>
-                                                <td v-else-if="detail.where == '4'"><span class="badge badge-soft-secondary">Walk-in</span></td>
+                                                <td>สังกัด</td>
+                                                <td>{{ detail.division }} ({{ detail.branch }})</td>
+                                            </tr>
+                                            <tr>
+                                                <td>วันที่แจ้ง</td>
+                                                <td>{{ detail.datetime }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -130,8 +125,78 @@
                                 </div>
                             </div>
                         </div>
-               
 
+                        <div class="col-lg-6 col-md-12" v-if="detail.code !== ''">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                   <h4>ข้อมูลจาก ASM</h4>
+                                   <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>รหัส</td>
+                                                <td>{{ asm.code }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ชื่อ</td>
+                                                <td>{{ asm.name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Serail.</td>
+                                                <td>{{ asm.name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ประเภท</td>
+                                                <td>{{ asm.type }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>แผนกครอบครอง</td>
+                                                <td>{{ asm.division }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ผู้ครอบครอง</td>
+                                                <td>{{ asm.owner }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ราคา</td>
+                                                <td>{{ asm.price }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>วันที่</td>
+                                                <td>{{ asm.importedDate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                   <h4>บันทึก</h4>
+                                   <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td>ลำดับ</td>
+                                                <td>รายละเอียด</td>
+                                                <td>บันทึกเวลา</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                   <h4>เอกสารแนบ</h4>
+                                    
+                                   
+                                      
+                                </div>
+                            </div>
+                        </div>
 
                 </div>
             </div>
@@ -181,16 +246,27 @@
         var app = new Vue({
             el: '#app',
             data: {
-                detail: []
+                detail: [],
+                asm: []
             },
             mounted() {
                 this.getDetail();
+                this.asm_api(this.detail.code);
             },
             methods: {
                 getDetail() {
-                    axios.get('/user/system/detail.api.php?id=<?php echo $_GET['id']; ?>')
+                    axios.get('/user/system/detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
                             app.detail = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                asm_api(code) {
+                    axios.get('/user/system/asm.api.php?code='+code)
+                        .then(function (response) {
+                            app.asm = response.data;
                             console.log(response.data);
                         })
                         .catch(function (error) {

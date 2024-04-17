@@ -1,31 +1,36 @@
 <?php
+    session_start();
     date_default_timezone_set("Asia/Bangkok");
     require_once '../../db-conn.php';
+    
     $request = json_decode(file_get_contents('php://input'));
 
     $type = $request->type;
     $topic = $request->topic;
     $detail = $request->detail;
+    $code = $request->code;
     $owner = $request->owner;
-    $branch = $request->branch;
-    $division = $request->division;
 
-    $data = array(
-        'tick_type' => $type,
-        'tick_topic' => $topic,
-        'tick_detail' => $detail,
-        'tick_code' => '',
-        'tick_owner' => $owner,
-        'tick_branch' => $branch,
-        'tick_division' => $division,
-        'tick_status' => '1',
-        'tick_datetime' => date('Y-m-d H:i:s')
-    );
-    $id = $db->insert('ticket', $data);
-    if($id){
-        $api = array('status' => 'success', 'id' => $id);
+    if($_SESSION['hd_user_id'] == $owner){
+
+        $data = array(
+            'tick_type' => $type,
+            'tick_topic' => $topic,
+            'tick_detail' => $detail,
+            'tick_code' => $code,
+            'tick_owner' => $owner,
+            'tick_status' => '0',
+            'tick_datetime' => date('Y-m-d H:i:s')
+        );
+        $id = $db->insert('ticket', $data);
+        if($id){
+            $api = array('status' => 'success', 'id' => $id);
+        } else {
+            $api = array('status' => 'error');
+        }
+
     } else {
-        $api = array('status' => 'error');
+        $api = array('status' => 'error', 'message' => 'Permission denied');
     }
         
     echo json_encode($api);
