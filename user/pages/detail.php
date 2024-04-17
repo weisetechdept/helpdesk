@@ -251,27 +251,18 @@
             },
             mounted() {
                 this.getDetail();
-                this.asm_api(this.detail.code);
             },
             methods: {
                 getDetail() {
                     axios.get('/user/system/detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
                             app.detail = response.data;
+
+                            axios.get('/user/system/asm.api.php?code='+response.data.code)
+                                .then(function (response) {
+                                    app.asm = response.data;
+                                })
                         })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                asm_api(code) {
-                    axios.get('/user/system/asm.api.php?code='+code)
-                        .then(function (response) {
-                            app.asm = response.data;
-                            console.log(response.data);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
                 }
             }
         });

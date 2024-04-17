@@ -17,7 +17,7 @@
             'tick_type' => $type,
             'tick_topic' => $topic,
             'tick_detail' => $detail,
-            'tick_code' => $code,
+            'tick_code' => strtoupper($code),
             'tick_owner' => $owner,
             'tick_status' => '0',
             'tick_datetime' => date('Y-m-d H:i:s')
