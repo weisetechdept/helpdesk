@@ -13,9 +13,11 @@
                         <li>
                             <a href="/user/list" class="waves-effect"><i class="feather-edit-3"></i><span>รายการซ่อมของฉัน</span></a>
                         </li>
-                        <li>
-                            <a href="/user/mgrList" class="waves-effect"><i class="feather-edit-3"></i><span>รายการรออนุมัติ</span></a>
-                        </li>
+                        <?php if($_SESSION['hd_permission'] == 'manager') { ?>
+                            <li>
+                                <a href="/user/mgrList" class="waves-effect"><i class="feather-edit-3"></i><span>รออนุมัติ (ผจก.)</span></a>
+                            </li>
+                        <?php } ?>
                     </ul>
 
                     

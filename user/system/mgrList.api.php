@@ -5,8 +5,11 @@
 
 
     if(!isset($_SESSION['hd_login']) && $_SESSION['hd_permission'] != 'manager') {
+
         header('Location: /404');
+
     } else {
+
         $id = $_SESSION['hd_user_id'];
 
         $mgr = $db->where('user_id',9)->where('user_permission','manager')->getOne('user');
@@ -46,6 +49,5 @@
             );
         }
     }
-
 
     echo json_encode($api);
