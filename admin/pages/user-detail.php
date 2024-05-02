@@ -36,6 +36,14 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
         }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
     </style>
 
 </head>
@@ -69,18 +77,27 @@
                     </div>
 
 
-                    <div class="col-6" id="app">
+                    <div class="col-12 col-md-6" id="app">
                         <div class="card">
                             <div class="card-body">
+                            <img class="rounded-circle profile-img" src="/assets/images/avatar.jpeg">
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr>
-                                            <td width="120px">ชื่อ</td>
+                                            <td width="145px">ชื่อ</td>
                                             <td><input class="form-control" v-model="user.f_name"></td>
                                         </tr>
                                         <tr>
-                                            <td width="120px">นามสกุล</td>
+                                            <td>นามสกุล</td>
                                             <td><input class="form-control" v-model="user.l_name"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>รหัสพนักงาน</td>
+                                            <td><input class="form-control"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>เลขบัตรประชาชน</td>
+                                            <td><input class="form-control"></td>
                                         </tr>
                                         <tr>
                                             <td>แผนก</td>
