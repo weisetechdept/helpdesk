@@ -19,7 +19,7 @@
     foreach ($dept as $value) {
         $api['dept'][] = array(
             'id' => $value['usrg_id'],
-            'name' => $value['usrg_name']
+            'name' => '[สำนักงานใหญ่] - '.$value['usrg_name']
         );
     }
     

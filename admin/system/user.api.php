@@ -71,7 +71,7 @@
                 $api['data'][] = array(
                     $row['user_id'],
                     $row['user_first_name'].' '.$row['user_last_name'],
-                    $row['usrg_name'],
+                    '[สำนักงานใหญ่] - '.$row['usrg_name'],
                     $row['user_permission'],
                     $row['user_status'],
                     $row['user_datetime']
