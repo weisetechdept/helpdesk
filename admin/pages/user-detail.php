@@ -37,8 +37,8 @@
             font-family: 'Kanit', sans-serif;
         }
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             margin: 0 auto;
             display: block;
             margin-bottom: 40px;
@@ -97,6 +97,10 @@
                                         </tr>
                                         <tr>
                                             <td>เลขบัตรประชาชน</td>
+                                            <td><input class="form-control"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>เบอร์โทรศัพท์</td>
                                             <td><input class="form-control"></td>
                                         </tr>
                                         <tr>
