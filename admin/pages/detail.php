@@ -1,9 +1,5 @@
 <?php 
     session_start();
-
-    if(!isset($_SESSION['hd_login'])) {
-        header('Location: /404');
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +33,9 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
         }
+        .active {
+            background-color: #e5effb;
+        }
     </style>
 
 </head>
@@ -45,10 +44,10 @@
 
     <div id="layout-wrapper">
 
-        <?php include 'user/inc-pages/nav.inc.php'; ?>
-        <?php include 'user/inc-pages/sidebar.inc.php'; ?>
+        <?php include 'admin/inc-pages/nav.inc.php'; ?>
+        <?php include 'admin/inc-pages/sidebar.inc.php'; ?>
 
-        <div class="main-content">
+        <div class="main-content" id="app">
 
             <div class="page-content">
                 <div class="container-fluid">
@@ -68,8 +67,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row" id="app">
+                    <div class="row">
                   
                         <div class="col-lg-6 col-md-12">
                             <div class="card m-b-30">
@@ -78,7 +76,7 @@
                                     <table class="table mb-0">
                                         <tbody>
                                             <tr>
-                                                <td width="120px">รหัส</td>
+                                                <td width="150px">รหัส</td>
                                                 <td>{{ detail.id }}</td>
                                             </tr>
                                             <tr>
@@ -119,6 +117,14 @@
                                                 <td>วันที่แจ้ง</td>
                                                 <td>{{ detail.datetime }}</td>
                                             </tr>
+                                            <tr class="active">
+                                                <td>ประเภทงาน</td>
+                                                <td>{{ detail.fix_type }}</td>
+                                            </tr>
+                                            <tr class="active">
+                                                <td>ผู้ปฏิบัติงาน</td>
+                                                <td>{{ detail.vd }}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                       
@@ -126,6 +132,7 @@
                             </div>
                         </div>
 
+                        
                         <div class="col-lg-6 col-md-12" v-if="detail.code !== ''">
                             <div class="card m-b-30">
                                 <div class="card-body">
@@ -169,16 +176,6 @@
                                 </div>
                             </div>
                         </div>
-                        <?php if($_SESSION['hd_permission'] == 'manager') { ?>
-                        <div  v-if="detail.status == '0'" class="col-lg-6 col-md-12">
-                            <div class="card m-b-30">
-                                <div class="card-body">
-                                   <h4>จัดการ</h4>
-                                   <button class="btn btn-success" @click="approval">อนุมัติ</button> <button class="btn btn-outline-danger">ไม่อนุมัติ</button> 
-                                </div>
-                            </div>
-                        </div>
-                        <?php } ?>
 
                         <div class="col-lg-6 col-md-12">
                             <div class="card m-b-30">
@@ -209,6 +206,68 @@
                         </div>
 
                 </div>
+                    <div v-if="detail.status == '1'" class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                    <h4 class="mt-0 header-title">การดำเนินงาน</h4>
+                                    <div class="form-group">
+                                        <label>ประเภทงาน</label>
+                                        <select v-model="send.type_fix" class="form-control">
+                                            <option v-for="t in type_fix" :value="t.id">{{ t.name }}</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>ผู้ปฏิบัติงาน</label>
+                                        <select v-model="send.vendor" class="form-control">
+                                            <option v-for="v in vendor" :value="v.id">{{ v.name }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" @click="upStp1">บันทึก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="detail.status == '2' || detail.status == '3' || detail.status == '4' || detail.status == '5'" class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                    <h4 class="mt-0 header-title">สถานะการดำเนินงาน</h4>
+                                        <div class="form-group">
+                                            <select class="form-control">
+                                                <option value="2">กำลังดำเนินการ</option>
+                                                <option value="3">ขออนุมัติซ่อม (มีค่าใช้จ่าย)</option>
+                                                <option value="4">รออะไหล่</option>
+                                                <option value="5">รอส่งงานนอก</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button @click="upStep2" class="btn btn-primary">บันทึก</button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="detail.status == '2' || detail.status == '3' || detail.status == '4' || detail.status == '5'" class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                    <h4 class="mt-0 header-title">ดำเนินงานเสร็จสิ้น</h4>
+                                        <div class="form-group">
+                                            <button class="btn btn-success">งานซ่อมเสร็จสื้น</button> <button class="btn btn-outline-danger ml-2">ยกเลิกงานซ่อม</button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
 
             <footer class="footer">
@@ -258,17 +317,79 @@
             data: {
                 detail: [],
                 asm: [],
-                id: <?php echo $id; ?>
+                vendor: [],
+                type_fix: [],
+                id: <?php echo $id; ?>,
+                send: {
+                    type_fix: 0,
+                    vendor: 0
+                },
+                upSend: {
+                    status: 5
+                }
             },
             mounted() {
                 this.getDetail();
             },
             methods: {
+                upStep2(){
+                    swal({
+                        title: 'กำลังดำเนินการ',
+                        text: 'ตรวจสอบข้อมูล และทำการอนุมัติการแจ้งซ่อมใช่หรือไม่',
+                        icon: 'info',
+                        buttons: {
+                            cancel: 'ยกเลิก',
+                            confirm: 'ยืนยัน'
+                        },
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+
+                    }).then(function () {
+                        axios.post('/admin/system/upTicket.api.php?po=stp2', {
+                            id: app.id,
+                            status: app.upSend.status
+                        })
+                        .then(function (response) {
+                            
+                        })
+                    });
+                },
+                upStp1(){
+                    if(this.send.type_fix == 0) {
+                        swal('ผิดพลาด', 'กรุณาเลือกประเภทการซ่อม', 'error');
+                        return;
+                    } else if(this.send.vendor == 0) {
+                        swal('ผิดพลาด', 'กรุณาเลือกผู้ปฏิบัติงาน', 'error');
+                        return;
+                    } else {
+                        axios.post('/admin/system/upTicket.api.php?po=stp1', {
+                            id: this.id,
+                            type_fix: this.send.type_fix,
+                            vendor: this.send.vendor
+                        })
+                        .then(function (response) {
+                            if(response.data.status == 'success') {
+                                swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                    .then(function() {
+                                        window.location.reload();
+                                    });
+                            } else {
+                                swal('ผิดพลาด', response.data.message, 'error');
+                            }
+                        })
+                    }
+                },
                 getDetail() {
-                    axios.get('/user/system/detail.api.php?id=<?php echo $id; ?>')
+                    axios.get('/admin/system/detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
                             app.detail = response.data;
+                            app.vendor = response.data.vendor;
+                            app.type_fix = response.data.type_fix;
 
+                            app.upSend.status = response.data.detail.status;
+
+                            //console.log(response.data);
+                            
                             axios.get('/user/system/asm.api.php?code='+response.data.code)
                                 .then(function (response) {
                                     app.asm = response.data;

@@ -40,6 +40,28 @@
         require 'user/pages/mgrList.php';
     });
 
+    /* admin */
+
+    $router->get( '/admin/home', function() {
+        require 'admin/pages/list.php';
+    });
+
+    $router->get( '/admin/user', function() {
+        require 'admin/pages/user.php';
+    });
+
+    $router->get( '/admin/dept', function() {
+        require 'admin/pages/dept.php';
+    });
+
+    $router->get( '/admin/user/de/(.*)', function($id) {
+        require 'admin/pages/user-detail.php';
+    });
+
+    $router->get( '/admin/de/(.*)', function($id) {
+        require 'admin/pages/detail.php';
+    });
+
     $router->run();
     
 

@@ -19,6 +19,8 @@
             'tick_detail' => $detail,
             'tick_code' => strtoupper($code),
             'tick_owner' => $owner,
+            'tick_fix_type' => '0',
+            'tick_vendor' => '0',
             'tick_status' => '0',
             'tick_datetime' => date('Y-m-d H:i:s')
         );
