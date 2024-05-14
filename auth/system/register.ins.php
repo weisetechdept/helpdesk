@@ -8,8 +8,9 @@
     $lname = $request->l_name;
     $dept = $request->department;
     $uid = $request->uid;
+    $code = $request->code;
 
-    if($fname == '' || $lname == '' || $dept == '0') {
+    if($fname == '' || $lname == '' || $dept == '0' || $code == '') {
         $api = array(
             'status' => 'error',
             'message' => 'โปรดตรวจสอบ คุณยังไม่ได้กรอกข้อมูลชื่อ นามสกุล หรือ แผนกที่คุณสังกัด'
@@ -21,13 +22,13 @@
         );
     } else {
         $data = array(
-            'user_code' => '0',
+            'user_code' => $code,
             'user_first_name' => $fname,
             'user_last_name' => $lname,
             'user_uid' => $uid,
             'user_dept' => $dept,
             'user_permission' => 'officer',
-            'user_img' => 'default.png',
+            'user_img' => '',
             'user_status' => '0',
             'user_datetime' => date('Y-m-d H:i:s')
         );

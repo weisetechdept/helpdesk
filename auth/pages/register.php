@@ -53,8 +53,8 @@
                                                 <b>HELPDESK</b>
                                             </a>
                                         </div>
-                                        <h1 class="h5 mb-1">Create an Account!</h1>
-                                        <p class="text-muted mb-4">Don't have an account? Create your own account, it takes less than a minute</p>
+                                        <h1 class="h5 mb-1">สมัครสมาชิก</h1>
+                                        <p class="text-muted mb-4">เพื่อเข้าใช้ระบบ HelpDesk ของ โตโยต้า พาราก้อน</p>
 
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
@@ -62,6 +62,9 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control form-control-user" v-model="send.l_name" placeholder="นามสกุล">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-user" v-model="send.code" placeholder="รหัสพนักงาน">
                                                 </div>
                                             </div>
 
@@ -115,7 +118,8 @@
                     f_name: '',
                     l_name: '',
                     department: '0',
-                    uid: ''
+                    uid: '',
+                    code: ''
                 },
                 department: []
             },
