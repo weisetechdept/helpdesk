@@ -34,6 +34,7 @@
         $user = $db->where('user_dept',2)->get('user u');
 
         if($db->count > 0){
+
             foreach($user as $row){
                 $api['data'][] = array(
                     $row['user_id'],
@@ -44,12 +45,14 @@
                     $row['user_datetime']
                 );
             }
+
         } else {
+
             $api['data'] = null;
+
         }
 
     }
-
 
     if($_GET['data'] == 'list'){
 

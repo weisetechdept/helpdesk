@@ -21,11 +21,13 @@
         );
     } else {
         $data = array(
+            'user_code' => '0',
             'user_first_name' => $fname,
             'user_last_name' => $lname,
             'user_uid' => $uid,
             'user_dept' => $dept,
             'user_permission' => 'officer',
+            'user_img' => 'default.png',
             'user_status' => '0',
             'user_datetime' => date('Y-m-d H:i:s')
         );
