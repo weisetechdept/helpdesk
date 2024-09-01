@@ -14,12 +14,12 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle header-profile-user" src="/assets/images/avatar.jpeg"
                                 alt="Header Avatar">
-                            <span class="d-none d-sm-inline-block ml-1">สวัสดี! ผู้ใช้งาน</span>
+                            <span class="d-none d-sm-inline-block ml-1">สวัสดี! <?php echo $_SESSION['adminName']; ?></span>
                             <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             
-                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="/admin/logout">
                                 <span>ออกจากระบบ</span>
                             </a>
                         </div>

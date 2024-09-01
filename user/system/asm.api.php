@@ -24,6 +24,21 @@
 
         $results = json_decode($resp);
 
+        $img = array();
+        $count = 0;
+        foreach ($results->importPhotos as $key => $value) {
+            if ($count < 3) {
+            $img[] = $value->base64;
+            $count++;
+            } else {
+            break;
+            }
+        }
+
+        foreach ($results->importPhotos as $key => $value) {
+            $imgAll[] = $value->base64;
+        }
+
         $api = array(
             'code' => $results->id,
             'name' => $results->name,
@@ -31,15 +46,19 @@
             'type' => $results->assetTypeName,
             'division' => $results->divisionName,
             'owner' => $results->owner,
-            'price' => $results->price,
-            'importedDate' => $results->importedDate,
-
+            'price' => number_format($results->price),
+            'locationName' => $results->locationName,
+            'img' => $img,
+            'imgAll' => $imgAll
         );
+
     } else {
         $api = array('status' => 'error', 'message' => 'not found');
         
     }
 
-    echo json_encode($api);
+    print_r($api);
+
+    //echo json_encode($api);
     
 ?>

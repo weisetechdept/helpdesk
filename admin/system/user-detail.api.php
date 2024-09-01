@@ -3,25 +3,29 @@
     require_once '../../db-conn.php';
     date_default_timezone_set("Asia/Bangkok");
 
-    $id = $_GET['id'];
+   
 
-    $user = $db->where('user_id',$id)->getOne('user');
+        $id = $_GET['id'];
 
-    $api['user'] = array(
-        'f_name' => $user['user_first_name'],
-        'l_name' => $user['user_last_name'],
-        'dept' => $user['user_dept'],
-        'status' => $user['user_status'],
-        'permission' => $user['user_permission']
-    );
+        $user = $db->where('user_id',$id)->getOne('user');
 
-    $dept = $db->where('usrg_status',1)->get('user_group');
-    foreach ($dept as $value) {
-        $api['dept'][] = array(
-            'id' => $value['usrg_id'],
-            'name' => '[สำนักงานใหญ่] - '.$value['usrg_name']
+        $api['user'] = array(
+            'f_name' => $user['user_first_name'],
+            'l_name' => $user['user_last_name'],
+            'dept' => $user['user_dept'],
+            'status' => $user['user_status'],
+            'permission' => $user['user_permission'],
+            'tel' => $user['user_tel'],
+            'thai_id' => $user['user_thai_id'],
+            'code' => $user['user_code']
         );
-    }
-    
+
+        $dept = $db->where('usrg_status',1)->get('user_group');
+        foreach ($dept as $value) {
+            $api['dept'][] = array(
+                'id' => $value['usrg_id'],
+                'name' => '[สำนักงานใหญ่] - '.$value['usrg_name']
+            );
+        }
 
     echo json_encode($api);

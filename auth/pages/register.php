@@ -18,11 +18,22 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <style>
-        body {
+        @media(min-width: 768px) {
+            .container {
+                max-width: 678px;
+            }
+        }
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
+        }
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        .heading > h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
         }
         .center {
             margin: auto;
@@ -32,6 +43,9 @@
         }
         .dept {
             display: none;
+        }
+        .head-des {
+            text-align: center;
         }
     </style>
 
@@ -48,22 +62,22 @@
                             <div class="row">
                                 <div class="col-lg-7 center">
                                     <div class="p-5">
-                                        <div class="text-center mb-5">
-                                            <a href="index.html" class="text-dark font-size-22 font-family-secondary">
-                                                <b>HELPDESK</b>
-                                            </a>
+                                        <div class="text-center heading mb-2">
+                                            <h1>สมัครสมาชิก</h1>
                                         </div>
-                                        <h1 class="h5 mb-1">สมัครสมาชิก</h1>
-                                        <p class="text-muted mb-4">เพื่อเข้าใช้ระบบ HelpDesk ของ โตโยต้า พาราก้อน</p>
+
+                                           
+                                            <p class="text-muted head-des mb-4">เพื่อเข้าใช้งานระบบของ โตโยต้า พาราก้อน</p>
+                                            
 
                                             <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <div class="col-12 mb-3">
                                                     <input type="text" class="form-control form-control-user" v-model="send.f_name" placeholder="ชื่อ">
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-12 mb-3">
                                                     <input type="text" class="form-control form-control-user" v-model="send.l_name" placeholder="นามสกุล">
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-12">
                                                     <input type="text" class="form-control form-control-user" v-model="send.code" placeholder="รหัสพนักงาน">
                                                 </div>
                                             </div>
@@ -108,8 +122,6 @@
 
     <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
     <script>
-        
-        
   
         var register = new Vue({
             el: '#register',
@@ -124,6 +136,7 @@
                 department: []
             },
             mounted() {
+                /*
                     liff.init({ liffId: "1654391121-baZ6dK7M" }, () => {
                         if (liff.isLoggedIn()) {
                                 liff.getProfile().then(profile => {
@@ -133,6 +146,7 @@
                             liff.login();
                         }
                     }, err => console.error(err.code, error.message));
+                */
             },
             methods: {
                 branch(e) {

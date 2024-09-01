@@ -11,6 +11,20 @@ class ComposerStaticInit10b28516f81d5eda89055c27ffb0b913
         'd383f1ec7b1e54a09cb53eb6fcf751e0' => __DIR__ . '/..' . '/thingengineer/mysqli-database-class/dbObject.php',
     );
 
+    public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+    );
+
     public static $prefixesPsr0 = array (
         'B' => 
         array (
@@ -28,6 +42,8 @@ class ComposerStaticInit10b28516f81d5eda89055c27ffb0b913
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit10b28516f81d5eda89055c27ffb0b913::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit10b28516f81d5eda89055c27ffb0b913::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit10b28516f81d5eda89055c27ffb0b913::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit10b28516f81d5eda89055c27ffb0b913::$classMap;
 

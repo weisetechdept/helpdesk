@@ -47,7 +47,7 @@
         <?php include 'admin/inc-pages/nav.inc.php'; ?>
         <?php include 'admin/inc-pages/sidebar.inc.php'; ?>
 
-        <div class="main-content">
+        <div class="main-content" id="app">
 
             <div class="page-content">
                 <div class="container-fluid">
@@ -68,15 +68,105 @@
                         </div>
                     </div>
 
-                    <div class="col-6 col-md-3">
+                    <div class="row">
+                        <div class="col-12 col-md-3 col-lg-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <buttons class="btn btn-primary btn-block" data-toggle="modal" data-target="#addDept">เพิ่มแผนก</buttons>
-                                </div>
-                            </div>
-                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="control-label">จัดการ : </label><br />
+                                            <button type="button" class="btn btn-primary btn-block waves-effect waves-light" data-toggle="modal" data-target="#exampleModal">
+                                                เพิ่มแผนก
+                                            </button>
+                                        </div>
+                                    </div>
 
-                        <div class="col-12 col-md-6" id="app">
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มแผนก</h5>
+                                                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label class="control-label">ชื่อแผนก:</label>
+                                                        <input type="text" class="form-control" v-model="add.name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">สาขา:</label>
+                                                        <select class="form-control" v-model="add.branch">
+                                                            <option value="0">เลือกสาขา</option>
+                                                            <option value="1">สำนักงานใหญ่</option>
+                                                            <option value="2">สาขาตลาดไท</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light" @click="addDept">บันทึก</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-md-3 col-lg-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="control-label">การแสดงผล : </label><br />
+                                            <select class="form-control" v-model="showList" @change="showListDept">
+                                                <option value="all">แสดงทั้งหมด</option>
+                                                <option value="1">แสดงเฉพาะสำนักงานใหญ่</option>
+                                                <option value="2">แสดงเฉพาะตลาดไท</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มแผนก</h5>
+                                                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label class="control-label">ชื่อแผนก:</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">สาขา:</label>
+                                                        <select class="form-control">
+                                                            <option value="1">สำนักงานใหญ่</option>
+                                                            <option value="2">สาขาตลาดไท</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light">บันทึก</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
                             <div class="card">
                                 <div class="card-body">
                                     <table id="datatable" class="table dt-responsive nowrap">
@@ -104,8 +194,7 @@
                                 </div>
                             </div>
                         </div>
-
-
+                    </div>
                 </div>
             </div>
 
@@ -154,6 +243,11 @@
         var app = new Vue({
             el: '#app',
             data: {
+                showList: 'all',
+                add:{
+                    name: '',
+                    branch: '0'
+                }
             },
             mounted() {
                 $('#datatable').DataTable({
@@ -171,12 +265,12 @@
                     "drawCallback": function () {
                         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
                     },
-                    ajax: '/admin/system/dept.api.php',
+                    ajax: '/admin/system/dept.api.php?action=list&branch=all',
                     "columns" : [
                         {'data':'0'},
                         {'data':'1'},
                         
-                        {'data':'3',
+                        {'data':'2',
                             render: function(data){
                                 if(data == 1){
                                     return '<span class="badge badge-primary">สำนักงานใหญ่</span>';
@@ -185,22 +279,58 @@
                                 }
                             }
                         },
-                        {'data':'2',
+                        {'data':'3',
                             render: function(data){
                                 if(data == 1){
                                     return '<span class="badge badge-success">ใช้งาน</span>';
-                                } else if(data == 2) {
+                                } else if(data == 0) {
                                     return '<span class="badge badge-danger">ไม่ใช้งาน</span>';
                                 }
                             }
                         },
                         {'data':'0',
                             render: function(data){
-                                return '<a href="dept/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a>';
+                                return '<a href="/admin/dept/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a> <button class="btn btn-outline-warning btn-sm ml-1" @click="changeStatus('+ data +')">เปลี่ยนสถานะ</button>';
                             }
                         }
                     ]
                 });
+            },
+            methods: {
+                changeStatus(e){
+                    swal({
+                        title: "คุณแน่ใจหรือไม่?",
+                        text: "คุณต้องการเปลี่ยนสถานะข้อมูลนี้ใช่หรือไม่",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    });
+                },
+                showListDept: function(){
+                    $('#datatable').DataTable().ajax.url('/admin/system/dept.api.php?action=list&branch='+this.showList).load();
+                },
+                addDept: function(){
+                    if(this.add.name == '' | this.add.branch == '0'){
+                        swal('เกิดข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');
+                        return;
+                    } else {
+                        axios.post('/admin/system/dept.api.php', {
+                            action: 'add',
+                            name: this.add.name,
+                            branch: this.add.branch
+                        }).then(function(response){
+                            if(response.data.status == 'success'){
+                                swal('สำเร็จ', 'เพิ่มข้อมูลแผนกเรียบร้อย', 'success');
+                                $('#datatable').DataTable().ajax.reload();
+                                $('#exampleModal').modal('hide');
+                                app.add.name = '';
+                                app.add.branch = '0';
+                            } else {
+                                swal('เกิดข้อผิดพลาด', 'ไม่สามารถเพิ่มข้อมูลได้', 'error');
+                            }
+                        });
+                    }
+                },
             }
         });
 

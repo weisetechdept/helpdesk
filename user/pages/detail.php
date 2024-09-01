@@ -1,6 +1,5 @@
 <?php 
     session_start();
-
     if(!isset($_SESSION['hd_login'])) {
         header('Location: /404');
     }
@@ -37,6 +36,51 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
         }
+        .thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .images-fix {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        #img-loading {
+            min-height: 165px;
+        }
+        .assetImg {
+            width: 100%;
+            height: auto;
+            padding: 5px;
+        }
+        .trans{
+            min-height:250px;
+        }
+        @media (min-width: 576px) {
+            .modal-dialog {
+                max-width: 780px;
+            }
+        }
+        @media (max-width: 767px) {
+            .thumb {
+                width: 50px;
+                height: 50px;
+            }
+            h5, .h5 {
+                font-size: 0.8rem;
+            }
+            #img-loading {
+                min-height: 130px;
+            }
+            .trans{
+                min-height:350px;
+            }
+        }
     </style>
 
 </head>
@@ -71,15 +115,19 @@
 
                     <div class="row" id="app">
                   
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-8">
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    
                                     <table class="table mb-0">
                                         <tbody>
                                             <tr>
-                                                <td width="120px">รหัส</td>
+                                                <td width="150px">รหัส</td>
                                                 <td>{{ detail.id }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="150px">การแจ้งช่อม</td>
+                                                <td>{{ detail.caretaker }}</td>
                                             </tr>
                                             <tr>
                                                 <td>ทรัพย์สิน (ASM)</td>
@@ -124,90 +172,179 @@
                                       
                                 </div>
                             </div>
+
+                            <div v-if="asm.getStatus == 'success'">
+                                <div class="card m-b-30">
+                                    <div class="card-body">
+                                    <h4>ข้อมูลจาก ASM</h4>
+                                    <table class="table mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="150px">รหัส</td>
+                                                    <td>{{ asm.code }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ชื่อ</td>
+                                                    <td>{{ asm.name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Serail</td>
+                                                    <td>{{ asm.serial }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ประเภท</td>
+                                                    <td>{{ asm.type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>แผนกครอบครอง</td>
+                                                    <td>{{ asm.division }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ผู้ครอบครอง</td>
+                                                    <td>{{ asm.owner }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ราคา</td>
+                                                    <td>{{ asm.price }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>โลเคชั่น</td>
+                                                    <td>{{ asm.locationName }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="card m-b-30" id="img-loading">
+                                    <div class="card-body">
+                                        <h4>ประวันติการซ่อมบน ASM</h4>
+
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>รายละเอียด</th>
+                                                    <th>รหัสเอกสาร</th>
+                                                    <th>ราคา</th>
+                                                    <th>บริษัทซ่อม/สั่งซื้อ</th>
+                                                    <th>สถานะ</th>
+                                                    <th>ผู้พิจารณา</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="r in repair">
+                                                    <td>{{ r.description }}</td>
+                                                    <td>{{ r.documentNo }}</td>
+                                                    <td>{{ r.price }}</td>
+                                                    <td>{{ r.responsibleCompany }}</td>
+                                                    <td>{{ r.statusText }}</td>
+                                                    <td>{{ r.whoSignName }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="card m-b-30" id="img-loading">
+                                    <div class="card-body">
+                                        <h4>รูปจาก ASM</h4>
+                                        <img v-for="a in asmImg" :src="'data:image/png;base64,'+a" class="img-fluid thumb">
+                                        <a href="#" data-toggle="modal" data-target="#exampleModal">
+                                            <img src="/assets/images/more.jpg" class="img-fluid thumb">
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">รูปทรัพย์สิน {{ asm.name }}</h5>
+                                                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img v-for="a in asmImgAll" :src="'data:image/png;base64,'+a" class="img-fluid assetImg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card m-b-30 trans">
+                                    <div class="card-body">
+
+                                        <div class="page-title-box d-flex align-items-center justify-content-between pb-1">
+                                            <h4 class="text-left mb-0">บันทึก</h4>
+                                            <a href="#" class="text-right" data-toggle="modal" data-target="#ModalMemo">ดูทั้งหมด</a>
+                                        </div>
+
+                                        <div class="modal fade" id="ModalMemo" tabindex="-1" role="dialog" aria-labelledby="ModalMemoLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="ModalMemoLabel">บันทึกทรัพย์สิน {{ asm.name }}</h5>
+                                                        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>ลำดับ</th>
+                                                                    <th>รายละเอียด</th>
+                                                                    <th>บันทึกเวลา</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="t in trans_all">
+                                                                    <td>{{ t.id }}</td>
+                                                                    <td>{{ t.detail }}</td>
+                                                                    <td>{{ t.datetime }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>ลำดับ</th>
+                                                    <th>รายละเอียด</th>
+                                                    <th>บันทึกเวลา</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="t in transaction">
+                                                    <td>{{ t.id }}</td>
+                                                    <td>{{ t.detail }}</td>
+                                                    <td>{{ t.datetime }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                                <div class="card m-b-30">
+                                    <div class="card-body">
+                                    <h4>เอกสารแนบ</h4>
+                                        <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <div class="col-lg-6 col-md-12" v-if="detail.code !== ''">
-                            <div class="card m-b-30">
-                                <div class="card-body">
-                                   <h4>ข้อมูลจาก ASM</h4>
-                                   <table class="table mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>รหัส</td>
-                                                <td>{{ asm.code }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ชื่อ</td>
-                                                <td>{{ asm.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Serail.</td>
-                                                <td>{{ asm.serail }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ประเภท</td>
-                                                <td>{{ asm.type }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>แผนกครอบครอง</td>
-                                                <td>{{ asm.division }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ผู้ครอบครอง</td>
-                                                <td>{{ asm.owner }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ราคา</td>
-                                                <td>{{ asm.price }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>วันที่</td>
-                                                <td>{{ asm.importedDate }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <?php if($_SESSION['hd_permission'] == 'manager') { ?>
-                        <div  v-if="detail.status == '0'" class="col-lg-6 col-md-12">
-                            <div class="card m-b-30">
-                                <div class="card-body">
-                                   <h4>จัดการ</h4>
-                                   <button class="btn btn-success" @click="approval">อนุมัติ</button> <button class="btn btn-outline-danger">ไม่อนุมัติ</button> 
-                                </div>
-                            </div>
-                        </div>
-                        <?php } ?>
-
-                        <div class="col-lg-6 col-md-12">
-                            <div class="card m-b-30">
-                                <div class="card-body">
-                                   <h4>บันทึก</h4>
-                                   <table class="table mb-0">
-                                        <tbody>
-                                            <tr>
-                                                <td>ลำดับ</td>
-                                                <td>รายละเอียด</td>
-                                                <td>บันทึกเวลา</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-12">
-                            <div class="card m-b-30">
-                                <div class="card-body">
-                                   <h4>เอกสารแนบ</h4>
-                                    
-                                   
-                                      
-                                </div>
-                            </div>
-                        </div>
-
+                    </div>
                 </div>
             </div>
 
@@ -258,21 +395,47 @@
             data: {
                 detail: [],
                 asm: [],
-                id: <?php echo $id; ?>
+                asmImg: [],
+                asmImgAll: [],
+                vendor: [],
+                type_fix: [],
+                id: <?php echo $id; ?>,
+                send: {
+                    type_fix: 0,
+                    vendor: 0
+                },
+                upSend: {
+                    status: '1'
+                },
+                transaction: [],
+                trans_all: [],
+                images: [],
+                repair: []
             },
             mounted() {
                 this.getDetail();
             },
             methods: {
+
                 getDetail() {
                     axios.get('/user/system/detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
                             app.detail = response.data;
+                            app.vendor = response.data.vendor;
+                            app.type_fix = response.data.type_fix;
+                            app.upSend.status = response.data.opaStatus;
+                            app.transaction = response.data.transaction;
+                            app.trans_all = response.data.trans_all;
+                            app.send.type_fix = response.data.tick_fix_type;
+                            app.send.vendor = response.data.tick_vendor;
+                            app.images = response.data.images;
 
-                            axios.get('/user/system/asm.api.php?code='+response.data.code)
-                                .then(function (response) {
-                                    app.asm = response.data;
-                                })
+                            app.asm = response.data.asm;
+                            app.asmImg = response.data.asm.img;
+                            app.asmImgAll = response.data.asm.imgAll;
+                            app.repair = response.data.asm.assetRepairs;
+
+                            console.log(response.data);
                         })
                 },
                 approval(){
@@ -314,4 +477,4 @@
 
 </body>
 
-</html>
+</html> 

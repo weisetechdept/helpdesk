@@ -6,19 +6,25 @@
     $request = json_decode(file_get_contents('php://input'));
 
     $id = $request->id;
-    $dept = $request->dept;
-    $status = $request->status;
-    $permission = $request->permission;
-
+    
+    $code = $request->code;
     $f_name = $request->f_name;
     $l_name = $request->l_name;
+    $tel = $request->tel;
+    $thai_id = $request->thai_id;
+    $dept = $request->dept;
+    $permission = $request->permission;
+    $status = $request->status;
 
     $data = array(
+        'user_code' => $code,
         'user_first_name' => $f_name,
         'user_last_name' => $l_name,
+        'user_tel' => $tel,
+        'user_thai_id' => $thai_id,
         'user_dept' => $dept,
-        'user_status' => $status,
-        'user_permission' => $permission
+        'user_permission' => $permission,
+        'user_status' => $status
     );
 
     $update = $db->where('user_id',$id)->update('user',$data);

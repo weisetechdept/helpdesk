@@ -59,7 +59,7 @@
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">การตั้งค่า</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">สมาชิก</a></li>
                                         <li class="breadcrumb-item active">รายชื่อสมาชิก</li>
                                     </ol>
                                 </div>
@@ -72,7 +72,7 @@
 
                     <div class="row" id="app">
 <?php if($_GET['type'] == 'all') { ?>
-                        <div class="col-2">
+                        <div class="col-6 col-md-2">
                             <a href="user?type=all">
                                 <div class="card bg-primary border-primary">
                                     <div class="card-body">
@@ -93,7 +93,7 @@
 <?php } 
     if($_GET['type'] == 'all' || $_GET['type'] == 'active') {
 ?>
-                        <div class="col-2">
+                        <div class="col-6 col-md-2">
                             <a href="user?type=active">
                                 <div class="card bg-success border-success">
                                     <div class="card-body">
@@ -114,7 +114,7 @@
 <?php } 
     if($_GET['type'] == 'all' || $_GET['type'] == 'pending') {
 ?>
-                        <div class="col-2">
+                        <div class="col-6 col-md-2">
                             <a href="/admin/user?type=pending">
                                 <div class="card bg-warning border-warning">
                                     <div class="card-body">
@@ -135,7 +135,7 @@
 <?php } 
     if($_GET['type'] == 'all' || $_GET['type'] == 'inactive') {
 ?>
-                        <div class="col-2">
+                        <div class="col-6 col-md-2">
                             <a href="user?type=inactive">
                                 <div class="card bg-danger border-danger">
                                     <div class="card-body">
@@ -153,29 +153,25 @@
                                 </div>
                             </a>
                         </div>
-<?php } 
-    if($_GET['type'] == 'all') {
-?>
-                        <div class="col-4">
+<?php } ?>
+
+                        <div class="col-12 col-md-3" id="app">
                             <div class="card">
+                                <label class="card-header">ส่วนเสริม</label>
                                 <div class="card-body">
-                                    <p class="text-muted mb-1">คัดตามแผนก</p>
-                                <div class="form-row align-items-center">
-                                    <div class="col-auto">
-                                        <label class="sr-only" for="inlineFormInput">Name</label>
-                                        <select v-model="type" class="form-control">
-                                            <option v-for="d in dept" :value="d.id">{{ d.name }}</option>
-                                        </select>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" value="https://helpdesk.toyotaparagon.com/user/add-ticket/{รหัสพนักงาน}">
                                     </div>
-                            
-                                    <div class="col-auto">
-                                    <button type="submit" @click="search" class="btn btn-primary">ค้นหา</button>
+                                    <div class="col-6">
+                                        <a href="/admin/add-user" class="btn btn-primary btn-block nmt-2">เพิ่มสมาชิกใหม่</a>
+                                    </div>
                                 </div>
-                            </div>
+                                    
                                 </div>
                             </div>
                         </div>
-<?php } ?>
 
                         <div class="col-12" id="app">
                             <div class="card">
@@ -184,7 +180,7 @@
                                         <thead>
                                             <tr>
                                                 <th>รหัส</th>
-                                                <th>ประเภท</th>
+                                                <th>ชื่อ - สกุล</th>
                                                 <th>แผนก</th>
                                                 <th>ระดับ</th>
                                                 <th>สถานะ</th>

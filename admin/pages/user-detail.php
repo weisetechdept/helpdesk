@@ -63,12 +63,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">รายชื่อสมาชิก</h4>
+                                <h4 class="mb-0 font-size-18">รายละเอียดสมาชิก</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">การตั้งค่า</a></li>
-                                        <li class="breadcrumb-item active">รายชื่อสมาชิก</li>
+                                        <li class="breadcrumb-item active">รายละเอียดสมาชิก</li>
                                     </ol>
                                 </div>
                                 
@@ -93,15 +93,15 @@
                                         </tr>
                                         <tr>
                                             <td>รหัสพนักงาน</td>
-                                            <td><input class="form-control"></td>
+                                            <td><input class="form-control" type="number" v-model="user.code" maxlength="10"></td>
                                         </tr>
                                         <tr>
                                             <td>เลขบัตรประชาชน</td>
-                                            <td><input class="form-control"></td>
+                                            <td><input class="form-control" type="number" v-model="user.thai_id" maxlength="13"></td>
                                         </tr>
                                         <tr>
                                             <td>เบอร์โทรศัพท์</td>
-                                            <td><input class="form-control"></td>
+                                            <td><input class="form-control" type="number" v-model="user.tel" maxlength="10"></td>
                                         </tr>
                                         <tr>
                                             <td>แผนก</td>
@@ -118,6 +118,7 @@
                                                     <option value="officer">Officer</option>
                                                     <option value="supervisor">Supervisor</option>
                                                     <option value="manager">Manager</option>
+                                                    <option value="admin">Admin</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -188,6 +189,9 @@
             el: '#app',
             data: {
                 user: {
+                    code:'',
+                    thai_id:'' ,
+                    tel: '',
                     f_name: '',
                     l_name: '',
                     dept: '',
@@ -205,8 +209,11 @@
                         app.user.status = response.data.user.status;
                         app.user.permission = response.data.user.permission;
                         app.user.dept = response.data.user.dept;
-
                         app.dept = response.data.dept;
+                        app.user.code = response.data.user.code;
+                        app.user.thai_id = response.data.user.thai_id;
+                        app.user.tel = response.data.user.tel;
+
                     })
             },
             methods: {
@@ -217,7 +224,10 @@
                         status: app.user.status,
                         permission: app.user.permission,
                         f_name: app.user.f_name,
-                        l_name: app.user.l_name
+                        l_name: app.user.l_name,
+                        code: app.user.code,
+                        thai_id: app.user.thai_id,
+                        tel: app.user.tel
                     })
                     .then(function (response) {
                         console.log(response.data);

@@ -1,9 +1,21 @@
 <?php 
     session_start();
-
-    if(!isset($_SESSION['hd_login'])) {
+    date_default_timezone_set("Asia/Bangkok");
+    require_once 'db-conn.php';
+    
+    if(!empty($id)){
+        $find_user = $db->where('user_code',$id)->getOne('user');
+        if(!empty($find_user['user_id'])){
+            $_SESSION['hd_login'] = true;
+            $_SESSION['hd_permission'] = 'officer';
+            $_SESSION['hd_code'] = $id;
+        } else {
+            header('Location: /404');
+        }
+    } else {
         header('Location: /404');
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +45,9 @@
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
+        }
+        .assets-code {
+            display: none;
         }
     </style>
 
@@ -70,47 +85,65 @@
                         <div class="col-12 col-lg-5">
                             <div class="card">
                                 <div class="card-body">
-                               
-                            <div class="form-group">
-                                <label>ประเภทการซ่อม</label>
-                                <select class="form-control" v-model="ticket.type">
-                                    <option value="0">= เลือกประเภทการซ่อม =</option>
-                                    <option value="1">อุปกรณ์ IT / Software</option>
-                                    <option value="2">อาคารสถานที่ / เครื่องใช้สำนักงาน</option>
-                                </select>
-                            </div>
+                                <p style="text-align:right;"> *จำเป็นต้องใส่ข้อมูล</p>
+                                <div class="form-group">
+                                    <label>ประเภทการซ่อม*</label>
+                                    <select class="form-control" @change="typeTicket" v-model="ticket.type">
+                                        <option value="0">= เลือกประเภทการซ่อม =</option>
+                                        <option value="1">อุปกรณ์ IT / Software</option>
+                                        <option value="2">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (มีรหัสทรัพยสิน)</option>
+                                        <option value="3">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (ไม่มีรหัสทรัพยสิน)</option>
+                                        <option value="4">อาคารสถานที่ (มีรหัสทรัพยสิน)</option>
+                                        <option value="5">อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label>หัวข้อการซ่อม</label>
-                                <input type="text" v-model="ticket.topic" class="form-control">
-                            </div>
+                                <div class="form-group">
+                                    <label>หัวข้อการซ่อม*</label>
+                                    <input type="text" v-model="ticket.topic" class="form-control">
+                                </div>
 
-                            <div class="form-group">
-                                <label>รหัสทรัพย์สิน (ถ้ามี)</label>
-                                <input type="text" v-model="ticket.code" class="form-control">
-                            </div>
+                                <div class="form-group assets-code">
+                                    <label>รหัสทรัพย์สิน*</label>
+                                    <input type="text" v-model="ticket.code" class="form-control">
+                                </div>
 
-                            <div class="form-group">
-                                <label>อาการเสีย / ชำรุด</label>
-                                <textarea class="form-control" v-model="ticket.detail" rows="3"></textarea>
-                            </div>
+                                <div class="form-group">
+                                    <label>อาการเสีย / ชำรุด*</label>
+                                    <textarea class="form-control" v-model="ticket.detail" rows="3"></textarea>
+                                </div>
 
-                            <div class="form-group">
-                                <label>ชื่อผู้แจ้ง</label>
-                                <p class="pl-2">{{ display.name }}</p>
-                            </div>
+                                <div class="form-group">
+                                    <label>เบอร์ติดต่อภายใน</label>
+                                    <input type="number" v-model="ticket.tel" class="form-control" maxlength="10">
+                                </div>
 
-                            <div class="form-group">
-                                <label>สาขา</label>
-                                <p class="pl-2">{{ display.branch }}</p>
-                            </div>
+                                <div class="row">
+                                    <div class="col form-group mt-2">
+                                        <label>อัพโหลดรูปแจ้งซ่อม</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input file-upload" id="uploadfiles" ref="uploadfiles" name="file_upload">
+                                            <label class="custom-file-label" for="uploadfiles">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="form-group">
-                                <label>แผนก / ฝ่าย</label>
-                                <p class="pl-2">{{ display.department }}</p>
-                            </div>
+                                <div class="form-group mt-2">
+                                    <label>ชื่อผู้แจ้ง</label>
+                                    <p class="pl-2">{{ display.name }}</p>
+                                </div>
 
-                            <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
+                                <div class="form-group">
+                                    <label>สาขา</label>
+                                    <p class="pl-2">{{ display.branch }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>แผนก / ฝ่าย</label>
+                                    <p class="pl-2">{{ display.department }}</p>
+                                </div>
+
+                                <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
                         
             
                         </div>
@@ -159,34 +192,88 @@
                         topic: '',
                         detail: '',
                         code: '',
-                        owner: <?php echo $_SESSION['hd_user_id']; ?>
+                        tel:'',
+                        owner: <?php echo $_SESSION['hd_code']; ?>
                     },
                     display: []
                 }
             },
             mounted() {
-                axios.get('/user/system/add-ticket.api.php')
-                    .then(function (response) {
-                        ticket.display = response.data;
-                    })
-                
+                axios.get('/user/system/add-ticket.api.php ')
+                .then(function (response) {
+                    ticket.display = response.data;
+                })
             },
             methods: {
+                typeTicket() {
+                    if(ticket.ticket.type == '2' || ticket.ticket.type == '4') {
+                        $('.assets-code').show();
+                    } else {
+                        $('.assets-code').hide();
+                        this.ticket.code = '';
+                    }
+                },
                 checkForm() {
                     if(ticket.ticket.type == '0' || ticket.ticket.topic == '' || ticket.ticket.detail == '') {
+
                         swal("แจ้งเตือน", "กรุณาเลือก และกรอกข้อมูลให้ครบถ้วน", "warning");
+                        
+                    } else if(this.ticket.type == '2' || this.ticket.type == '4') {
+
+                        if(this.ticket.code == '') {
+
+                            swal("แจ้งเตือน", "กรุณากรอกรหัสทรัพย์สิน", "warning");
+                            return false;
+
+                        } else {
+                            this.addTicket();
+                        }
                     } else {
-                        axios.post('/user/system/add-ticket.ins.php', this.ticket)
-                        .then(function (response) {
-                            if(response.data.status == 'success') {
-                                swal("สำเร็จ", "แจ้งซ่อมเรียบร้อย", "success").then(function() {
-                                    window.location.href = '/user/list';
-                                });
-                            } else {
-                                swal("เกิดข้อผิดพลาด",response.data.message , "error");
-                            }
-                        })
+                        this.addTicket();
                     }
+                },
+                addTicket() {
+                    swal("ยืนยันการแจ้งซ่อม", "คุณต้องการแจ้งซ่อมใช่หรือไม่", "info", {
+                        buttons: {
+                            cancel: "ยกเลิก",
+                            confirm: "ยืนยัน"
+                        },
+                    }).then((value) => {
+                        if(value) {
+                            swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
+                                buttons: false,
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            });
+
+                            var formData = new FormData();
+                            var image = this.$refs.uploadfiles.files[0];
+
+                            formData.append('file_upload', image);
+                            formData.append('type', ticket.ticket.type);
+                            formData.append('topic', ticket.ticket.topic);
+                            formData.append('detail', ticket.ticket.detail);
+                            formData.append('code', ticket.ticket.code);
+                            formData.append('owner', ticket.ticket.owner);
+                            formData.append('tel', ticket.ticket.tel);
+
+                            axios.post('/user/system/add-ticket.ins.php', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function(response){
+
+                                if(response.data.status == 'success') {
+                                    swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
+                                        window.location.href = '/user/list/<?php echo $_SESSION['hd_code']; ?>';
+                                    });
+                                } else {
+                                    swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                                }
+                                    
+                            });
+                        }
+                    });
                 }
             }
         })
@@ -194,4 +281,4 @@
 
 </body>
 
-</html>
+</html> 

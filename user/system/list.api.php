@@ -3,23 +3,38 @@
     require_once '../../db-conn.php';
     date_default_timezone_set("Asia/Bangkok");
 
+    function DateThai($strDate)
+    {
+        $strYear = date("y",strtotime($strDate));
+        $strMonth= date("n",strtotime($strDate));
+        $strDay= date("j",strtotime($strDate));
+        $strHout = date("H",strtotime($strDate));
+        $strMinute = date("i",strtotime($strDate));
+    
+        $strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+        $strMonthThai=$strMonthCut[$strMonth];
+        return "$strDay $strMonthThai $strYear - $strHout:$strMinute";
+    } 
+
     if(!isset($_SESSION['hd_login'])) {
         header('Location: /404');
     } else {
-        $id = $_SESSION['hd_user_id'];
 
-        $list = $db->where('tick_owner',$id)->get('ticket');
+        $code = $_SESSION['hd_code'];
+        $id = $db->where('user_code',$code)->getOne('user');
+
+        $list = $db->where('tick_owner',$id['user_id'])->get('ticket');
 
         $db->join('user_group g','u.user_dept = g.usrg_id','LEFT');
-        $emp = $db->where('user_id',$id)->getOne('user u');
+        $emp = $db->where('user_id',$id['user_id'])->getOne('user u');
 
         if($emp['usrg_branch'] == '1'){
             $branch = 'สำนักงานใหญ่';
         } elseif($emp['usrg_branch'] == '2') {
             $branch = 'สาขาตลาดไท';
         }
-        $division = $emp['usrg_name'];
 
+        $division = $emp['usrg_name'];
 
         foreach($list as $row){
             if($row['tick_type'] == 1){
@@ -35,7 +50,7 @@
                 $branch,
                 $division,
                 $row['tick_status'],
-                $row['tick_datetime']
+                DateThai($row['tick_datetime'])
             );
         }
     }

@@ -3,16 +3,17 @@
     $router = new \Bramus\Router\Router();
 
     $router->get( '/', function() {
-        require '404.html';
+        require 'user/pages/404.php';
     });
 
     $router->get( '/404', function() {
-        require '404.html';
+        require 'user/pages/404.php';
     });
+    
 
     /* Auth */
 
-    $router->get( '/login', function() {
+    $router->get( '/loginAuth', function() {
         require 'auth/pages/login.php';
     });
 
@@ -22,11 +23,11 @@
 
     /* user section */
 
-    $router->get( '/user/add-ticket', function() {
+    $router->get( '/user/add-ticket/(.*)', function($id) {
         require 'user/pages/add-ticket.php';
     });
 
-    $router->get( '/user/list', function() {
+    $router->get( '/user/list/(.*)', function($id) {
         require 'user/pages/list.php';
     });
 
@@ -41,6 +42,18 @@
     });
 
     /* admin */
+
+    $router->get( '/admin/logout', function() {
+        require 'admin/pages/logout.php';
+    });
+
+    $router->get( '/admin/add-user', function() {
+        require 'admin/pages/add-user.php';
+    });
+
+    $router->get( '/admin/auth', function() {
+        require 'admin/pages/login.php';
+    });
 
     $router->get( '/admin/home', function() {
         require 'admin/pages/list.php';
@@ -60,6 +73,32 @@
 
     $router->get( '/admin/de/(.*)', function($id) {
         require 'admin/pages/detail.php';
+    });
+
+    $router->get( '/admin/dept/de/(.*)', function($id) {
+        require 'admin/pages/dept-detail.php';
+    });
+
+    $router->get( '/admin/report', function() {
+        require 'admin/pages/report.php';
+    });
+
+    $router->get( '/admin/type', function() {
+        require 'admin/pages/type.php';
+    });
+
+    $router->get( '/admin/vendor', function() {
+        require 'admin/pages/vendor.php';
+    });
+
+    $router->get( '/admin/assets-report', function() {
+        require 'admin/pages/assets-report.php';
+    });
+
+    /* Verify */
+
+    $router->get( '/verify/(.*)', function($id) {
+        require 'verify/pages/verify.php';
     });
 
     $router->run();

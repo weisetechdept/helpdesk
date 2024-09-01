@@ -1,9 +1,22 @@
 <?php 
     session_start();
-
-    if(!isset($_SESSION['hd_login'])) {
+    date_default_timezone_set("Asia/Bangkok");
+    require_once 'db-conn.php';
+    
+    if(!empty($id)){
+        $find_user = $db->where('user_code',$id)->getOne('user');
+        if(!empty($find_user['user_id'])){
+            $_SESSION['hd_login'] = true;
+            $_SESSION['hd_permission'] = 'officer';
+            $_SESSION['hd_code'] = $id;
+        } else {
+            header('Location: /404');
+        }
+    } else {
         header('Location: /404');
     }
+
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,11 +101,13 @@
                                                 <th>สาขา</th>
                                                 <th>แผนก</th>
                                                 <th>สถานะ</th>
+                                                <th>วันที่แจ้ง</th>
                                                 <th>จัดการ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -156,6 +171,7 @@
 
     <script>
         $('#datatable').DataTable({
+            order: [[0, 'desc']],
             "language": {
                 "paginate": {
                     "previous": "<i class='mdi mdi-chevron-left'>",
@@ -178,20 +194,23 @@
                 {'data':'3'},
                 {'data':'4'},
                 {'data':'5',
+                    
                     'render': function(data, type, row, meta) {
                         if(data == 0){
                             return '<span class="badge badge-info">รออนุมัติ (ผจก.)</span>';
                         } else if(data == 1){
                             return '<span class="badge badge-warning">รอดำเนินการ</span>';
-                        } else if(date == 2) {
+                        } else if(data == 2) {
                             return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
-                        } else if(date == 4) {
+                        }  else if(data == 3) {
                             return '<span class="badge badge-success">เสร็จสิ้น</span>';
-                        } else if(date == 10) {
-                            return '<span class="badge badge-danger">ไม่เสร็จสิ้น</span>';
+                        } else if(data == 10) {
+                            return '<span class="badge badge-danger">ยกเลิก</span>';
                         }
+                    
                     }
                 },
+                {'data':'6'},
                 {'data':'0', 
                     'render': function(data, type, row, meta) {
                         return '<a href="/user/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a>';
@@ -199,7 +218,7 @@
                 }
             ]
         });
-
+  
     </script>
 
 </body>

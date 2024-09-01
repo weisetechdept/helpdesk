@@ -3,38 +3,114 @@
     require_once '../../db-conn.php';
     date_default_timezone_set("Asia/Bangkok");
 
-        $id = $_SESSION['hd_user_id'];
+    $group = $_SESSION['adminGroup'];
 
-        $list = $db->where('tick_status', array(1,2,3,4),'IN')->get('ticket');
+    if($_GET['get'] == 'count'){
+        $all = $db->where('tick_status',array('1','2','3','4'),"IN")->where('tick_caretaker',$group)->getValue ("ticket", "count(*)");
+        $wait = $db->where('tick_status',2)->where('tick_caretaker',$group)->getValue("ticket", "count(*)");
+        $process = $db->where('tick_status',2)->where('tick_caretaker',$group)->getValue("ticket", "count(*)");
 
-        $db->join('user_group g','u.user_dept = g.usrg_id','LEFT');
-        $emp = $db->where('user_id',$id)->getOne('user u');
+        $api['count'] = array(
+            'all' => $all,
+            'wait' => $wait,
+            'process' => $process
+        );
 
-        if($emp['usrg_branch'] == '1'){
-            $branch = 'สำนักงานใหญ่';
-        } elseif($emp['usrg_branch'] == '2') {
-            $branch = 'สาขาตลาดไท';
-        }
-        $division = $emp['usrg_name'];
+        echo json_encode($api);
+    }
 
+    if($_GET['get'] == 'list'){
 
-        foreach($list as $row){
-            if($row['tick_type'] == 1){
-                $type = 'อุปกรณ์ IT / Software';
-            } else {
-                $type = 'เครื่องใช้สำนักงาน / อาคารสถานที่';
+        function DateThai($strDate)
+        {
+            $strYear = date("y",strtotime($strDate));
+            $strMonth= date("n",strtotime($strDate));
+            $strDay= date("j",strtotime($strDate));
+        
+            $strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+            $strMonthThai=$strMonthCut[$strMonth];
+            return "$strDay $strMonthThai $strYear";
+        } 
+
+        function getBranch($id){
+            global $db;
+            $dept = $db->where('usrg_id',$id)->getOne('user_group');
+            if($dept['usrg_branch'] == '1'){
+                return 'สำนักงานใหญ่';
+            } elseif($dept['usrg_branch'] == '2') {
+                return 'สาขาตลาดไท';
             }
-
-            $api['data'][] = array(
-                $row['tick_id'],
-                $type,
-                $row['tick_topic'],
-                $branch,
-                $division,
-                $row['tick_status'],
-                $row['tick_datetime']
-            );
         }
-    
 
-    echo json_encode($api);
+        function getDept($id){
+            global $db;
+            $dept = $db->where('usrg_id',$id)->getOne('user_group');
+            return $dept['usrg_name'];
+        }
+
+        function getTyped($id){
+            global $db;
+            $type = $db->where('type_id',$id)->getOne('fix_type');
+            return $type['type_name'];
+        }
+        
+        $sql_details_1 = ['user'=> $usern,'pass'=> $passn,'db'=> $dbn,'host'=> $hostn,'charset'=>'utf8'];
+        require 'ssp.class.php';
+
+        $table = 'ticket';
+        $primaryKey = 'tick_id';
+        $columns = [
+            ['db' => 'tick_id', 'dt' => 0, 'field' => 'tick_id'],
+            ['db' => 'tick_topic', 'dt' => 1, 'field'=> 'tick_topic'],
+            ['db' => 'tick_type', 'dt' => 2, 'field' => 'tick_type',
+                'formatter' => function($d, $row){
+                    return getTyped($d);
+                }
+            ],
+            ['db' => 'tick_dept', 'dt' => 3, 'field'=> 'tick_dept',
+                'formatter' => function($d, $row){
+                    return getBranch($d);
+                }
+            ],
+            ['db' => 'tick_dept', 'dt' => 4, 'field'=> 'tick_dept',
+                'formatter' => function($d, $row){
+                    return getDept($d);
+                }
+            ],
+            ['db' => 'tick_status', 'dt' => 5, 'field'=> 'tick_status',
+                'formatter' => function($d, $row){
+                    if($d == 0){
+                        return '<span class="badge badge-info">รออนุมัติ (ผจก.)</span>';
+                    } elseif($d == 1){
+                        return '<span class="badge badge-warning">รอดำเนินการ</span>';
+                    } elseif($d == 2) {
+                        return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
+                    } elseif($d == 3) {
+                        return '<span class="badge badge-success">เสร็จสิ้น</span>';
+                    } elseif($d == 10) {
+                        return '<span class="badge badge-danger">ยกเลิก</span>';
+                    }
+                }
+            ],
+            ['db' => 'tick_datetime', 'dt' => 6, 'field'=> 'tick_datetime',
+                'formatter' => function($d, $row){
+                    return DateThai($d);
+                }
+            ],
+            ['db' => 'tick_id', 'dt' => 7, 'field'=> 'tick_id',
+                'formatter' => function($d, $row){
+                    return '<a href="/admin/de/'.$d.'" class="btn btn-sm btn-outline-primary">ดูรายละเอียด</a>';
+                }
+            ]
+        ];
+
+        $joinQuery = "FROM ticket";
+        $where = " tick_status IN (1,2,3,4) AND tick_caretaker = '$group'";
+
+        echo json_encode(
+            SSP::simple($_GET, $sql_details_1, $table, $primaryKey, $columns, $joinQuery , $where)
+        );
+
+    }
+
+    

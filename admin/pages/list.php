@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">รายการซ่อมอุปกรณ์ IT / Software</h4>
+                                <h4 class="mb-0 font-size-18">รายการแจ้งซ่อม</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -72,7 +72,7 @@
 
                     <div class="row" id="app">
 
-                        <div class="col-3">
+                        <div class="col-6 col-md-4 col-lg-3">
                             <a href="#">
                                 <div class="card bg-primary border-primary">
                                     <div class="card-body">
@@ -82,7 +82,7 @@
                                         <div class="row d-flex align-items-center">
                                             <div class="col-8">
                                                 <h2 class="d-flex align-items-center mb-0 text-white">
-                                                    0
+                                                    {{ count.all }}
                                                 </h2>
                                             </div>
                                         </div>
@@ -91,7 +91,7 @@
                             </a>
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-6 col-md-4 col-lg-3">
                             <a href="#">
                                 <div class="card bg-warning border-warning">
                                     <div class="card-body">
@@ -101,7 +101,26 @@
                                         <div class="row d-flex align-items-center">
                                             <div class="col-8">
                                                 <h2 class="d-flex align-items-center mb-0 text-white">
-                                                    0
+                                                    {{ count.wait }}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-md-4 col-lg-3">
+                            <a href="#">
+                                <div class="card bg-info border-info">
+                                    <div class="card-body">
+                                        <div class="mb-2">
+                                            <h5 class="card-title mb-0 text-white">กำลังดำเนินการ</h5>
+                                        </div>
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-8">
+                                                <h2 class="d-flex align-items-center mb-0 text-white">
+                                                    {{ count.process }}
                                                 </h2>
                                             </div>
                                         </div>
@@ -120,17 +139,19 @@
                                     <table id="datatable" class="table dt-responsive nowrap">
                                         <thead>
                                             <tr>
-                                                <th>รหัส</th>
-                                                <th>ประเภท</th>
+                                                <th width="50px">รหัส</th>
                                                 <th>หัวข้อ</th>
-                                                <th>สาขา</th>
-                                                <th>แผนก</th>
-                                                <th>สถานะ</th>
+                                                <th width="180px">ประเภท</th>
+                                                <th width="100px">สาขา</th>
+                                                <th width="110px">แผนก</th>
+                                                <th width="100px">สถานะ</th>
+                                                <th width="100px">วันที่แจ้ง</th>
                                                 <th>จัดการ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -193,49 +214,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <script>
-        $('#datatable').DataTable({
-            "language": {
-                "paginate": {
-                    "previous": "<i class='mdi mdi-chevron-left'>",
-                    "next": "<i class='mdi mdi-chevron-right'>"
+        var app = new Vue({
+            el: '#app',
+            data: {
+                count: {
+                    all: 0,
+                    wait: 0,
+                    process: 0
                 },
-                "lengthMenu": "แสดง _MENU_ รายชื่อ",
-                "zeroRecords": "ขออภัย ไม่มีข้อมูล", 
-                "info": "หน้า _PAGE_ ของ _PAGES_",
-                "infoEmpty": "ไม่มีข้อมูล",
-                "search": "ค้นหา:",
             },
-            "drawCallback": function () {
-                $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+            mounted: function(){
+                this.getCount();
+
+                $('#datatable').DataTable({
+                    order: [0, 'desc'],
+                    ajax: '/admin/system/list.api.php?get=list',
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    bInfo: false,
+                    order: [[0, "desc"]],
+                    language: {
+                        "processing": "กำลังดาวน์โหลดข้อมูล...",
+                        "search": "ค้นหา:",
+                        "lengthMenu": "แสดง _MENU_ รายการ",
+                    },
+                    search: {
+                        "regex": true,
+                        "smart": false,
+                    },
+                });
             },
-            ajax: '/admin/system/list.api.php',
-            "columns" : [
-                {'data':'0'},
-                {'data':'1'},
-                {'data':'2'},
-                {'data':'3'},
-                {'data':'4'},
-                {'data':'5',
-                    'render': function(data, type, row, meta) {
-                        if(data == 0){
-                            return '<span class="badge badge-info">รออนุมัติ (ผจก.)</span>';
-                        } else if(data == 1){
-                            return '<span class="badge badge-warning">รอดำเนินการ</span>';
-                        } else if(data == 2) {
-                            return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
-                        } else if(data == 4) {
-                            return '<span class="badge badge-success">เสร็จสิ้น</span>';
-                        } else if(data == 10) {
-                            return '<span class="badge badge-danger">ไม่เสร็จสิ้น</span>';
-                        }
-                    }
-                },
-                {'data':'0', 
-                    'render': function(data, type, row, meta) {
-                        return '<a href="/admin/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a>';
-                    }
+            methods: {
+                getCount: function(){
+                    axios.get('/admin/system/list.api.php?get=count')
+                    .then(function (response) {
+                        app.count.all = response.data.count.all;
+                        app.count.wait = response.data.count.wait;
+                        app.count.process = response.data.count.process;
+                    })
                 }
-            ]
+            }
         });
 
     </script>
