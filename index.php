@@ -75,6 +75,10 @@
         require 'admin/pages/detail.php';
     });
 
+    $router->get( '/admin/fix/(.*)', function($id) {
+        require 'admin/pages/fixer_detail.php';
+    });
+
     $router->get( '/admin/dept/de/(.*)', function($id) {
         require 'admin/pages/dept-detail.php';
     });

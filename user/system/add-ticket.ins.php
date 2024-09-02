@@ -6,9 +6,9 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require '../../vendor/PHPMailer/PHPMailer/src/Exception.php';
-    require '../../vendor/PHPMailer/PHPMailer/src/PHPMailer.php';
-    require '../../vendor/PHPMailer/PHPMailer/src/SMTP.php';
+    require '../../vendor/phpmailer/phpmailer/src/Exception.php';
+    require '../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require '../../vendor/phpmailer/phpmailer/src/SMTP.php';
 
     $type = $_POST['type'];
     $topic = $_POST['topic'];
@@ -28,7 +28,6 @@
     } else {
         $caretaker = '1';
     }
-    //$caretracker = 
 
     $data = array(
         'tick_caretaker' => $caretaker,
@@ -41,6 +40,7 @@
         'tick_vendor' => '0',
         'tick_fix_type' => '0',
         'tick_dept' => $user['user_dept'],
+        'tick_fixedcost' => '0',
         'tick_status' => '0',
         'tick_finished' => date('Y-m-d H:i:s'),
         'tick_datetime' => date('Y-m-d H:i:s')
@@ -138,5 +138,4 @@
         $api = array('status' => 'error');
     }
 
-        
     echo json_encode($api);
