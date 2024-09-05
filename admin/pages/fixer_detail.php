@@ -84,6 +84,11 @@
                 min-height:350px;
             }
         }
+
+        .swal-text {
+            text-align: center;
+            line-height: 1.6rem;
+        }
         
     </style>
 
@@ -119,7 +124,7 @@
 
                     <div class="row">
                   
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    
@@ -231,7 +236,7 @@
                         </div>
 
                         
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
 
 <div v-if="asm.getStatus == 'success'">
 
@@ -401,7 +406,11 @@
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    <h4>เอกสารแนบ</h4>
-                                    <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
+                                    <div v-for="i in images">
+                                        <a :href="i.link" target="_blank">
+                                            <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -422,62 +431,34 @@
 
                     <div class="row" v-if="detail.status == '1' || detail.status == '2'">
 
-                        <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="mt-0 header-title">สถานะการดำเนินงาน</h4>
-                                            <div class="row col-12" v-if="detail.status == '2'">
-                                                
-                                                <div class="form-group">
-                                                    <p class="mb-2">สถานะหลัก</p>
-                                                    <button class="btn btn-success" @click="takeFinish">งานซ่อมเสร็จสื้น</button> <button class="btn btn-outline-danger ml-2" @click="takeCancel">ยกเลิกงานซ่อม</button>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <p>สถานะการดำเนินงาน</p>
-                                                <div class="form-group">
-                                                    <select class="form-control" v-model="upSend.status">
-                                                        <option value="1">กำลังดำเนินการ</option>
-                                                        <option value="2">ขออนุมัติซ่อม (มีค่าใช้จ่าย)</option>
-                                                        <option value="3">รออะไหล่</option>
-                                                        <option value="4">รอส่งงานนอก</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea class="form-control" rows="3" placeholder="รายละเอียดเพิ่มเติม" v-model="upSend.detail"></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <button @click="upStep2" class="btn btn-primary">บันทึก</button>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div class="col-lg-6">
                                 <div class="card m-b-30">
                                     <div class="card-body">
-                                        <h4 class="mt-0 header-title">การดำเนินงาน</h4>
+                                        <h4 class="mt-0 header-title">เขียนบันทึก</h4>
 
-                                        <div class="form-group">
-                                            <p>ประเภทงาน</p>
-                                            <select v-model="send.type_fix" class="form-control">
-                                                <option v-for="t in type_fix" :value="t.id">{{ t.name }}</option>
-                                            </select>
-                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group mt-2">
+                                                <div class="form-group">
+                                                    <label>เรื่อง</label>
+                                                    <select class="form-control" v-model="upComment.type">
+                                                        <option value="0">= เลือกเรื่องที่ต้องการบันทึก =</option>
+                                                        <option value="2">บันทึกเรื่องทั่วไป</option>
+                                                        <option value="3">ปัญหาเกี่ยวกับต้นสังกัดที่แจ้ง</option>
+                                                        <option value="4">ปัญหาเกี่ยวกับการสื่อสาร</option>
+                                                        <option value="5">ปัญหาเกี่ยวกับอุปกรณ์</option>
+                                                        <option value="6">ปัญหาเกี่ยวการเบิกจ่ายเงิน</option>
+                                                        <option value="7">เรื่องอื่นๆ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>รายละเอียด</label>
+                                                    <textarea class="form-control" v-model="upComment.detail"></textarea>
+                                                </div>
+                                                <button class="btn btn-primary mt-2" @click="upComm">บันทึก</button>
 
-                                        <div class="form-group">
-                                            <p>ผู้ปฏิบัติงาน</p>
-                                            <select v-model="send.vendor" class="form-control">
-                                                <option v-for="v in vendor" :value="v.id">{{ v.name }}</option>
-                                            </select>
+                                            </div>
                                         </div>
-
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" @click="upStp1">บันทึก</button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -493,12 +474,11 @@
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input file-upload" id="uploadfiles" ref="uploadfiles">
                                                     <label class="custom-file-label" for="customFile">Choose file</label>
-                                                    <button class="btn btn-primary mt-2">อัพโหลด</button>
+                                                    <button class="btn btn-primary mt-2" @click="uploadImg">อัพโหลด</button>
                                                 </div>
 
                                             </div>
                                         </div>
-
                                         
                                     </div>
                                 </div>
@@ -508,15 +488,15 @@
 
                     </div>
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            2024 © WeiseTech
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    2024 © WeiseTech
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </footer>
+                    </footer>
 
         </div>
 
@@ -576,12 +556,80 @@
                 edit: {
                     code: ''
                 },
-                repair: []
+                repair: [],
+                upComment: {
+                    type: '0',
+                    detail: ''
+                }
             },
             mounted() {
                 this.getDetail();
             },
             methods: {
+                upComm(){
+
+                    if(this.upComment.type == '0') {
+                        swal('ผิดพลาด', 'กรุณาเลือกเรื่องที่ต้องการบันทึก', 'error');
+                        return;
+                    } else if(this.upComment.type == ''){
+                        swal('ผิดพลาด', 'กรุณาพิมพ์ข้อความ', 'error');
+                        return;
+                    } else {
+                        axios.post('/admin/system/upTicket.api.php?po=upComment', {
+                            id: app.detail.id,
+                            type: app.upComment.type,
+                            detail: app.upComment.detail
+                        }).then(function(response){
+                            if(response.data.status == 'success') {
+                                swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                    .then(function() {
+                                        window.location.reload();
+                                    });
+                            } else {
+                                swal('ผิดพลาด', response.data.message, 'error');
+                            }
+                        });
+                    }
+
+                },
+                uploadImg() {
+                    swal("ยืนยันการอัพโหลด", "คุณต้องการอัพโหลดใช่หรือไม่", "info", {
+                        buttons: {
+                            cancel: "ยกเลิก",
+                            confirm: "ยืนยัน"
+                        },
+                    }).then((value) => {
+                        if(value) {
+                            swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
+                                buttons: false,
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            });
+
+                            var formData = new FormData();
+                            var image = this.$refs.uploadfiles.files[0];
+
+                            formData.append('file_upload', image);
+                            formData.append('id', app.detail.id);
+
+                            axios.post('/admin/system/upTicket.api.php?po=uploadImg', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function(response){
+
+                                if(response.data.status == 'success') {
+                                    swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                                }
+                                    
+                            });
+                        }
+                    });
+                },
                 editCode() {
                     axios.post('/admin/system/upTicket.api.php?po=editCode', {
                         id: this.id,
@@ -596,10 +644,6 @@
                             swal('ผิดพลาด', response.data.message, 'error');
                         }
                     })
-                },
-                uploadImg() {
-                    
-
                 },
                 takeCancel(){
                     swal({
@@ -648,22 +692,33 @@
 
                     }).then(function () {
 
-                        axios.post('/admin/system/upTicket.api.php?po=finish', {
-                            id: app.id,
-                            status: '3'
-                        }).then(function (response) {
+                        swal("รายการนี้มีค่าใช้จ่ายหรือไม่","หากมีค่าใช้จ่าย ให้กรอกค่าใช้จ่ายรวมทั้งหมดของการซ่อมนี้ลงในช่อง หากไม่มีให้ใส่ 0", {
+                            content: "input",
+                            buttons: {
+                                cancel: "ยกเลิก",
+                                submit: "ยืนยัน",
+                            },
+                        }).then(cost => {
+                        
+                            axios.post('/admin/system/upTicket.api.php?po=finish', {
+                                id: app.id,
+                                status: '3',
+                                fixed_cost: '0'
 
-                            if(response.data.status == 'success') {
-                                swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
-                                .then(function() {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal('ผิดพลาด', response.data.message, 'error');
-                            }
+                            }).then(function (response) {
 
-                        })
+                                if(response.data.status == 'success') {
+                                    swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                    .then(function() {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal('ผิดพลาด', response.data.message, 'error');
+                                }
 
+                            })
+                            
+                        });
                     });
                 },
                 upStep2(){
@@ -791,9 +846,10 @@
                         })
                         
                     });
-                    
+            
                 }
             }
+
         });
     </script>
 

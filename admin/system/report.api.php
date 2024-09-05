@@ -76,7 +76,8 @@
                     $value['usrg_name'],
                     $vend_name,
                     $value['tick_status'],
-                    DateThai($value['tick_datetime'])
+                    DateThai($value['tick_datetime']),
+                    number_format($value['tick_fixedcost'])
                 );
     
             }
@@ -135,7 +136,8 @@
                     $value['usrg_name'],
                     $vend_name,
                     $value['tick_status'],
-                    DateThai($value['tick_datetime'])
+                    DateThai($value['tick_datetime']),
+                    $value['tick_fixedcost']
                 );
             }
         } else {

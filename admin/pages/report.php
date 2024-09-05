@@ -108,8 +108,9 @@
                                                 <th>หัวข้อ</th>
                                                 <th width="150px">ประเภท</th>
                                                 <th width="150px">หมวดหมู่ซ่อม</th>
+                                                <th width="90px">ค่าใช้จ่าย</th>
                                                 <th width="150px">ผู้แจ้ง</th>
-                                                <th width="150px">แผนก</th>
+                                                <th width="150px">สาขา</th>
                                                 <th width="150px">แผนก</th>
                                                 <th width="150px">ผู้รับผิดชอบ</th>
                                                 <th width="100px">สถานะ</th>
@@ -119,6 +120,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -239,6 +241,7 @@
                         {'data':'2'},
                         {'data':'3'},
                         {'data':'4'},
+                        {'data':'11'},
                         {'data':'5'},
                         {'data':'6'},
                         {'data':'7'},

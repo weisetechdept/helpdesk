@@ -84,6 +84,11 @@
                 min-height:350px;
             }
         }
+
+        .swal-text {
+            text-align: center;
+            line-height: 1.6rem;
+        }
         
     </style>
 
@@ -119,7 +124,7 @@
 
                     <div class="row">
                   
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    
@@ -231,7 +236,7 @@
                         </div>
 
                         
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
 
 <div v-if="asm.getStatus == 'success'">
 
@@ -401,7 +406,11 @@
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    <h4>เอกสารแนบ</h4>
-                                    <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
+                                    <div v-for="i in images">
+                                        <a :href="i.link" target="_blank">
+                                            <img :src="i.link" class="img-fluid images-fix">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -493,12 +502,11 @@
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input file-upload" id="uploadfiles" ref="uploadfiles">
                                                     <label class="custom-file-label" for="customFile">Choose file</label>
-                                                    <button class="btn btn-primary mt-2">อัพโหลด</button>
+                                                    <button class="btn btn-primary mt-2" @click="uploadImg">อัพโหลด</button>
                                                 </div>
 
                                             </div>
                                         </div>
-
                                         
                                     </div>
                                 </div>
@@ -576,12 +584,51 @@
                 edit: {
                     code: ''
                 },
-                repair: []
+                repair: [],
+
             },
             mounted() {
                 this.getDetail();
             },
             methods: {
+                uploadImg() {
+                    swal("ยืนยันการอัพโหลด", "คุณต้องการอัพโหลดใช่หรือไม่", "info", {
+                        buttons: {
+                            cancel: "ยกเลิก",
+                            confirm: "ยืนยัน"
+                        },
+                    }).then((value) => {
+                        if(value) {
+                            swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
+                                buttons: false,
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            });
+
+                            var formData = new FormData();
+                            var image = this.$refs.uploadfiles.files[0];
+
+                            formData.append('file_upload', image);
+                            formData.append('id', app.detail.id);
+
+                            axios.post('/admin/system/upTicket.api.php?po=uploadImg', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function(response){
+
+                                if(response.data.status == 'success') {
+                                    swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                                }
+                                    
+                            });
+                        }
+                    });
+                },
                 editCode() {
                     axios.post('/admin/system/upTicket.api.php?po=editCode', {
                         id: this.id,
@@ -596,10 +643,6 @@
                             swal('ผิดพลาด', response.data.message, 'error');
                         }
                     })
-                },
-                uploadImg() {
-                    
-
                 },
                 takeCancel(){
                     swal({
@@ -648,22 +691,33 @@
 
                     }).then(function () {
 
-                        axios.post('/admin/system/upTicket.api.php?po=finish', {
-                            id: app.id,
-                            status: '3'
-                        }).then(function (response) {
+                        swal("รายการนี้มีค่าใช้จ่ายหรือไม่","หากมีค่าใช้จ่าย ให้กรอกค่าใช้จ่ายรวมทั้งหมดของการซ่อมนี้ลงในช่อง หากไม่มีให้ใส่ 0", {
+                            content: "input",
+                            buttons: {
+                                cancel: "ยกเลิก",
+                                submit: "ยืนยัน",
+                            },
+                        }).then(cost => {
+                        
+                            axios.post('/admin/system/upTicket.api.php?po=finish', {
+                                id: app.id,
+                                status: '3',
+                                fixed_cost: '0'
 
-                            if(response.data.status == 'success') {
-                                swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
-                                .then(function() {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal('ผิดพลาด', response.data.message, 'error');
-                            }
+                            }).then(function (response) {
 
-                        })
+                                if(response.data.status == 'success') {
+                                    swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                    .then(function() {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal('ผิดพลาด', response.data.message, 'error');
+                                }
 
+                            })
+                            
+                        });
                     });
                 },
                 upStep2(){
@@ -791,9 +845,10 @@
                         })
                         
                     });
-                    
+            
                 }
             }
+
         });
     </script>
 

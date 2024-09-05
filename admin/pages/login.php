@@ -6,9 +6,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Scoxe - Admin & Dashboard Template</title>
+    <title>Admin Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" />
     <meta content="MyraStudio" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -27,7 +27,7 @@
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-6 offset-3">
+                <div class="col-12 col-md-6 offset-md-3">
                     <div class="d-flex align-items-center min-vh-100">
                         <div class="w-100 d-block bg-white shadow-lg rounded my-5">
                             <div class="row">
