@@ -2,7 +2,6 @@
     "require": {
         "thingengineer/mysqli-database-class": "dev-master",
         "bramus/router": "^1.6",
-        "phpmailer/phpmailer": "^6.9",
-        "mpdf/mpdf": "^8.2"
+        "phpmailer/phpmailer": "^6.9"
     }
 }
