@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">รายงาน</h4>
+                                <h4 class="mb-0 font-size-18">รายงานการแจ้งซ่อม</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -74,7 +74,7 @@
                             <div class="card">
                                 <div class="card-body">
 
-                                    <h4 class="card-title">ค้นหา</h4>
+                                    <h4 class="card-title">ค้นหาตามวันที่</h4>
                                     <div class="form-group">
                                         <label for="example-select">เริ่มวันที่</label>
                                         <input type="date" class="form-control" v-model="search.start">
@@ -99,7 +99,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">รายละเอียดการซ้อมทั้งหมด</h4>
+                                    <h4 class="card-title">รายละเอียดการซ่อมทั้งหมด</h4>
                                     <table id="datatable" class="table table-responsive">
                                         <thead>
                                             <tr>

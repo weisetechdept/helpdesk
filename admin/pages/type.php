@@ -96,13 +96,14 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label class="control-label">รหัสประเภท:</label>
+                                        <label class="control-label">รหัสประเภท :</label>
                                         <input type="text" class="form-control" v-model="add.code">
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label">ชื่อประเภท:</label>
+                                        <label class="control-label">ชื่อประเภท :</label>
                                         <input type="text" class="form-control" v-model="add.name">
                                     </div>
+                                   
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary waves-effect waves-light" @click="addType">บันทึก</button>
@@ -123,15 +124,22 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label class="control-label">รหัสประเภท:</label>
-                                        <input type="text" class="form-control" v-model="add.code">
+                                        <input type="text" class="form-control" v-model="edit.code">
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">ชื่อประเภท:</label>
-                                        <input type="text" class="form-control" v-model="add.name">
+                                        <input type="text" class="form-control" v-model="edit.name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">สถานะ :</label>
+                                        <select class="form-control" v-model="edit.status">
+                                            <option value="1">ใช้งาน</option>
+                                            <option value="0">ไม่ใช้งาน</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light" @click="addType">บันทึก</button>
+                                    <button type="button" class="btn btn-primary waves-effect waves-light" @click="sendEdit">บันทึก</button>
                                 </div>
                             </div>
                         </div>
@@ -220,6 +228,12 @@
                 add: {
                     code: '',
                     name: ''
+                },
+                edit: {
+                    id: '',
+                    code: '',
+                    name: '',
+                    status: ''
                 }
             },
             mounted() {
@@ -254,35 +268,63 @@
                         {'data':'4'},
                         {'data':'0',
                             render: function(data){
-                                return '<button type="button" class="btn btn-outline-warning btn-sm mr-1" data-toggle="modal" data-target="#editModal">แก้ไข</button> <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#exampleModal">ลบ</button>';
+                                return '<button type="button" class="btn btn-outline-warning btn-sm mr-1" onclick="app.editData('+ data +')" data-toggle="modal" data-target="#editModal">แก้ไข</button>';
                             }
                         }
                     ]
                 });
             },
             methods: {
-               addType() {
-                    if(this.add.code == '' || this.add.name == ''){
-                        swal('ผิดพลาด', 'กรุณากรอกข้อมูลให้ครบ', 'error');
-                    } else {
-                        axios.post('/admin/system/type.api.php?action=add', {
-                            code: this.add.code,
-                            name: this.add.name
-                        }).then(function (response) {
-                            if(response.data.status == 'success'){
-                                swal('สำเร็จ', response.data.message, 'success');
-                                $('#datatable').DataTable().ajax.reload();
-                                $('#exampleModal').modal('hide');
-                                app.add.code = '';
-                                app.add.name = '';
-                            } else {
-                                swal('ผิดพลาด', response.data.message, 'error');
-                            }
-                        }).catch(function (error) {
-                            console.log(error);
-                        });
-                    }
-               }
+                editData(id) {
+                    axios.get('/admin/system/type.api.php?action=getData&id=' + id).then(function (response) {
+                        app.edit.id = response.data.data.id;
+                        app.edit.code = response.data.data.code;
+                        app.edit.name = response.data.data.name;
+                        app.edit.status = response.data.data.status;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+                sendEdit(){
+                    axios.post('/admin/system/type.api.php?action=editData', {
+                        id: app.edit.id,
+                        code: app.edit.code,
+                        name: app.edit.name,
+                        status: app.edit.status
+                    }).then(function (response) {
+                        if(response.data.status == 'success'){
+                            swal('สำเร็จ', response.data.message, 'success');
+                            $('#datatable').DataTable().ajax.reload();
+                            $('#editModal').modal('hide');
+                        } else {
+                            swal('ผิดพลาด', response.data.message, 'error');
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+                addType() {
+                        if(this.add.code == '' || this.add.name == ''){
+                            swal('ผิดพลาด', 'กรุณากรอกข้อมูลให้ครบ', 'error');
+                        } else {
+                            axios.post('/admin/system/type.api.php?action=add', {
+                                code: this.add.code,
+                                name: this.add.name
+                            }).then(function (response) {
+                                if(response.data.status == 'success'){
+                                    swal('สำเร็จ', response.data.message, 'success');
+                                    $('#datatable').DataTable().ajax.reload();
+                                    $('#exampleModal').modal('hide');
+                                    app.add.code = '';
+                                    app.add.name = '';
+                                } else {
+                                    swal('ผิดพลาด', response.data.message, 'error');
+                                }
+                            }).catch(function (error) {
+                                console.log(error);
+                            });
+                        }
+                }
             }
         });
 

@@ -105,6 +105,10 @@
         require 'verify/pages/verify.php';
     });
 
+    $router->get( '/verifyApv/', function() {
+        require 'verify/pages/emailApproval.php';
+    });
+
     $router->run();
     
 

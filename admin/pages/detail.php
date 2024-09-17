@@ -44,8 +44,8 @@
             border-radius: 5px;
         }
         .images-fix {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: auto;
             object-fit: cover;
             margin: 5px;
             border-radius: 5px;
@@ -406,11 +406,15 @@
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    <h4>เอกสารแนบ</h4>
-                                    <div v-for="i in images">
+<div class="row">
+                                    <div class="col-4" v-for="i in images">
+
                                         <a :href="i.link" target="_blank">
                                             <img :src="i.link" class="img-fluid images-fix">
                                         </a>
+
                                     </div>
+    </div>
                                 </div>
                             </div>
                         </div>

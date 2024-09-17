@@ -107,6 +107,50 @@
 
     }
 
+    if($action == 'getEditData'){
+        $id = $requset->id;
+        $data = $db->where('vend_id',$id)->getOne('vendor');
+        $api['editData'] = array(
+            'id' => $data['vend_id'],
+            'name' => $data['vend_name'],
+            'status' => $data['vend_status']
+        );
+    }
+
+    if($action == 'editData'){
+        $id = $requset->id;
+        $name = $requset->name;
+        $status = $requset->status;
+
+        if($name == '') {
+
+            $api['status'] = 'error';
+            $api['message'] = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+            exit;
+
+        } elseif (empty($group)) {
+            $api = array(
+                'status' => 'auth',
+                'message' => 'กรุณาเข้าสู่ระบบ'
+            );
+        } else {
+
+            $data = array(
+                'vend_name' => $name,
+                'vend_status' => $status
+            );
+            $ins = $db->where('vend_id',$id)->update('vendor', $data);
+            if($ins) {
+                $api['status'] = 'success';
+                $api['message'] = 'แก้ไขข้อมูลสำเร็จ';
+            } else {
+                $api['status'] = 'error';
+                $api['message'] = $db->getLastError();
+            }
+
+        }
+    }
+
 
 
     echo json_encode($api);

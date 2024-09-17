@@ -65,9 +65,60 @@
         }
     }
 
+    if($action == 'get'){
+        $deptId = $requset->deptId;
+        $dept = $db->where('usrg_id',$deptId)->getOne('user_group');
+        $api['data'] = array(
+            'id' => $dept['usrg_id'],
+            'name' => $dept['usrg_name'],
+            'branch' => $dept['usrg_branch'],
+            'status' => $dept['usrg_status'],
+            'email' => $dept['usrg_email'],
+        );
+    }
+
+    if($action == 'update'){
+        $id = $requset->id;
+        $name = $requset->name;
+        $branch = $requset->branch;
+        $status = $requset->status;
+        $email = $requset->email;
+
+        if($name == '' || $branch == '0' || $status == '' || $email == '') {
+
+            $api['status'] = 'error';
+            $api['message'] = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+            exit;
+        } else {
+
+            $data = array(
+                'usrg_name' => $name,
+                'usrg_branch' => $branch,
+                'usrg_email' => $email,
+                'usrg_status' => $status,
+            );
+
+            $upd = $db->where('usrg_id',$id)->update('user_group', $data);
+            if($upd) {
+                $api = array(
+                    'status' => 'success',
+                    'message' => 'แก้ไขข้อมูลสำเร็จ'
+                );
+            } else {
+                $api = array(
+                    'status' => 'error',
+                    'message' => 'ไม่สามารถแก้ไขข้อมูลได้'
+                );
+            }
+
+        }
+        
+    }
+
     if($action == 'add'){
         $branch = $requset->branch;
         $name = $requset->name;
+        $email = $requset->email;
 
         if($name == '' || $branch == '') {
 
@@ -81,6 +132,7 @@
             $data = array(
                 'usrg_name' => $name,
                 'usrg_branch' => $branch,
+                'usrg_email' => $email,
                 'usrg_status' => '1',
                 'usrg_datetime' => date('Y-m-d H:i:s')
             );

@@ -137,7 +137,7 @@
                     }).then(function(response) {
                         if(response.data.approval.status == 'success'){
                             swal('อนุมัติ', 'อนุมัติคำขอซ่อมเรียบร้อย', 'success').then(function(){
-                                window.location.href = '/404';
+                                window.location.href = '/verifyApv';
                             });
                         } else {
                             swal('ไม่สามารถอนุมัติได้', 'ไม่สามารถอนุมัติคำขอซ่อม', 'error');
@@ -164,7 +164,7 @@
                     }).then(function(response) {
                         if(response.data.approval.status == 'success'){
                             swal('ยกเลิก', 'ยกเลิกคำขอซ่อมเรียบร้อย', 'warning').then(function(){
-                                window.location.href = '/404';
+                                window.location.href = '/verifyApv';
                             });
                         } else {
                             swal('ไม่สามารถอนุมัติได้', 'ไม่สามารถอนุมัติคำขอซ่อม', 'error');

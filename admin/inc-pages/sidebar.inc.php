@@ -14,7 +14,7 @@
                             <a href="javascript: void(0);" class="has-arrow waves-effect"><i class="feather-edit-3"></i><span>รายงาน</span></a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="/admin/report">รายงานซ่อม</a></li>
-                                <li><a href="/admin/assets-report">รหัสทรัพย์สิน</a></li>
+                                <li><a href="/admin/assets-report">รายงานรัพย์สินรายชิ้น</a></li>
                             </ul>
                         </li>
                         <li class="menu-title">การตั้งค่า</li>

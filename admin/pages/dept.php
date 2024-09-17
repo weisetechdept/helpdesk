@@ -1,6 +1,5 @@
 <?php 
     session_start();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 
-    <!-- App favicon -->
     <link rel="shortcut icon" href="../../assets/images/favicon.ico">
 
     <link href="../../assets/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
@@ -25,16 +23,21 @@
     <link href="../../assets/plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
 
-    <!-- App css -->
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/css/theme.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="../../assets/css/use-bootstrap-tag.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Kanit', sans-serif;
+        }
+        .use-bootstrap-tag>button:not(:disabled) {
+            margin: 0 5px 0;
+            border-radius: 5px;
         }
     </style>
 
@@ -103,6 +106,10 @@
                                                             <option value="2">สาขาตลาดไท</option>
                                                         </select>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">อีเมล ผจก. เพื่ออนุมัติงานซ่อม <small>เพิ่มได้สูงสุด 2 อีเมล</small>  :</label>
+                                                        <input type="text" class="form-control" id="add-email"  data-ub-tag-max="2" />
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary waves-effect waves-light" @click="addDept">บันทึก</button>
@@ -159,6 +166,49 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">แก้ใข : {{ edit.deptName }}</h5>
+                                                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label class="control-label">ชื่อแผนก:</label>
+                                                        <input type="text" v-model="edit.name" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">สาขา:</label>
+                                                        <select class="form-control" v-model="edit.branch">
+                                                            <option value="1">สำนักงานใหญ่</option>
+                                                            <option value="2">สาขาตลาดไท</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">อีเมล ผจก. เพื่ออนุมัติงานซ่อม <small>เพิ่มได้สูงสุด 2 อีเมล</small> :</label>
+                                                        <input type="text" class="form-control" id="email-tag" data-ub-tag-max="2" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">สถานะแผนก:</label>
+                                                        <select class="form-control" v-model="edit.status">
+                                                            <option value="1">ใช้งาน</option>
+                                                            <option value="0">ไม่ใช่งาน</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light" @click="updateData">บันทึก</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
                                 </div>
 
                             </div>
@@ -176,7 +226,6 @@
                                                 <th>ชื่อแผนก</th>
                                                 <th>สาขา</th>
                                                 <th>สถานะ</th>
-                                                
                                                 <th>จัดการ</th>
                                             </tr>
                                         </thead>
@@ -207,7 +256,6 @@
                     </div>
                 </div>
             </footer>
-
         </div>
 
     </div>
@@ -239,6 +287,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
+    <script src="../../assets/js/use-bootstrap-tag.min.js"></script>
+
     <script>
         var app = new Vue({
             el: '#app',
@@ -246,10 +296,23 @@
                 showList: 'all',
                 add:{
                     name: '',
-                    branch: '0'
-                }
+                    branch: '0',
+                    email: []
+                },
+                edit:{
+                    id: '',
+                    deptName:'',
+                    name: '',
+                    branch: '',
+                    status: '',
+                    email: []
+                },
+                
             },
             mounted() {
+                UseBootstrapTag(document.getElementById('email-tag'));
+                UseBootstrapTag(document.getElementById('add-email'));
+                
                 $('#datatable').DataTable({
                     "language": {
                         "paginate": {
@@ -290,26 +353,53 @@
                         },
                         {'data':'0',
                             render: function(data){
-                                return '<a href="/admin/dept/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a> <button class="btn btn-outline-warning btn-sm ml-1" @click="changeStatus('+ data +')">เปลี่ยนสถานะ</button>';
+                                return '<button class="btn btn-outline-warning btn-sm mr-1" onclick="app.getUpdateData('+ data +')" data-toggle="modal" data-target="#editModal">แก้ใข</button> <a href="/admin/dept/de/'+data+'" class="btn btn-outline-primary btn-sm">ดูประวัติซ่อมของแผนก</a>';
                             }
                         }
                     ]
                 });
             },
             methods: {
-                changeStatus(e){
-                    swal({
-                        title: "คุณแน่ใจหรือไม่?",
-                        text: "คุณต้องการเปลี่ยนสถานะข้อมูลนี้ใช่หรือไม่",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
+                getUpdateData(e){
+                    UseBootstrapTag(document.getElementById('email-tag')).removeValue(this.edit.email);
+                    axios.post('/admin/system/dept.api.php', {
+                        action: 'get',
+                        deptId: e
+                    }).then(function(response){
+                        app.edit.id = response.data.data.id;
+                        app.edit.deptName = response.data.data.name;
+                        app.edit.name = response.data.data.name;
+                        app.edit.branch = response.data.data.branch;
+                        app.edit.status = response.data.data.status;
+                        app.edit.email = JSON.parse(response.data.data.email);
+                        UseBootstrapTag(document.getElementById('email-tag')).addValue(JSON.parse(response.data.data.email));
                     });
+                },
+                updateData(){
+                    this.edit.email = UseBootstrapTag(document.getElementById('email-tag')).getValues();  
+                    axios.post('/admin/system/dept.api.php', {
+                        action: 'update',
+                        id: this.edit.id,
+                        name: this.edit.name,
+                        branch: this.edit.branch,
+                        status: this.edit.status,
+                        email: JSON.stringify(this.edit.email)
+                    }).then(function(response){
+                        if(response.data.status == 'success'){
+                            swal('สำเร็จ', 'แก้ใขข้อมูลแผนกเรียบร้อย', 'success');
+                            $('#datatable').DataTable().ajax.reload();
+                            $('#editModal').modal('hide');
+                        } else {
+                            swal('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ใขข้อมูลได้', 'error');
+                        }
+                    });
+                    
                 },
                 showListDept: function(){
                     $('#datatable').DataTable().ajax.url('/admin/system/dept.api.php?action=list&branch='+this.showList).load();
                 },
                 addDept: function(){
+                    this.add.email = UseBootstrapTag(document.getElementById('add-email')).getValues();
                     if(this.add.name == '' | this.add.branch == '0'){
                         swal('เกิดข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');
                         return;
@@ -317,7 +407,8 @@
                         axios.post('/admin/system/dept.api.php', {
                             action: 'add',
                             name: this.add.name,
-                            branch: this.add.branch
+                            branch: this.add.branch,
+                            email: JSON.stringify(this.add.email)
                         }).then(function(response){
                             if(response.data.status == 'success'){
                                 swal('สำเร็จ', 'เพิ่มข้อมูลแผนกเรียบร้อย', 'success');

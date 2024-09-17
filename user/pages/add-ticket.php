@@ -268,7 +268,7 @@
                                         window.location.href = '/user/list/<?php echo $_SESSION['hd_code']; ?>';
                                     });
                                 } else {
-                                    swal("เกิดข้อผิดพลาด", "กรุณาลองใหม่อีกครั้ง", "error");
+                                    swal("เกิดข้อผิดพลาด", response.data.message , "error");
                                 }
                                     
                             });
@@ -281,4 +281,4 @@
 
 </body>
 
-</html> 
+</html>

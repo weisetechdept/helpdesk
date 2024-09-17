@@ -22,12 +22,18 @@
 
     $owner = $_SESSION['hd_code'];
     $user = $db->where('user_code',$owner)->getOne('user');
-
     if($type = '2' || $type = '3' || $type = '4' || $type = '5'){
-        $caretaker = '2';
+        $branch = $db->where('usrg_id',$user['user_dept'])->getOne('user_group');
+        if($branch['usrg_branch'] == '1'){
+            $caretaker = '2';
+        } else {
+            $caretaker = '3';
+        }
     } else {
         $caretaker = '1';
     }
+
+    
 
     $data = array(
         'tick_caretaker' => $caretaker,
@@ -79,11 +85,18 @@
 
             $mail->MsgHTML($body);
 
-            $mail->AddAddress("pyoungys@gmail.com", "recipient1"); // ผู้รับคนที่หนึ่ง
+            $getEmail = $db->where('usrg_id',$user['user_dept'])->getOne('user_group');
+
+            $loopMail = json_decode($getEmail['usrg_email']);
+            foreach ($loopMail as $value) {
+                $mail->AddAddress($value, "recipient1");
+            }
+
 
             if($mail->Send()) {
 
                 if(isset($_FILES['file_upload'])){
+
                     $image = $_FILES['file_upload']['tmp_name'];
                     $type = mime_content_type($image);
                     $name = basename($image);
@@ -91,21 +104,21 @@
                     $url = 'https://api.cloudflare.com/client/v4/accounts/1adf66719c0e0ef72e53038acebcc018/images/v1';
                     $cfile = curl_file_create($image, $type, $name);
                     $data = array("file" => $cfile);
-                    
+
                     $headers = [ 
                         'Authorization: Bearer x2skj57v2poPW8UxIQGqBACBxkJ4Glg42lVhbDPe',
                         'Content-Type: multipart/form-data'
                     ];
-                    
+
                     $curl = curl_init($url);
                     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                     $response = curl_exec($curl);
                     curl_close($curl);
-    
+
                     $response = json_decode($response, true);
-    
+
                     $data = array(
                         'imag_link' => $response['result']['variants'][1],
                         'imag_code' => $response['result']['id'],
@@ -113,7 +126,7 @@
                         'imag_status' => '1',
                         'imag_datetime' => date('Y-m-d H:i:s')
                     );
-    
+
                     $upload = $db->insert('images', $data);
                     if($upload){
                         $api = array('status' => 'success');
@@ -132,7 +145,6 @@
         } else {
             $api = array('status' => 'error', 'message' => 'Create verify code failed');
         }
-
 
     } else {
         $api = array('status' => 'error');

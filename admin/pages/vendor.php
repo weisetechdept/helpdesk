@@ -108,8 +108,39 @@
 
                         </div>
 
+
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">แก้ใขผู้รับงาน</h5>
+                                        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label class="control-label">ชื่อผู้รับงาน :</label>
+                                            <input type="text" class="form-control" v-model="edit.name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">สถานะ :</label>
+                                            <select class="form-control" v-model="edit.status">
+                                                <option value="1">ใช้งาน</option>
+                                                <option value="0">ไม่ใช้งาน</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" @click="editData">บันทึก</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                        
                     </div>
+
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="card">
@@ -190,6 +221,11 @@
                 showList: 'all',
                 add:{
                     name: ''
+                },
+                edit: {
+                    id: '',
+                    name: '',
+                    status: ''
                 }
             },
             mounted() {
@@ -224,13 +260,41 @@
                         {'data':'4'},
                         {'data':'0',
                             render: function(data){
-                                return '<button class="btn btn-outline-warning btn-sm" @click="changeStatus('+data+')">แก้ใข</button> <button class="btn btn-outline-danger btn-sm" @click="changeStatus('+data+')">ลบ</button>';
+                                return '<button class="btn btn-outline-warning btn-sm" onclick="app.getEditData('+ data +')" data-toggle="modal" data-target="#editModal">แก้ใข</button>';
                             }
                         }
                     ]
                 });
             },
             methods: {
+                editData(){
+
+                    axios.post('/admin/system/vendor.api.php', {
+                        action: 'editData',
+                        id: this.edit.id,
+                        name: this.edit.name,
+                        status: this.edit.status
+                    }).then(function(response){
+                        if(response.data.status == 'success'){
+                            swal('สำเร็จ', 'แก้ใขข้อมูลเรียบร้อย', 'success');
+                            $('#datatable').DataTable().ajax.reload();
+                            $('#editModal').modal('hide');
+                        } else {
+                            swal('เกิดข้อผิดพลาด', response.data.message, 'error');
+                        }
+                    });
+
+                },
+                getEditData(e) {
+                    axios.post('/admin/system/vendor.api.php', {
+                        action: 'getEditData',
+                        id: e
+                    }).then(function(response){
+                        app.edit.id = response.data.editData.id;
+                        app.edit.name = response.data.editData.name;
+                        app.edit.status = response.data.editData.status;
+                    });
+                },
                 changeStatus(e){
                     swal({
                         title: "คุณแน่ใจหรือไม่?",

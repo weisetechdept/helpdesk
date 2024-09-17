@@ -17,7 +17,7 @@
     } 
 
     if($_GET['action'] == 'list'){
-        $type = $db->where('type_group',$group)->where('type_status')->get('fix_type');
+        $type = $db->where('type_group',$group)->get('fix_type');
         foreach($type as $t){
             $api['data'][] = array(
                 $t['type_id'],
@@ -29,7 +29,34 @@
         } 
     }
 
-    if($_GET['action'] == 'edit'){
+    if($_GET['action'] == 'editData'){
+        $request = json_decode(file_get_contents('php://input'));
+        $id = $request->id;
+        $data = array(
+            'type_code' => $request->code,
+            'type_name' => $request->name,
+            'type_status' => $request->status,
+            'type_update_at' => date('Y-m-d H:i:s')
+        );
+        $edit = $db->where('type_id',$id)->update('fix_type', $data);
+        if($edit){
+            $api['status'] = 'success';
+            $api['message'] = 'แก้ไขข้อมูลสำเร็จ';
+        }else{
+            $api['status'] = 'error';
+            $api['message'] = 'แก้ไขข้อมูลไม่สำเร็จ';
+        }
+
+    }
+
+    if($_GET['action'] == 'getData'){
+        $type = $db->where('type_id',$_GET['id'])->getOne('fix_type');
+        $api['data'] = array(
+            'id' => $type['type_id'],
+            'code' => $type['type_code'],
+            'name' => $type['type_name'],
+            'status' => $type['type_status']
+        );
         
     }
 
@@ -52,9 +79,7 @@
             $api['status'] = 'error';
             $api['message'] = 'เพิ่มข้อมูลไม่สำเร็จ';
         }
-    } else {
-        $api['status'] = 'error';
-        $api['message'] = 'กรุณาเข้าสู่ระบบ';
+
     }
 
     echo json_encode($api);
