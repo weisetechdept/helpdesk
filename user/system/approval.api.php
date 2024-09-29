@@ -41,18 +41,22 @@
 
     if($update){
         $tdata = $db->where('tick_id',$tid)->getOne('ticket');
-        if($tdata['tick_type'] == '1'){
+        if($tdata['tick_caretaker'] == '1'){
 
             $sToken = "nbmhKeadM6zUJ9ZkxFMhNzYK74L8mCgQbYcyO235le6";
             $sMessage = "มีการแจ้งซ้อมใหม่ กรุณาตรวจสอบ";
             send($sToken,$sMessage,'');
             
-        } else {
+        } elseif($tdata['tick_caretaker'] == '2'){
 
             $sToken = "ssOkKxxfRq1amv4hkmVQUOsKWfN9FYeRik5k2ozYFcK"; 
 	        $sMessage = "มีการแจ้งซ้อมใหม่ กรุณาตรวจสอบ";
             send($sToken,$sMessage,'');
 
+        } elseif($tdata['tick_caretaker'] == '3') {
+            $sToken = "hMEJa1YtlGTQ2B5iby5CDvuPeNSEUlYxiepAbYFeAyc"; 
+	        $sMessage = "มีการแจ้งซ้อมใหม่ กรุณาตรวจสอบ";
+            send($sToken,$sMessage,'');
         }
 
         $api = array(

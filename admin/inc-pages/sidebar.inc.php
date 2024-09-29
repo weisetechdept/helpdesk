@@ -11,6 +11,9 @@
                             <a href="/admin/home?type=all" class="waves-effect"><i class="feather-edit-3"></i><span>รายการแจ้งซ่อม</span></a>
                         </li>
                         <li>
+                            <a href="/admin/addin" class="waves-effect"><i class="feather-edit-3"></i><span>แจ้งซ่อมในแผนก</span></a>
+                        </li>
+                        <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect"><i class="feather-edit-3"></i><span>รายงาน</span></a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="/admin/report">รายงานซ่อม</a></li>

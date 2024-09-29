@@ -23,7 +23,7 @@
 
         $db->join('user u','t.tick_owner = u.user_id','LEFT');
         $db->join('user_group g','t.tick_dept = g.usrg_id','LEFT');
-        $emp = $db->getOne('ticket t');
+        $emp = $db->where('tick_owner',$detail['tick_owner'])->getOne('ticket t');
 
         if($emp['usrg_branch'] == '1'){
             $branch = 'สำนักงานใหญ่';

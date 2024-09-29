@@ -22,18 +22,24 @@
 
     $owner = $_SESSION['hd_code'];
     $user = $db->where('user_code',$owner)->getOne('user');
-    if($type = '2' || $type = '3' || $type = '4' || $type = '5'){
-        $branch = $db->where('usrg_id',$user['user_dept'])->getOne('user_group');
-        if($branch['usrg_branch'] == '1'){
-            $caretaker = '2';
-        } else {
-            $caretaker = '3';
-        }
-    } else {
-        $caretaker = '1';
-    }
 
-    
+   
+        $branch = $db->where('usrg_id',$user['user_dept'])->getOne('user_group'); 
+
+        if($branch['usrg_branch'] == '1'){
+            if($type == '1'){
+                $caretaker = '1';
+            } else {
+                $caretaker = '2';
+            }
+            
+        } elseif($branch['usrg_branch'] == '2') {
+            if($type == '1'){
+                $caretaker = '1';
+            } else {
+                $caretaker = '3';
+            }
+        }
 
     $data = array(
         'tick_caretaker' => $caretaker,

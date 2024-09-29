@@ -504,8 +504,7 @@
                                             <div class="col form-group mt-2">
                                                 <label>อัพโหลดรูปแจ้งซ่อม</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input file-upload" id="uploadfiles" ref="uploadfiles">
-                                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                                    <input type="file" class="file-upload" id="uploadfiles" ref="uploadfiles">
                                                     <button class="btn btn-primary mt-2" @click="uploadImg">อัพโหลด</button>
                                                 </div>
 

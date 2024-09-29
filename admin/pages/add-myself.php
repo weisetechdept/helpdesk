@@ -1,20 +1,6 @@
 <?php 
     session_start();
     date_default_timezone_set("Asia/Bangkok");
-    require_once 'db-conn.php';
-    
-    if(!empty($id)){
-        $find_user = $db->where('user_code',$id)->getOne('user');
-        if(!empty($find_user['user_id'])){
-            $_SESSION['hd_login'] = true;
-            $_SESSION['hd_permission'] = 'officer';
-            $_SESSION['hd_code'] = $id;
-        } else {
-            header('Location: /404');
-        }
-    } else {
-        header('Location: /404');
-    }
 
 ?>
 <!DOCTYPE html>
@@ -57,8 +43,8 @@
 
     <div id="layout-wrapper">
 
-        <?php include 'user/inc-pages/nav.inc.php'; ?>
-        <?php include 'user/inc-pages/sidebar.inc.php'; ?>
+        <?php include 'admin/inc-pages/nav.inc.php'; ?>
+        <?php include 'admin/inc-pages/sidebar.inc.php'; ?>
 
         <div class="main-content">
 
@@ -68,7 +54,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">แจ้งซ่อม</h4>
+                                <h4 class="mb-0 font-size-18">แจ้งซ่อมในแผนกตนเอง (Admin)</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -90,11 +76,12 @@
                                     <label>ประเภทการซ่อม*</label>
                                     <select class="form-control" @change="typeTicket" v-model="ticket.type">
                                         <option value="0">= เลือกประเภทการซ่อม =</option>
-                                        <option value="1">อุปกรณ์ IT / Software</option>
-                                        <option value="2">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (มีรหัสทรัพยสิน)</option>
-                                        <option value="3">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (ไม่มีรหัสทรัพยสิน)</option>
-                                        <option value="4">อาคารสถานที่ (มีรหัสทรัพยสิน)</option>
-                                        <option value="5">อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)</option>
+
+                                        <option v-if="ticket.adminRole == '1'" value="1">อุปกรณ์ IT / Software</option>
+                                        <option v-if="ticket.adminRole == '2' || ticket.adminRole == '3'" value="2">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (มีรหัสทรัพยสิน)</option>
+                                        <option v-if="ticket.adminRole == '2' || ticket.adminRole == '3'" value="3">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (ไม่มีรหัสทรัพยสิน)</option>
+                                        <option v-if="ticket.adminRole == '2' || ticket.adminRole == '3'" value="4">อาคารสถานที่ (มีรหัสทรัพยสิน)</option>
+                                        <option v-if="ticket.adminRole == '2' || ticket.adminRole == '3'" value="5">อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)</option>
                                     </select>
                                 </div>
 
@@ -127,7 +114,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group mt-2">
+                                <!-- <div class="form-group mt-2">
                                     <label>ชื่อผู้แจ้ง</label>
                                     <p class="pl-2">{{ display.name }}</p>
                                 </div>
@@ -140,7 +127,7 @@
                                 <div class="form-group">
                                     <label>แผนก / ฝ่าย</label>
                                     <p class="pl-2">{{ display.department }}</p>
-                                </div>
+                                </div> -->
 
                                 <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
                         
@@ -192,16 +179,17 @@
                         detail: '',
                         code: '',
                         tel:'',
-                        owner: <?php echo $_SESSION['hd_code']; ?>
+                        owner: '<?php echo $_SESSION['userAdmin']; ?>',
+                        adminRole: '<?php echo $_SESSION['adminGroup']; ?>'
                     },
                     display: []
                 }
             },
             mounted() {
-                axios.get('/user/system/add-ticket.api.php ')
-                .then(function (response) {
-                    ticket.display = response.data;
-                })
+                // axios.get('/user/system/add-ticket.api.php ')
+                // .then(function (response) {
+                //     ticket.display = response.data;
+                // })
             },
             methods: {
                 typeTicket() {
@@ -231,49 +219,49 @@
                         this.addTicket();
                     }
                 },
-                addTicket() {
-                    swal("ยืนยันการแจ้งซ่อม", "คุณต้องการแจ้งซ่อมใช่หรือไม่", "info", {
-                        buttons: {
-                            cancel: "ยกเลิก",
-                            confirm: "ยืนยัน"
-                        },
-                    }).then((value) => {
-                        if(value) {
-                            swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
-                                buttons: false,
-                                closeOnClickOutside: false,
-                                closeOnEsc: false
-                            });
+                // addTicket() {
+                //     swal("ยืนยันการแจ้งซ่อม", "คุณต้องการแจ้งซ่อมใช่หรือไม่", "info", {
+                //         buttons: {
+                //             cancel: "ยกเลิก",
+                //             confirm: "ยืนยัน"
+                //         },
+                //     }).then((value) => {
+                //         if(value) {
+                //             swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
+                //                 buttons: false,
+                //                 closeOnClickOutside: false,
+                //                 closeOnEsc: false
+                //             });
 
-                            var formData = new FormData();
-                            var image = this.$refs.uploadfiles.files[0];
+                //             var formData = new FormData();
+                //             var image = this.$refs.uploadfiles.files[0];
 
-                            formData.append('file_upload', image);
-                            formData.append('type', ticket.ticket.type);
-                            formData.append('topic', ticket.ticket.topic);
-                            formData.append('detail', ticket.ticket.detail);
-                            formData.append('code', ticket.ticket.code);
-                            formData.append('owner', ticket.ticket.owner);
-                            formData.append('tel', ticket.ticket.tel);
+                //             formData.append('file_upload', image);
+                //             formData.append('type', ticket.ticket.type);
+                //             formData.append('topic', ticket.ticket.topic);
+                //             formData.append('detail', ticket.ticket.detail);
+                //             formData.append('code', ticket.ticket.code);
+                //             formData.append('owner', ticket.ticket.owner);
+                //             formData.append('tel', ticket.ticket.tel);
 
-                            axios.post('/user/system/add-ticket.ins.php', formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            }).then(function(response){
+                //             axios.post('/user/system/add-ticket.ins.php', formData, {
+                //                 headers: {
+                //                     'Content-Type': 'multipart/form-data'
+                //                 }
+                //             }).then(function(response){
 
-                                if(response.data.status == 'success') {
-                                    swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
-                                        window.location.href = '/user/list/<?php echo $_SESSION['hd_code']; ?>';
-                                    });
-                                } else {
-                                    swal("เกิดข้อผิดพลาด", response.data.message , "error");
-                                }
+                //                 if(response.data.status == 'success') {
+                //                     swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
+                //                         window.location.href = '/user/list/<?php echo $_SESSION['hd_code']; ?>';
+                //                     });
+                //                 } else {
+                //                     swal("เกิดข้อผิดพลาด", response.data.message , "error");
+                //                 }
                                     
-                            });
-                        }
-                    });
-                }
+                //             });
+                //         }
+                //     });
+                // }
             }
         })
     </script>

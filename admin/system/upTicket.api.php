@@ -220,6 +220,8 @@
                     $sToken = "nbmhKeadM6zUJ9ZkxFMhNzYK74L8mCgQbYcyO235le6";
                 } elseif($care['tick_caretaker'] == '2') {
                     $sToken = "ssOkKxxfRq1amv4hkmVQUOsKWfN9FYeRik5k2ozYFcK"; 
+                } elseif($care['tick_caretaker'] == '3') {
+                    $sToken = "hMEJa1YtlGTQ2B5iby5CDvuPeNSEUlYxiepAbYFeAyc"; 
                 }
     
                 $sMessage = "[จ่ายงาน] งานซ่อมหมายเลข ".$id." ได้มอบหมายให้ ".$v['vend_name']." ,ประเภท ".$f['type_name']." - https://helpdesk.toyotaparagon.com/admin/fix/".$id;

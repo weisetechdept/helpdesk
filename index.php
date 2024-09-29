@@ -10,7 +10,6 @@
         require 'user/pages/404.php';
     });
     
-
     /* Auth */
 
     $router->get( '/loginAuth', function() {
@@ -45,6 +44,10 @@
 
     $router->get( '/admin/logout', function() {
         require 'admin/pages/logout.php';
+    });
+
+    $router->get( '/admin/addin', function() {
+        require 'admin/pages/add-myself.php';
     });
 
     $router->get( '/admin/add-user', function() {
