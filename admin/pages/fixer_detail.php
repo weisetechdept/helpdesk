@@ -103,7 +103,7 @@
     <div id="layout-wrapper">
 
 
-        <div class="main-content" id="app">
+        <div class="container" id="app">
 
             <div class="page-content">
                 <div class="container-fluid">
@@ -240,7 +240,7 @@
                         
                         <div class="col-lg-6">
 
-<div v-if="asm.getStatus == 'success'">
+                <div v-if="asm.getStatus == 'success'">
 
                             <div class="card m-b-30">
                                 <div class="card-body">
@@ -408,11 +408,16 @@
                             <div class="card m-b-30">
                                 <div class="card-body">
                                    <h4>เอกสารแนบ</h4>
-                                    <div v-for="i in images">
-                                        <a :href="i.link" target="_blank">
-                                            <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
-                                        </a>
+                              
+                                    <div class="row">
+                                        <div class="col-4" v-for="i in images">
+                                            <a :href="i.link" target="_blank">
+                                                <img :src="i.link" class="img-fluid images-fix">
+                                            </a>
+                                        </div>
                                     </div>
+                                       
+                              
                                 </div>
                             </div>
                         </div>
@@ -420,8 +425,6 @@
 
 
                     <div class="row" v-if="detail.status == '1' || detail.status == '2'">
-
-                       
                         
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
@@ -474,8 +477,8 @@
                                             <div class="col form-group mt-2">
                                                 <label>อัพโหลดรูปแจ้งซ่อม</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input file-upload" id="uploadfiles" ref="uploadfiles">
-                                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                                    <input type="file" class="file-upload" id="uploadfiles" ref="uploadfiles">
+                                                <br />
                                                     <button class="btn btn-primary mt-2" @click="uploadImg">อัพโหลด</button>
                                                 </div>
 
@@ -490,15 +493,7 @@
 
                     </div>
 
-                    <footer class="footer">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    2024 © WeiseTech
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+                    
 
         </div>
 
@@ -543,7 +538,7 @@
                 asmImgAll: [],
                 vendor: [],
                 type_fix: [],
-                id: <?php echo $id; ?>,
+                id: <?php echo base64_decode($id); ?>,
                 send: {
                     type_fix: 0,
                     vendor: 0
@@ -785,8 +780,9 @@
                     }
                 },
                 getDetail() {
-                    axios.get('/admin/system/fix-detail.api.php?id=<?php echo $id; ?>')
+                    axios.get('/admin/system/fix-detail.api.php?id=<?php echo base64_decode($id); ?>')
                         .then(function (response) {
+                            console.log(response.data);
                             if(response.data.status == 'error') {
                                 swal('ผิดพลาด', response.data.message, 'error')
                                     .then(function() {
@@ -851,7 +847,6 @@
             
                 }
             }
-
         });
     </script>
 

@@ -16,11 +16,10 @@
         return "$strDay $strMonthThai $strYear";
     } 
     
-    $id = base64_decode($_GET['id']);
-    
+    $id = $_GET['id'];
     $detail = $db->where('tick_id',$id)->getOne('ticket');
 
-    if($detail['tick_caretaker'] == $group){
+    
 
         $db->join('user u','t.tick_owner = u.user_id','LEFT');
         $db->join('user_group g','t.tick_dept = g.usrg_id','LEFT');
@@ -229,14 +228,4 @@
                 );
             }
 
-
-    } else {
-        $api = array(
-            'status' => 'error',
-            'message' => 'ไม่สามารถดูข้อมูลได้'
-        );
-    }
-
     echo json_encode($api);
-
-    
