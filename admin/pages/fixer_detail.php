@@ -44,8 +44,8 @@
             border-radius: 5px;
         }
         .images-fix {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             margin: 5px;
             border-radius: 5px;
@@ -91,7 +91,11 @@
         }
 
         .page-content {
-            padding: calc(5px + 24px) calc(24px / 2) 70px calc(24px / 2);
+            padding: calc(5px + 24px) calc(0px / 2) 70px calc(0px / 2);
+        }
+        .container {
+            padding-right: 0px;
+            padding-left: 0px;
         }
         
     </style>
@@ -196,49 +200,11 @@
                                         </tbody>
                                     </table>
 
-                                    <div class="row">
-                                        <div class="col-12 mt-3">
-                                            <button class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal3">แก้ใขข้อมูล</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel3">แก้ใขข้อมูล {{ asm.name }}</h5>
-                                                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-
-                                                <table class="table mb-0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="150px">รหัส</td>
-                                                            <td>{{ detail.id }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>รหัสทรัพย์สิน</td>
-                                                            <td><input type="text" class="form-control" v-model="edit.code"></td>
-                                                        </tr>
-                                                        
-                                                    </tbody>
-                                                </table>
-                                                <button class="btn btn-primary mt-2" @click="editCode">บันทึก</button>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
-
                         
-                        <div class="col-lg-6">
+                    <div class="col-lg-6">
 
                 <div v-if="asm.getStatus == 'success'">
 
@@ -407,12 +373,13 @@
                         
                             <div class="card m-b-30">
                                 <div class="card-body">
+
                                    <h4>เอกสารแนบ</h4>
                               
                                     <div class="row">
                                         <div class="col-4" v-for="i in images">
                                             <a :href="i.link" target="_blank">
-                                                <img :src="i.link" class="img-fluid images-fix">
+                                                <img :src="i.link" class="images-fix">
                                             </a>
                                         </div>
                                     </div>
@@ -626,21 +593,6 @@
                             });
                         }
                     });
-                },
-                editCode() {
-                    axios.post('/admin/system/upTicket.api.php?po=editCode', {
-                        id: this.id,
-                        code: this.edit.code
-                    }).then(function (response) {
-                        if(response.data.status == 'success') {
-                            swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
-                                .then(function() {
-                                    window.location.reload();
-                                });
-                        } else {
-                            swal('ผิดพลาด', response.data.message, 'error');
-                        }
-                    })
                 },
                 takeCancel(){
                     swal({
