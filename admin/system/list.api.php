@@ -7,7 +7,7 @@
 
     if($_GET['get'] == 'count'){
         $all = $db->where('tick_status',array('1','2','3','4'),"IN")->where('tick_caretaker',$group)->getValue ("ticket", "count(*)");
-        $wait = $db->where('tick_status',2)->where('tick_caretaker',$group)->getValue("ticket", "count(*)");
+        $wait = $db->where('tick_status',1)->where('tick_caretaker',$group)->getValue("ticket", "count(*)");
         $process = $db->where('tick_status',2)->where('tick_caretaker',$group)->getValue("ticket", "count(*)");
 
         $api['count'] = array(

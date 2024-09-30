@@ -98,8 +98,6 @@
 
     <div id="layout-wrapper">
 
-        <?php include 'admin/inc-pages/nav.inc.php'; ?>
-        <?php include 'admin/inc-pages/sidebar.inc.php'; ?>
 
         <div class="main-content" id="app">
 

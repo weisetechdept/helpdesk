@@ -61,10 +61,18 @@
                 }
             }
 
-            if($tdata['tick_type'] == '1'){
+            // if($tdata['tick_type'] == '1'){
+            //     $sToken = "nbmhKeadM6zUJ9ZkxFMhNzYK74L8mCgQbYcyO235le6";
+            // } else {
+            //     $sToken = "ssOkKxxfRq1amv4hkmVQUOsKWfN9FYeRik5k2ozYFcK"; 
+            // }
+
+            if($tdata['tick_caretaker'] == '1'){
                 $sToken = "nbmhKeadM6zUJ9ZkxFMhNzYK74L8mCgQbYcyO235le6";
-            } else {
-                $sToken = "ssOkKxxfRq1amv4hkmVQUOsKWfN9FYeRik5k2ozYFcK"; 
+            } elseif($care['tick_caretaker'] == '2') {
+                $sToken = "V3xJ05fH6kCTfZtb5G3vVvbys4lhnLt88wunPUTBzC6"; 
+            } elseif($care['tick_caretaker'] == '3') {
+                $sToken = "hMEJa1YtlGTQ2B5iby5CDvuPeNSEUlYxiepAbYFeAyc"; 
             }
 
             $sMessage = "[รับแจ้ง] มีการแจ้งซ้อมใหม่ หมายเลข ".$tdata['tick_id']." จาก ".$tdata['usrg_name']." (".branch($tdata['usrg_branch']).") กรุณาตรวจสอบ";

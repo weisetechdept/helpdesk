@@ -2,6 +2,10 @@
     session_start();
     date_default_timezone_set("Asia/Bangkok");
 
+    if(empty($_SESSION['adminName'] || $_SESSION['adminGroup'] || $_SESSION['userAdmin'])) {
+        header('Location: /admin/auth');
+    } else {
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -250,3 +254,5 @@
 </body>
 
 </html>
+
+<?php } ?>

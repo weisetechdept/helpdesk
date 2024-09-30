@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if(empty($_SESSION['adminName'] || $_SESSION['adminGroup'] || $_SESSION['userAdmin'])) {
+        header('Location: /admin/auth');
+    } else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -859,3 +862,4 @@
 </body>
 
 </html>
+<?php } ?>
