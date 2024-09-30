@@ -684,47 +684,30 @@
 
                 },
                 takeFinish(){
-                    swal({
-                        title: 'กำลังดำเนินการ',
-                        text: 'ตรวจสอบข้อมูล และทำการเสร็จสิ้นการแจ้งซ่อมใช่หรือไม่',
-                        icon: 'info',
-                        buttons: {
-                            cancel: 'ยกเลิก',
-                            confirm: 'ยืนยัน'
-                        },
-                        closeOnClickOutside: false,
-                        closeOnEsc: false
-
-                    }).then(function () {
 
                         swal("รายการนี้มีค่าใช้จ่ายหรือไม่","หากมีค่าใช้จ่าย ให้กรอกค่าใช้จ่ายรวมทั้งหมดของการซ่อมนี้ลงในช่อง หากไม่มีให้ใส่ 0", {
-                            content: "input",
-                            buttons: {
-                                cancel: "ยกเลิก",
-                                submit: "ยืนยัน",
-                            },
-                        }).then(cost => {
-                        
-                            axios.post('/admin/system/upTicket.api.php?po=finish', {
-                                id: app.id,
-                                status: '3',
-                                fixed_cost: '0'
-
-                            }).then(function (response) {
-
-                                if(response.data.status == 'success') {
-                                    swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
-                                    .then(function() {
-                                        window.location.reload();
-                                    });
-                                } else {
-                                    swal('ผิดพลาด', response.data.message, 'error');
-                                }
-
-                            })
-                            
+                            content: "input"
+                        }).then((value) => {
+                            if (value !== null && value !== '') {
+                                axios.post('/admin/system/upTicket.api.php?po=finish', {
+                                    id: app.id,
+                                    status: '3',
+                                    fixed_cost: value
+                                }).then(function (response) {
+                                    if(response.data.status == 'success') {
+                                        swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                        .then(function() {
+                                            window.location.reload();
+                                        });
+                                    } else {
+                                        swal('ผิดพลาด', response.data.message, 'error');
+                                    }
+                                });
+                            } else {
+                                swal('ยกเลิก', 'คุณไม่ได้กรอกค่าใช้จ่าย', 'error');
+                            }
                         });
-                    });
+
                 },
                 upStep2(){
                     swal({

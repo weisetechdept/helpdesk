@@ -49,6 +49,7 @@
             object-fit: cover;
             margin: 5px;
             border-radius: 5px;
+            border: 1px solid;
         }
         #img-loading {
             min-height: 165px;
@@ -57,6 +58,9 @@
             width: 100%;
             height: auto;
             padding: 5px;
+        }
+        .card-body {
+            padding: 1.25rem 0.75rem;
         }
         .trans{
             min-height:250px;
@@ -377,7 +381,7 @@
                                    <h4>เอกสารแนบ</h4>
                               
                                     <div class="row">
-                                        <div class="col-4" v-for="i in images">
+                                        <div class="col-4 mb-3" v-for="i in images">
                                             <a :href="i.link" target="_blank">
                                                 <img :src="i.link" class="images-fix">
                                             </a>
