@@ -188,7 +188,7 @@
                                                     <td>{{ asm.name }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Serail</td>
+                                                    <td>Serial</td>
                                                     <td>{{ asm.serial }}</td>
                                                 </tr>
                                                 <tr>

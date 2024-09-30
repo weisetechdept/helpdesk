@@ -228,7 +228,7 @@
 
                 $('#datatable').DataTable({
                     order: [0, 'desc'],
-                    ajax: '/admin/system/list.api.php?get=list',
+                    ajax: '/admin/system/list.api.php?get=list', 
                     processing: true,
                     serverSide: true,
                     responsive: true,

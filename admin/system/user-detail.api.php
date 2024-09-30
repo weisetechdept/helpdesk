@@ -3,8 +3,6 @@
     require_once '../../db-conn.php';
     date_default_timezone_set("Asia/Bangkok");
 
-   
-
         $id = $_GET['id'];
 
         $user = $db->where('user_id',$id)->getOne('user');

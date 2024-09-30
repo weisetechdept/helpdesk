@@ -114,21 +114,6 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="form-group mt-2">
-                                    <label>ชื่อผู้แจ้ง</label>
-                                    <p class="pl-2">{{ display.name }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>สาขา</label>
-                                    <p class="pl-2">{{ display.branch }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>แผนก / ฝ่าย</label>
-                                    <p class="pl-2">{{ display.department }}</p>
-                                </div> -->
-
                                 <button @click="checkForm" class="btn btn-primary waves-effect waves-light">แจ้งซ่อม</button>
                         
             
@@ -179,17 +164,13 @@
                         detail: '',
                         code: '',
                         tel:'',
-                        owner: '<?php echo $_SESSION['userAdmin']; ?>',
+                        owner: '99',
                         adminRole: '<?php echo $_SESSION['adminGroup']; ?>'
                     },
                     display: []
                 }
             },
             mounted() {
-                // axios.get('/user/system/add-ticket.api.php ')
-                // .then(function (response) {
-                //     ticket.display = response.data;
-                // })
             },
             methods: {
                 typeTicket() {
@@ -219,49 +200,49 @@
                         this.addTicket();
                     }
                 },
-                // addTicket() {
-                //     swal("ยืนยันการแจ้งซ่อม", "คุณต้องการแจ้งซ่อมใช่หรือไม่", "info", {
-                //         buttons: {
-                //             cancel: "ยกเลิก",
-                //             confirm: "ยืนยัน"
-                //         },
-                //     }).then((value) => {
-                //         if(value) {
-                //             swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
-                //                 buttons: false,
-                //                 closeOnClickOutside: false,
-                //                 closeOnEsc: false
-                //             });
+                addTicket() {
+                    swal("ยืนยันการแจ้งซ่อม", "คุณต้องการแจ้งซ่อมใช่หรือไม่", "info", {
+                        buttons: {
+                            cancel: "ยกเลิก",
+                            confirm: "ยืนยัน"
+                        },
+                    }).then((value) => {
+                        if(value) {
+                            swal("กำลังดำเนินการ", "กรุณารอสักครู่", "info", {
+                                buttons: false,
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            });
 
-                //             var formData = new FormData();
-                //             var image = this.$refs.uploadfiles.files[0];
+                            var formData = new FormData();
+                            var image = this.$refs.uploadfiles.files[0];
 
-                //             formData.append('file_upload', image);
-                //             formData.append('type', ticket.ticket.type);
-                //             formData.append('topic', ticket.ticket.topic);
-                //             formData.append('detail', ticket.ticket.detail);
-                //             formData.append('code', ticket.ticket.code);
-                //             formData.append('owner', ticket.ticket.owner);
-                //             formData.append('tel', ticket.ticket.tel);
+                            formData.append('file_upload', image);
+                            formData.append('type', ticket.ticket.type);
+                            formData.append('topic', ticket.ticket.topic);
+                            formData.append('detail', ticket.ticket.detail);
+                            formData.append('code', ticket.ticket.code);
+                            formData.append('owner', ticket.ticket.owner);
+                            formData.append('tel', ticket.ticket.tel);
 
-                //             axios.post('/user/system/add-ticket.ins.php', formData, {
-                //                 headers: {
-                //                     'Content-Type': 'multipart/form-data'
-                //                 }
-                //             }).then(function(response){
+                            axios.post('/admin/system/add-ticket.ins.php', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }).then(function(response){
 
-                //                 if(response.data.status == 'success') {
-                //                     swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
-                //                         window.location.href = '/user/list/<?php echo $_SESSION['hd_code']; ?>';
-                //                     });
-                //                 } else {
-                //                     swal("เกิดข้อผิดพลาด", response.data.message , "error");
-                //                 }
+                                if(response.data.status == 'success') {
+                                    swal("สำเร็จ", "แจ้งซ่อมเรียบร้อยแล้ว", "success").then((value) => {
+                                        window.location.href = '/admin/home?type=all';
+                                    });
+                                } else {
+                                    swal("เกิดข้อผิดพลาด", response.data.message , "error");
+                                }
                                     
-                //             });
-                //         }
-                //     });
-                // }
+                            });
+                        }
+                    });
+                }
             }
         })
     </script>

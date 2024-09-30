@@ -33,7 +33,11 @@
 
         $division = $emp['usrg_name'];
 
-        $owner = $emp['user_first_name'].' '.$emp['user_last_name'];
+        if($detail['tick_owner'] == '90001' || $detail['tick_owner'] == '90002' || $detail['tick_owner'] == '90003'){
+            $owner = 'เพิ่มงานจาก Controller';
+        } else {
+            $owner = $emp['user_first_name'].' '.$emp['user_last_name'];
+        }
 
         if($detail['tick_type'] == '1'){
             $type = 'อุปกรณ์ IT / Software';

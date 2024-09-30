@@ -91,10 +91,10 @@
                                     <select class="form-control" @change="typeTicket" v-model="ticket.type">
                                         <option value="0">= เลือกประเภทการซ่อม =</option>
                                         <option value="1">อุปกรณ์ IT / Software</option>
-                                        <option value="2">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (มีรหัสทรัพยสิน)</option>
-                                        <option value="3">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (ไม่มีรหัสทรัพยสิน)</option>
-                                        <option value="4">อาคารสถานที่ (มีรหัสทรัพยสิน)</option>
-                                        <option value="5">อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)</option>
+                                        <option value="2">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (มีรหัสทรัพย์สิน)</option>
+                                        <option value="3">เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน (ไม่มีรหัสทรัพย์สิน)</option>
+                                        <option value="4">อาคารสถานที่ (มีรหัสทรัพย์สิน)</option>
+                                        <option value="5">อาคารสถานที่ (ไม่มีรหัสทรัพย์สิน)</option>
                                     </select>
                                 </div>
 
