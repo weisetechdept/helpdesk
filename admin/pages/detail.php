@@ -508,6 +508,7 @@
                                                 <label>อัพโหลดรูปแจ้งซ่อม</label>
                                                 <div class="custom-file">
                                                     <input type="file" class="file-upload" id="uploadfiles" ref="uploadfiles">
+                                                    <br />
                                                     <button class="btn btn-primary mt-2" @click="uploadImg">อัพโหลด</button>
                                                 </div>
 
@@ -651,36 +652,33 @@
                     })
                 },
                 takeCancel(){
-                    swal({
-                        title: 'กำลังดำเนินการ',
-                        text: 'ตรวจสอบข้อมูล และทำการยกเลิกการแจ้งซ่อมใช่หรือไม่',
-                        icon: 'info',
-                        buttons: {
-                            cancel: 'ยกเลิก',
-                            confirm: 'ยืนยัน'
-                        },
-                        closeOnClickOutside: false,
-                        closeOnEsc: false
 
-                    }).then(function () {
+                    swal("กำลังดำเนินการ","ตรวจสอบข้อมูล และโปรดใส่เหตุผลในการยกเลิก", {
+                        content: "input"
+                    }).then((value) => {
+                        if (value !== null && value !== '') {
 
-                        axios.post('/admin/system/upTicket.api.php?po=cancel', {
-                            id: app.id,
-                            status: '10'
-                        }).then(function (response) {
+                            axios.post('/admin/system/upTicket.api.php?po=cancel', {
+                                id: app.id,
+                                status: '10',
+                                detail: value
+                            }).then(function (response) {
 
-                            if(response.data.status == 'success') {
-                                swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
-                                .then(function() {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal('ผิดพลาด', response.data.message, 'error');
-                            }
+                                if(response.data.status == 'success') {
+                                    swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
+                                    .then(function() {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal('ผิดพลาด', response.data.message, 'error');
+                                }
 
-                        })
+                            })
 
-                    });
+                        } else {
+                            swal('ยกเลิก', 'คุณไม่ได้กรอกเหตุผลในการยกเลิก', 'error');
+                        }
+                    });   
 
                 },
                 takeFinish(){

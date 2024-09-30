@@ -70,6 +70,7 @@
     if($_GET['po'] == 'cancel'){
         $request = json_decode(file_get_contents('php://input'));
         $id = $request->id;
+        $detail = $request->detail;
         $status = $request->status;
         $update = $db->where('tick_id', $id)->update('ticket', ['tick_status' => '10']);
         if($update){
@@ -77,7 +78,7 @@
             $tdata = array(
                 'tran_where' => 'ticket',
                 'tran_type' => '1',
-                'tran_detail' => 'รายการแจ้งซ้อมยกเลิก',
+                'tran_detail' => 'รายการแจ้งซ้อมยกเลิก เหตุผล : '.$request->detail,
                 'tran_parent' => $id,
                 'tran_status' => $status,
                 'tran_datetime' => date('Y-m-d H:i:s')
