@@ -70,11 +70,11 @@
             if($tdata['tick_caretaker'] == '1'){
                 $sToken = "Ey09FWoSKYIn0dCLzKodE0mYIAaRrMEvFl1eMSSFo1u";
 
-            } elseif($care['tick_caretaker'] == '2') {
+            } elseif($tdata['tick_caretaker'] == '2') {
 
                 $sToken = "x9D0NLb762C3fiAvlA8VTcZSvujibjkwIHRwmaashGY"; 
 
-            } elseif($care['tick_caretaker'] == '3') {
+            } elseif($tdata['tick_caretaker'] == '3') {
 
                 $sToken = "Jv05BoiLmQ3eYVlltdOiAtW05e5oHjuD0vMCB9j68Ru"; 
 
