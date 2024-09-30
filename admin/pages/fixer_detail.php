@@ -89,6 +89,10 @@
             text-align: center;
             line-height: 1.6rem;
         }
+
+        .page-content {
+            padding: calc(5px + 24px) calc(24px / 2) 70px calc(24px / 2);
+        }
         
     </style>
 
@@ -781,7 +785,7 @@
                     }
                 },
                 getDetail() {
-                    axios.get('/admin/system/detail.api.php?id=<?php echo $id; ?>')
+                    axios.get('/admin/system/fix-detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
                             if(response.data.status == 'error') {
                                 swal('ผิดพลาด', response.data.message, 'error')

@@ -224,7 +224,7 @@
                     $sToken = "hMEJa1YtlGTQ2B5iby5CDvuPeNSEUlYxiepAbYFeAyc"; 
                 }
     
-                $sMessage = "[จ่ายงาน] งานซ่อมหมายเลข ".$id." ได้มอบหมายให้ ".$v['vend_name']." ,ประเภท ".$f['type_name']." - https://helpdesk.toyotaparagon.com/admin/fix/".$id;
+                $sMessage = "[จ่ายงาน] งานซ่อมหมายเลข ".$id." ได้มอบหมายให้ ".$v['vend_name']." ,ประเภท ".$f['type_name']." - https://helpdesk.toyotaparagon.com/admin/fix/".base64_encode($id);
                 send($sToken,$sMessage);
 
                 $api = array(
