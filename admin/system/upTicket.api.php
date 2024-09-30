@@ -212,16 +212,16 @@
                 'tran_status' => '2',
                 'tran_datetime' => date('Y-m-d H:i:s')
             );
-
+ 
             if($db->insert('transaction', $tdata)){
 
                 $care = $db->where('tick_id', $id)->getOne('ticket');
                 if($care['tick_caretaker'] == '1'){
-                    $sToken = "nbmhKeadM6zUJ9ZkxFMhNzYK74L8mCgQbYcyO235le6";
+                    $sToken = "Ey09FWoSKYIn0dCLzKodE0mYIAaRrMEvFl1eMSSFo1u";
                 } elseif($care['tick_caretaker'] == '2') {
-                    $sToken = "V3xJ05fH6kCTfZtb5G3vVvbys4lhnLt88wunPUTBzC6"; 
+                    $sToken = "x9D0NLb762C3fiAvlA8VTcZSvujibjkwIHRwmaashGY"; 
                 } elseif($care['tick_caretaker'] == '3') {
-                    $sToken = "hMEJa1YtlGTQ2B5iby5CDvuPeNSEUlYxiepAbYFeAyc"; 
+                    $sToken = "Jv05BoiLmQ3eYVlltdOiAtW05e5oHjuD0vMCB9j68Ru"; 
                 }
     
                 $sMessage = "[จ่ายงาน] งานซ่อมหมายเลข ".$id." ได้มอบหมายให้ ".$v['vend_name']." ,ประเภท ".$f['type_name']." - https://helpdesk.toyotaparagon.com/admin/fix/".base64_encode($id);
