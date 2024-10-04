@@ -42,7 +42,9 @@
     }
 
     if($_GET['data'] == 'dept') {
+
         $dept = $db->where('usrg_status',1)->get('user_group');
+
         foreach ($dept as $value) {
             if($value['usrg_branch'] == 1){
                 $branch = 'สำนักงานใหญ่';
@@ -56,7 +58,7 @@
             );
         }
     }
-
+ 
     if($_GET['data'] == 'count'){
 
         $all = $db->where('user_status',array(0,1,10),"IN")->getValue('user','count(*)');
@@ -125,10 +127,17 @@
 
         if($db->count > 0){
             foreach($user as $row){
+                
+                if($row['usrg_branch'] == 1){
+                    $branch = 'สำนักงานใหญ่';
+                } elseif($row['usrg_branch'] == 2){
+                    $branch = 'สาขาตลาดไท';
+                }
+
                 $api['data'][] = array(
                     $row['user_id'],
                     $row['user_first_name'].' '.$row['user_last_name'],
-                    '[สำนักงานใหญ่] - '.$row['usrg_name'],
+                    '['.$branch.'] - '.$row['usrg_name'],
                     $row['user_permission'],
                     $row['user_status'],
                     $row['user_datetime']

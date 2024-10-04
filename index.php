@@ -30,6 +30,10 @@
         require 'user/pages/list.php';
     });
 
+    $router->get( '/user/listDept/(.*)', function($id) {
+        require 'user/pages/list-dept.php';
+    });
+
     $router->get( '/user/de/(.*)', function($id) {
         require 'user/pages/detail.php';
     });

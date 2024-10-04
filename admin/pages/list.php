@@ -75,7 +75,7 @@
                     <div class="row" id="app">
 
                         <div class="col-6 col-md-4 col-lg-3">
-                            <a href="#">
+                            <a href="/admin/home?type=alllist">
                                 <div class="card bg-primary border-primary">
                                     <div class="card-body">
                                         <div class="mb-2">
@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="col-6 col-md-4 col-lg-3">
-                            <a href="#">
+                            <a href="/admin/home?type=wait">
                                 <div class="card bg-warning border-warning">
                                     <div class="card-body">
                                         <div class="mb-2">
@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="col-12 col-md-4 col-lg-3">
-                            <a href="#">
+                            <a href="/admin/home?type=process">
                                 <div class="card bg-info border-info">
                                     <div class="card-body">
                                         <div class="mb-2">
@@ -227,10 +227,10 @@
             },
             mounted: function(){
                 this.getCount();
-
+ 
                 $('#datatable').DataTable({
                     order: [0, 'desc'],
-                    ajax: '/admin/system/list.api.php?get=list', 
+                    ajax: '/admin/system/list.api.php?list=data&get=<?php echo $_GET['type']; ?>', 
                     processing: true,
                     serverSide: true,
                     responsive: true,

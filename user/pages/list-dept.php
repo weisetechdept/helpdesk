@@ -86,8 +86,8 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            <a href="/user/list/<?php echo $id; ?>" type="button" class="btn btn-info mr-2">รายการแจ้งของฉัน</a>
-                            <a href="/user/listDept/<?php echo $id; ?>" type="button" class="btn btn-outline-info">รายการแจ้งในแผนก</a>
+                            <a href="/user/list/<?php echo $id; ?>" type="button" class="btn btn-outline-info mr-2">รายการแจ้งของฉัน</a>
+                            <a href="" type="button" class="btn btn-info">รายการแจ้งในแผนก</a>
                         </div>
                     </div>
 
@@ -107,8 +107,7 @@
                                                 <th>รหัส</th>
                                                 <th>ประเภท</th>
                                                 <th>หัวข้อ</th>
-                                                <th>สาขา</th>
-                                                <th>แผนก</th>
+                                                <th>ผู้แจ้ง</th>
                                                 <th>สถานะ</th>
                                                 <th>วันที่แจ้ง</th>
                                                 <th>จัดการ</th>
@@ -116,7 +115,6 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -195,14 +193,13 @@
             "drawCallback": function () {
                 $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
             },
-            ajax: '/user/system/list.api.php?get=list',
+            ajax: '/user/system/list.api.php?get=listDept&id=<?php echo $id; ?>',
             "columns" : [
                 {'data':'0'},
                 {'data':'1'},
                 {'data':'2'},
                 {'data':'3'},
-                {'data':'4'},
-                {'data':'5',
+                {'data':'4',
                     
                     'render': function(data, type, row, meta) {
                         if(data == 0){
@@ -219,8 +216,8 @@
                     
                     }
                 },
-                {'data':'6'},
-                {'data':'7', 
+                {'data':'5'},
+                {'data':'6', 
                     'render': function(data, type, row, meta) {
                         return '<a href="/user/de/'+ data +'" class="btn btn-outline-primary btn-sm">ดูข้อมูล</a>';
                     }

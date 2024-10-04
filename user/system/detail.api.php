@@ -36,9 +36,10 @@
 
     if(isset($_SESSION['hd_login'])){
         
-        $db->join('user u','t.tick_owner = u.user_id','LEFT');
+        $db->join('user u','t.tick_owner = u.user_id','RIGHT');
         $db->join('user_group g','t.tick_dept = g.usrg_id','LEFT');
-        $emp = $db->getOne('ticket t');
+        $db->groupBy('t.tick_id');
+        $emp = $db->where('tick_id',$_GET['id'])->getOne('ticket t');
 
         if($emp['usrg_branch'] == '1'){
             $branch = 'สำนักงานใหญ่';

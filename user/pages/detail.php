@@ -272,7 +272,11 @@
                                     </div>
                                 </div>
 
-                                <div class="card m-b-30 trans">
+                                
+
+                            </div>
+
+                            <div class="card m-b-30 trans">
                                     <div class="card-body">
 
                                         <div class="page-title-box d-flex align-items-center justify-content-between pb-1">
@@ -311,8 +315,6 @@
                                             </div>
                                         </div>
 
-                                        
-
                                         <table class="table mb-0">
                                             <thead>
                                                 <tr>
@@ -339,8 +341,6 @@
                                         <img v-for="i in images" :src="i.link" class="img-fluid images-fix">
                                     </div>
                                 </div>
-
-                            </div>
 
                         </div>
 
@@ -399,7 +399,7 @@
                 asmImgAll: [],
                 vendor: [],
                 type_fix: [],
-                id: <?php echo $id; ?>,
+                id: <?php echo base64_decode($id); ?>,
                 send: {
                     type_fix: 0,
                     vendor: 0
@@ -418,7 +418,7 @@
             methods: {
 
                 getDetail() {
-                    axios.get('/user/system/detail.api.php?id=<?php echo $id; ?>')
+                    axios.get('/user/system/detail.api.php?id=<?php echo base64_decode($id); ?>')
                         .then(function (response) {
                             app.detail = response.data;
                             app.vendor = response.data.vendor;
@@ -435,7 +435,7 @@
                             app.asmImgAll = response.data.asm.imgAll;
                             app.repair = response.data.asm.assetRepairs;
 
-                            console.log(response.data);
+                            //console.log(response.data);
                         })
                 },
                 approval(){

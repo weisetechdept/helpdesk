@@ -19,7 +19,7 @@
         echo json_encode($api);
     }
 
-    if($_GET['get'] == 'list'){
+    if($_GET['list'] == 'data'){
 
         function DateThai($strDate)
         {
@@ -51,7 +51,12 @@
         function getTyped($id){
             global $db;
             $type = $db->where('type_id',$id)->getOne('fix_type');
-            return $type['type_name'];
+            if(!isset($type)){
+                return 'ไม่พบข้อมูล';
+            } else {
+                return $type['type_code'].' - '.$type['type_name'];
+            }
+            
         }
         
         $sql_details_1 = ['user'=> $usern,'pass'=> $passn,'db'=> $dbn,'host'=> $hostn,'charset'=>'utf8'];
@@ -62,7 +67,7 @@
         $columns = [
             ['db' => 'tick_id', 'dt' => 0, 'field' => 'tick_id'],
             ['db' => 'tick_topic', 'dt' => 1, 'field'=> 'tick_topic'],
-            ['db' => 'tick_type', 'dt' => 2, 'field' => 'tick_type',
+            ['db' => 'tick_fix_type', 'dt' => 2, 'field' => 'tick_fix_type',
                 'formatter' => function($d, $row){
                     return getTyped($d);
                 }
@@ -80,11 +85,11 @@
             ['db' => 'tick_status', 'dt' => 5, 'field'=> 'tick_status',
                 'formatter' => function($d, $row){
                     if($d == 0){
-                        return '<span class="badge badge-info">รออนุมัติ (ผจก.)</span>';
+                        return '<span class="badge badge-primary">รออนุมัติ (ผจก.)</span>';
                     } elseif($d == 1){
                         return '<span class="badge badge-warning">รอดำเนินการ</span>';
                     } elseif($d == 2) {
-                        return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
+                        return '<span class="badge badge-info">กำลังดำเนินการ</span>';
                     } elseif($d == 3) {
                         return '<span class="badge badge-success">เสร็จสิ้น</span>';
                     } elseif($d == 10) {
@@ -105,7 +110,16 @@
         ];
 
         $joinQuery = "FROM ticket";
-        $where = " tick_status IN (1,2,3,4) AND tick_caretaker = '$group'";
+
+        if($_GET['get'] == 'alllist'){
+            $where = " tick_status IN (1,2,3,4) AND tick_caretaker = '$group'";
+        } elseif($_GET['get'] == 'wait'){
+            $where = " tick_status IN (1) AND tick_caretaker = '$group'";
+        } elseif($_GET['get'] == 'process'){
+            $where = " tick_status IN (2) AND tick_caretaker = '$group'";
+
+        }
+        
 
         echo json_encode(
             SSP::simple($_GET, $sql_details_1, $table, $primaryKey, $columns, $joinQuery , $where)

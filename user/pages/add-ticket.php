@@ -49,6 +49,13 @@
         .assets-code {
             display: none;
         }
+        .warning {
+            background-color: #fff9c7;
+            color: #908717;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
 
 </head>
@@ -82,11 +89,20 @@
                     </div>
 
                     <div class="row" id="app">
+
                         <div class="col-12 col-lg-5">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="warning">
+                                        หากเป็นเหตุที่ส่งผลให้เกิดผลกระทบร้ายแรง หรือต้องแก้ใขเร่งด่วน กรุณาแจ้งโทรศัพท์แจ้งและลงระบบแจ้งในภายหลัง
+                                        <ul class="mt-2 mb-1">
+                                            <li>เบอร์ภายใน 507</li>
+                                            <li>089 761 0725 (คุณสมเกียรติ)</li>
+                                        </ul>
+                                    </div>
                                 <p style="text-align:right;"> *จำเป็นต้องใส่ข้อมูล</p>
                                 <div class="form-group">
+
                                     <label>ประเภทการซ่อม*</label>
                                     <select class="form-control" @change="typeTicket" v-model="ticket.type">
                                         <option value="0">= เลือกประเภทการซ่อม =</option>
