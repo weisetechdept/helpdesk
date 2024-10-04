@@ -78,6 +78,15 @@
         } else {
             $detail['tick_code'] = $detail['tick_code'];
         }
+        function getBranch($branch){
+            if($branch == '1'){
+                return 'สำนักงานใหญ่';
+            } elseif($branch == '2') {
+                return 'สาขาตลาดไท';
+            }
+        }
+
+        $deptName = $db->where('usrg_id',$detail['tick_dept'])->getOne('user_group');
 
         $api = array(
             'id' => $detail['tick_id'],
@@ -97,12 +106,25 @@
             'tick_fix_type' => $detail['tick_fix_type'],
             'tick_vendor' => $detail['tick_vendor'],
             'tel' => $detail['tick_tel'],
+            'deptId' => $detail['tick_dept'],
+            'deptName' => $deptName['usrg_name'].' ('.getBranch($deptName['usrg_branch']).')',
         ); 
 
         $api['type_fix'][] = array(
             'id' => '0',
             'name' => '= เลือกประเภทการซ่อม ='
         );
+
+        $deptList = $db->where('usrg_status',1)->get('user_group');
+
+
+        foreach ($deptList as $value) {
+
+            $api['dept'][] = array(
+                'id' => $value['usrg_id'],
+                'name' => $value['usrg_name'].' ('.getBranch($value['usrg_branch']).')'
+            );
+        }
 
         $type_fix = $db->where('type_group',$group)->where('type_status',1)->get('fix_type');
         foreach ($type_fix as $value) {

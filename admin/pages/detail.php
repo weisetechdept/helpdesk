@@ -175,7 +175,7 @@
                                             </tr>
                                             <tr> 
                                                 <td>สังกัด</td>
-                                                <td>{{ detail.division }} ({{ detail.branch }})</td>
+                                                <td>{{ detail.deptName }}</td>
                                             </tr>
                                             <tr> 
                                                 <td>เบอร์ภายใน</td>
@@ -223,6 +223,14 @@
                                                         <tr>
                                                             <td>รหัสทรัพย์สิน</td>
                                                             <td><input type="text" class="form-control" v-model="edit.code"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>สังกัด</td>
+                                                            <td>
+                                                                <select class="form-control" v-model="edit.deptId">
+                                                                    <option v-for="d in dept" :value="d.id">{{ d.name }}</option>
+                                                                </select>
+                                                            </td>
                                                         </tr>
                                                         
                                                     </tbody>
@@ -589,9 +597,12 @@
                 trans_all: [],
                 images: [],
                 edit: {
-                    code: ''
+                    code: '',
+                    deptId: ''
                 },
                 repair: [],
+                dept: [],
+                
 
             },
             mounted() {
@@ -639,7 +650,8 @@
                 editCode() {
                     axios.post('/admin/system/upTicket.api.php?po=editCode', {
                         id: this.id,
-                        code: this.edit.code
+                        code: this.edit.code,
+                        deptId: this.edit.deptId
                     }).then(function (response) {
                         if(response.data.status == 'success') {
                             swal('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success')
@@ -771,6 +783,7 @@
                 getDetail() { 
                     axios.get('/admin/system/detail.api.php?id=<?php echo $id; ?>')
                         .then(function (response) {
+                            console.log(response.data);
                             if(response.data.status == 'error') {
                                 swal('ผิดพลาด', response.data.message, 'error')
                                     .then(function() {
@@ -796,6 +809,10 @@
                                 app.asmImg = response.data.asm.img;
                                 app.asmImgAll = response.data.asm.imgAll;
                                 app.repair = response.data.asm.assetRepairs;
+
+                                app.dept = response.data.dept;
+                                app.edit.deptId = response.data.deptId;
+
 
                             }
                            

@@ -51,7 +51,8 @@
 
     if($_GET['po'] == 'editCode'){
         $data = array(
-            'tick_code' => $request->code
+            'tick_code' => $request->code,
+            'tick_dept' => $request->deptId
         );
         $update = $db->where('tick_id', $request->id)->update('ticket', $data);
         if($update){
