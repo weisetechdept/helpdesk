@@ -20,9 +20,14 @@
 
         $dept = $db->where('usrg_status',1)->get('user_group');
         foreach ($dept as $value) {
+            if($value['usrg_branch'] == 1){
+                $branch = 'สำนักงานใหญ่';
+            } elseif($value['usrg_branch'] == 2){
+                $branch = 'สาขาตลาดไท';
+            }
             $api['dept'][] = array(
                 'id' => $value['usrg_id'],
-                'name' => '[สำนักงานใหญ่] - '.$value['usrg_name']
+                'name' => '['.$branch.'] - '.$value['usrg_name']
             );
         }
 

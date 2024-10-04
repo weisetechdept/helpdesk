@@ -216,7 +216,7 @@
 
                     })
             },
-            methods: {
+            methods: { 
                 update(){
                     axios.post('/admin/system/user-detail.edt.php',{
                         id: <?php echo $id;?>,
