@@ -8,7 +8,7 @@
                     <ul class="metismenu list-unstyled" id="side-menu">
                         <li class="menu-title">เมนู</li>
                         <li>
-                            <a href="/admin/home?type=all" class="waves-effect"><i class="feather-edit-3"></i><span>รายการแจ้งซ่อม</span></a>
+                            <a href="/admin/home?type=alllist" class="waves-effect"><i class="feather-edit-3"></i><span>รายการแจ้งซ่อม</span></a>
                         </li>
                         <li>
                             <a href="/admin/addin" class="waves-effect"><i class="feather-edit-3"></i><span>แจ้งซ่อมในแผนก</span></a>
