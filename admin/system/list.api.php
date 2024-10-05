@@ -117,7 +117,8 @@
             $where = " tick_status IN (1) AND tick_caretaker = '$group'";
         } elseif($_GET['get'] == 'process'){
             $where = " tick_status IN (2) AND tick_caretaker = '$group'";
-
+        } else {
+            $where = " tick_status IN (1,2,3,4) AND tick_caretaker = '$group'";
         }
         
 
