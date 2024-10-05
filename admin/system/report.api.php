@@ -64,6 +64,12 @@
                 } else {
                     $tick_code = $value['tick_code'];
                 }
+
+                if(empty($value['user_first_name'])) {
+                    $owner_name = 'เพิ่มงานจาก Controller';
+                } else {
+                    $owner_name = $value['user_first_name'].' '.$value['user_last_name'];
+                }
     
                 $api['data'][] = array(
                     $value['tick_id'],
@@ -71,7 +77,7 @@
                     $value['tick_topic'],
                     $tp,
                     $tn,
-                    $value['user_first_name'].' '.$value['user_last_name'],
+                    $owner_name,
                     branch($value['usrg_branch']),
                     $value['usrg_name'],
                     $vend_name,
@@ -89,60 +95,74 @@
 
     if($_GET['action'] == 'detail') {
 
-        if($value['vend_name'] == '') {
-            $vend_name = 'ไม่ระบุ';
-        } else {
-            $vend_name = $value['vend_name'];
-        }
+        // if($value['vend_name'] == '') {
+        //     $vend_name = 'ไม่ระบุ';
+        // } else {
+        //     $vend_name = $value['vend_name'];
+        // }
 
-        $db->join('user_group ug','ug.usrg_id = t.tick_dept','LEFT');
-        $db->join('fix_type f','f.type_id = t.tick_fix_type','LEFT');
-        $db->join('vendor v','v.vend_id = t.tick_vendor','LEFT');
-        $db->join('user u','u.user_id = t.tick_owner','LEFT');
-        $ticket = $db->where('tick_status',array('1','2','3','4'),"IN")->where('tick_caretaker',$group)->get('ticket t');
-        if($ticket) {
-            foreach ($ticket as $key => $value) {
+        // $db->join('user_group ug','ug.usrg_id = t.tick_dept','LEFT');
+        // $db->join('fix_type f','f.type_id = t.tick_fix_type','LEFT');
+        // $db->join('vendor v','v.vend_id = t.tick_vendor','LEFT');
+        // $db->join('user u','u.user_id = t.tick_owner','LEFT');
+        // $ticket = $db->where('tick_status',array('1','2','3','4'),"IN")->where('tick_caretaker',$group)->get('ticket t');
+        // if($ticket) {
+        //     foreach ($ticket as $key => $value) {
 
-                if($value['tick_code'] == '') {
-                    $tick_code = 'ไม่ระบุ';
-                } else {
-                    $tick_code = $value['tick_code'];
-                }
+        //         if($value['vend_name'] == '') {
+        //             $vend_name = 'ไม่ระบุ';
+        //         } else {
+        //             $vend_name = $value['vend_name'];
+        //         }
 
-                if($value['type_name'] == '') {
-                    $tn = 'ไม่ระบุ';
-                }else {
-                    $tn = $value['type_name'];
-                }
+        //         if($value['tick_code'] == '') {
+        //             $tick_code = 'ไม่ระบุ';
+        //         } else {
+        //             $tick_code = $value['tick_code'];
+        //         }
 
-                if($value['tick_type'] == '1'){
-                    $tp = 'อุปกรณ์ IT / Software';
-                } elseif ($value['tick_type'] == '2') {
-                    $tp = 'เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน';
-                } elseif ($value['tick_type'] == '3') {
-                    $tp = 'อาคารสถานที่ (มีรหัสทรัพยสิน)';
-                } elseif ($value['tick_type'] == '4') {
-                    $tp = 'อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)';
-                }
+        //         if($value['type_name'] == '') {
+        //             $tn = 'ไม่ระบุ';
+        //         }else {
+        //             $tn = $value['type_name'];
+        //         }
+
+        //         if($value['tick_type'] == '1'){
+        //             $tp = 'อุปกรณ์ IT / Software';
+        //         } elseif ($value['tick_type'] == '2') {
+        //             $tp = 'เครื่องใช้สำนักงาน / เครื่องมือในการทำงาน';
+        //         } elseif ($value['tick_type'] == '3') {
+        //             $tp = 'อาคารสถานที่ (มีรหัสทรัพยสิน)';
+        //         } elseif ($value['tick_type'] == '4') {
+        //             $tp = 'อาคารสถานที่ (ไม่มีรหัสทรัพยสิน)';
+        //         }
+
+        //         if(empty($value['user_first_name'])) {
+        //             $owner_name = 'เพิ่มงานจาก Controller';
+        //         } else {
+        //             $owner_name = $value['user_first_name'].' '.$value['user_last_name'];
+        //         }
                 
-                $api['data'][] = array(
-                    $value['tick_id'],
-                    $tick_code,
-                    $value['tick_topic'],
-                    $tp,
-                    $tn,
-                    $value['user_first_name'].' '.$value['user_last_name'],
-                    branch($value['usrg_branch']),
-                    $value['usrg_name'],
-                    $vend_name,
-                    $value['tick_status'],
-                    DateThai($value['tick_datetime']),
-                    $value['tick_fixedcost']
-                );
-            }
-        } else {
-            $api['data'] = array();
-        }
+        //         $api['data'][] = array(
+        //             $value['tick_id'],
+        //             $tick_code,
+        //             $value['tick_topic'],
+        //             $tp,
+        //             $tn,
+        //             $owner_name,
+        //             branch($value['usrg_branch']),
+        //             $value['usrg_name'],
+        //             $vend_name,
+        //             $value['tick_status'],
+        //             DateThai($value['tick_datetime']),
+        //             $value['tick_fixedcost']
+        //         );
+        //     }
+        // } else {
+        //     $api['data'] = array();
+        // }
+
+        $api['data'] = array();
 
     }
 

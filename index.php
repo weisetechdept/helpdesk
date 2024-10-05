@@ -106,6 +106,10 @@
         require 'admin/pages/assets-report.php';
     });
 
+    $router->get( '/admin/summary-report', function() {
+        require 'admin/pages/report-summary.php';
+    });
+
     /* Verify */
 
     $router->get( '/verify/(.*)', function($id) {

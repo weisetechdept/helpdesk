@@ -52,7 +52,7 @@
             } elseif ($ticket['tick_caretaker'] == '3') {
                 $token = $sTokenFixedTM;
             }
-            $finalMsg = '[ต้นสังกัด] รหัส:'.$id.' แจ้งว่า '.$msg;
+            $finalMsg = '[ต้นสังกัด] รหัส:'.$id.' - แจ้งว่า '.$msg;
             send($token,$finalMsg);
             
             $api = array(
@@ -66,7 +66,7 @@
                 'msg' => 'ไม่สามารถส่งข้อความได้'
             );
         }
-        
+
     } else {
         $api = array(
             'status' => 'error',

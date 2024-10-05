@@ -191,9 +191,9 @@
         var app = new Vue({
             el: '#app',
             data: {
-                search:{
-                    start: '',
-                    end: ''
+                search: {
+                    start: '<?php echo date('Y-m-01'); ?>',
+                    end: '<?php echo date('Y-m-d'); ?>'
                 }
             },
             mounted() {
@@ -216,7 +216,7 @@
                                 });
                             });
                     },
-                    dom: 'Bfrtip',
+                    dom: 'Bfrtip', 
                     buttons: [
                         'copy', 'print'
                     ],

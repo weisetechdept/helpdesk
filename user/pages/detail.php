@@ -272,8 +272,6 @@
                                     </div>
                                 </div>
 
-                                
-
                             </div>
 
                             <div class="card" v-if="detail.status == '1' ||detail.status == '2'">
