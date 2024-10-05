@@ -15,14 +15,7 @@
                             <img class="rounded-circle header-profile-user" src="../../assets/images/avatar.jpeg"
                                 alt="Header Avatar">
                             <span class="d-none d-sm-inline-block ml-1">สวัสดี! ผู้ใช้งาน</span>
-                            <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            
-                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
-                                <span>ออกจากระบบ</span>
-                            </a>
-                        </div>
                     </div>
                     
                 </div>

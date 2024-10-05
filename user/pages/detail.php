@@ -276,6 +276,17 @@
 
                             </div>
 
+                            <div class="card" v-if="detail.status == '1' ||detail.status == '2'">
+                                <div class="card-body">
+                                    <h4 class="mb-0">ส่งข้อความถึงผู้ดำเนินงาน</h4>
+                                    <small>ข้อความจะถูกบันทึก และแจ้งเตือนไปยังผู้ดำเนินงาน</small>
+                                    <div class="form-group mt-3">
+                                        <textarea class="form-control" rows="3" v-model="sendMsg.message"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" @click="sendUserMessage">ส่งข้อความ</button>
+                                </div>
+                            </div>
+                            
                             <div class="card m-b-30 trans">
                                     <div class="card-body">
 
@@ -410,13 +421,51 @@
                 transaction: [],
                 trans_all: [],
                 images: [],
-                repair: []
+                repair: [],
+                sendMsg: {
+                    message: ''
+                }
             },
             mounted() {
                 this.getDetail();
             },
             methods: {
-
+                sendUserMessage() {
+                    if(this.sendMsg.message == '') {
+                        swal('ผิดพลาด', 'โปรดกรอกข้อความก่อนทำการส่ง', 'error');
+                        return;
+                    } else {
+                        swal({
+                            title: 'โปรดตรวจสอบ',
+                            text: 'โปรดตรวจสอบข้อมูลก่อนทำการส่งข้อความ คุณยินยันการส่งข้อมูลใช่หรือไม่',
+                            icon: 'info',
+                            buttons: {
+                                cancel: 'ยกเลิก',
+                                confirm: 'ยืนยัน'
+                            },
+                            closeOnClickOutside: false,
+                            closeOnEsc: false
+                            }).then(function (confirm) {
+                                if (confirm) {
+                                    axios.post('/user/system/sendMsg.api.php', {
+                                        id: app.id,
+                                        msg: app.sendMsg.message
+                                    })
+                                    .then(function (response) {
+                                        if(response.data.status == 'success') {
+                                            swal('สำเร็จ', response.data.msg, 'success')
+                                                .then(function() {
+                                                    app.getDetail();
+                                                    app.sendMsg.message = '';
+                                                });
+                                        } else {
+                                            swal('ผิดพลาด', response.data.msg, 'error');
+                                        }
+                                    })
+                                }
+                        });
+                    }
+                },
                 getDetail() {
                     axios.get('/user/system/detail.api.php?id=<?php echo base64_decode($id); ?>')
                         .then(function (response) {

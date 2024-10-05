@@ -74,7 +74,7 @@
 
                     <div class="row" id="app">
 
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-4">
                             <a href="/admin/home?type=alllist">
                                 <div class="card bg-primary border-primary">
                                     <div class="card-body">
@@ -84,8 +84,11 @@
                                         <div class="row d-flex align-items-center">
                                             <div class="col-8">
                                                 <h2 class="d-flex align-items-center mb-0 text-white">
-                                                    {{ count.all }}
+                                                     {{ count.all }}
                                                 </h2>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                <span class="badge badge-light">ดูข้อมูล</span>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +96,7 @@
                             </a>
                         </div>
 
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-4">
                             <a href="/admin/home?type=wait">
                                 <div class="card bg-warning border-warning">
                                     <div class="card-body">
@@ -106,13 +109,16 @@
                                                     {{ count.wait }}
                                                 </h2>
                                             </div>
+                                            <div class="col-4 text-right">
+                                                <span class="badge badge-light">ดูข้อมูล</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
 
-                        <div class="col-12 col-md-4 col-lg-3">
+                        <div class="col-12 col-md-4 col-lg-4">
                             <a href="/admin/home?type=process">
                                 <div class="card bg-info border-info">
                                     <div class="card-body">
@@ -125,11 +131,18 @@
                                                     {{ count.process }}
                                                 </h2>
                                             </div>
+                                            <div class="col-4 text-right">
+                                                <span class="badge badge-light">ดูข้อมูล</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
+
+                    </div>
+                                
+                    <div class="row">
 
                         <div class="col-12">
                             <div class="card">
