@@ -10,9 +10,15 @@
 
     $ticketAll = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_caretaker', $group)->getValue('ticket', 'COUNT(*)');
 
-    function countByType($id){
+    function countByTypeAll($id){
         global $db, $start, $end, $group;
-        $countDb = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_fix_type',$id)->where('tick_caretaker', $group)->getValue('ticket', 'COUNT(*)');
+        $countDb = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_fix_type',$id)->where('tick_caretaker', $group)->where('tick_status',array("1","2","3"),"IN")->getValue('ticket', 'COUNT(*)');
+        return $countDb;
+    }
+
+    function countByTypeDone($id){
+        global $db, $start, $end, $group;
+        $countDb = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_fix_type',$id)->where('tick_caretaker', $group)->where('tick_status',3)->getValue('ticket', 'COUNT(*)');
         return $countDb;
     }
 
@@ -21,7 +27,8 @@
     foreach ($type as $t) {
         $api['byType']['code'][] = $t['type_code'];
         $api['byType']['name'][] = $t['type_name'];
-        $api['byType']['count'][] = countByType($t['type_id']);
+        $api['byType']['count'][] = countByTypeAll($t['type_id']);
+        $api['byType']['done'][] = countByTypeDone($t['type_id']);
     }
     
     echo json_encode($api);

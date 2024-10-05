@@ -111,14 +111,16 @@
                                             <tr>
                                                 <th>รหัส</th>
                                                 <th>ประเภท</th>
-                                                <th>จำนวน</th>
+                                                <th>ทั้งหมด</th>
+                                                <th>สำเร็จ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(label, index) in typeData.label" :key="index">
                                                 <td>{{ label }}</td>
                                                 <td>{{ typeData.name[index] }}</td>
-                                                <td>{{ typeData.count[index] }}</td>
+                                                <td class="text-center">{{ typeData.count[index] }}</td>
+                                                <td class="text-center">{{ typeData.done[index] }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -172,7 +174,8 @@
                 typeData: {
                     label:[],
                     count:[],
-                    name:[]
+                    name:[],
+                    done:[]
                 }
             },
             mounted: function() {
@@ -195,21 +198,28 @@
                         app.typeData.label = app.sumData.byType.code;
                         app.typeData.count = app.sumData.byType.count;
                         app.typeData.name = app.sumData.byType.name;
-                        app.typeChart(app.typeData.label,app.typeData.count);
+                        app.typeData.done = app.sumData.byType.done;
+                        app.typeChart(app.typeData.label, app.typeData.count, app.typeData.done);
                         $('.hidden').removeClass('hidden');
                         swal.close();
                     })
+                    console.log(app.typeData.done);
                 },
-                typeChart(label,count) {
+                typeChart(label,count,done) {
                     var currentChartCanvas = $("#barChart").get(0).getContext("2d");
                     var currentChart = new Chart(currentChartCanvas, {
                         type: 'bar',
                         data: {
                         labels: label,
                         datasets: [{
-                            label: 'จำนวน',
-                            data: count,
-                            backgroundColor: '#f5c842'
+                                label: 'จำนวน',
+                                data: count,
+                                backgroundColor: '#f5c842'
+                            },
+                            {
+                                label: 'สำเร็จ',
+                                data: done,
+                                backgroundColor: '#34c38f'
                             }
                         ]
                         },
