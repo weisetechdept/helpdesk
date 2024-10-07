@@ -38,6 +38,9 @@
         .hidden {
             display:none;
         }
+        .soft-gray {
+            background-color: #f9f9f9;
+        }
     </style>
 
 </head>
@@ -97,7 +100,7 @@
 
 
                     <div class="row hidden">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12 col-lg-8">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">รายละเอียดการซ่อมสรุป</h4>
@@ -111,16 +114,31 @@
                                             <tr>
                                                 <th>รหัส</th>
                                                 <th>ประเภท</th>
-                                                <th>ทั้งหมด</th>
-                                                <th>สำเร็จ</th>
+                                                <th class="text-center soft-gray">ทั้งหมด</th>
+                                                <th class="text-center">รอดำเนินการ</th>
+                                                <th class="text-center">ดำเนินการ</th>
+                                                <th class="text-center">สำเร็จ</th>
+                                                <th class="text-center">เวลาเฉลี่ย</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(label, index) in typeData.label" :key="index">
                                                 <td>{{ label }}</td>
                                                 <td>{{ typeData.name[index] }}</td>
-                                                <td class="text-center">{{ typeData.count[index] }}</td>
+                                                <td class="text-center soft-gray">{{ typeData.count[index] }}</td>
+                                                <td class="text-center">{{ typeData.wait[index] }}</td>
+                                                <td class="text-center">{{ typeData.process[index] }}</td>
                                                 <td class="text-center">{{ typeData.done[index] }}</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="soft-gray">
+                                                <td>รวม</td>
+                                                <td>รวม</td>
+                                                <td class="text-center">{{ typeData.count.reduce((a, b) => a + b, 0) }}</td>
+                                                <td class="text-center">{{ typeData.wait.reduce((a, b) => a + b, 0) }}</td>
+                                                <td class="text-center">{{ typeData.process.reduce((a, b) => a + b, 0) }}</td>
+                                                <td class="text-center">{{ typeData.done.reduce((a, b) => a + b, 0) }}</td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -175,7 +193,9 @@
                     label:[],
                     count:[],
                     name:[],
-                    done:[]
+                    done:[],
+                    wait:[],
+                    process:[]
                 }
             },
             mounted: function() {
@@ -199,13 +219,15 @@
                         app.typeData.count = app.sumData.byType.count;
                         app.typeData.name = app.sumData.byType.name;
                         app.typeData.done = app.sumData.byType.done;
-                        app.typeChart(app.typeData.label, app.typeData.count, app.typeData.done);
+                        app.typeData.wait = app.sumData.byType.wait;
+                        app.typeData.process = app.sumData.byType.process;
+                        app.typeChart(app.typeData.label, app.typeData.count, app.typeData.done, app.typeData.wait, app.typeData.process);
                         $('.hidden').removeClass('hidden');
                         swal.close();
                     })
                     console.log(app.typeData.done);
                 },
-                typeChart(label,count,done) {
+                typeChart(label,count,done,wait,process) {
                     var currentChartCanvas = $("#barChart").get(0).getContext("2d");
                     var currentChart = new Chart(currentChartCanvas, {
                         type: 'bar',
@@ -214,7 +236,17 @@
                         datasets: [{
                                 label: 'จำนวน',
                                 data: count,
-                                backgroundColor: '#f5c842'
+                                backgroundColor: '#3f87fd'
+                            },
+                            {
+                                label: 'รอดำเนินการ',
+                                data: wait,
+                                backgroundColor: '#f1c31c'
+                            },
+                            {
+                                label: 'ดำเนินการ',
+                                data: process,
+                                backgroundColor: '#19c0ea'
                             },
                             {
                                 label: 'สำเร็จ',
