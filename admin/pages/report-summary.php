@@ -252,8 +252,7 @@
                                 label: 'สำเร็จ',
                                 data: done,
                                 backgroundColor: '#34c38f'
-                            }
-                        ]
+                            }]
                         },
                         options: {
                         responsive: true,

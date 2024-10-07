@@ -155,7 +155,7 @@
         $status = $request->status;
         $cost = $request->fixed_cost;
 
-        $update = $db->where('tick_id', $id)->update('ticket', ['tick_status' => '3','tick_fixedcost' => $cost]);
+        $update = $db->where('tick_id', $id)->update('ticket', ['tick_status' => '3','tick_fixedcost' => $cost,'tick_finished' => date('Y-m-d H:i:s')]);
         if($update){
             
             $tdata = array(

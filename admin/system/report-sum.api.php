@@ -40,7 +40,6 @@
         return $countDb;
     }
 
-
     $type = $db->where('type_group',$group)->orderBy('type_code',"ASC")->get('fix_type');
     
     foreach ($type as $t) {
@@ -58,7 +57,6 @@
     $api['byType']['done'][] = countByTypeDone(0);
     $api['byType']['wait'][] = countByTypeWait(0);
     $api['byType']['process'][] = countByTypeProcess(0);
-
    
     echo json_encode($api);
     
