@@ -199,7 +199,8 @@
 
                                     <div class="row">
                                         <div class="col-12 mt-3">
-                                            <button class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal3">แก้ใขข้อมูล</button>
+                                            <button class="btn btn-outline-warning mr-2" data-toggle="modal" data-target="#exampleModal3">แก้ใขข้อมูล</button>
+                                            <a :href="'/admin/pages/export-asm.php?code='+detail.code" target="_blank" class="btn btn-outline-primary">สรุปรายงาน PDF</a>
                                         </div>
                                     </div>
 

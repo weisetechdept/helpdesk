@@ -118,7 +118,8 @@
                                                 <th class="text-center">รอดำเนินการ</th>
                                                 <th class="text-center">ดำเนินการ</th>
                                                 <th class="text-center">สำเร็จ</th>
-                                                <th class="text-center">เวลาเฉลี่ย</th>
+                                                <th class="text-center">ปิดงาน</th>
+                                                <th class="text-center">เฉลี่ย (ว:ช:น)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -130,6 +131,7 @@
                                                 <td class="text-center">{{ typeData.process[index] }}</td>
                                                 <td class="text-center">{{ typeData.done[index] }}</td>
                                                 <td></td>
+                                                <td class="text-center">{{ typeData.avgTime[index] }}</td>
                                             </tr>
                                             <tr class="soft-gray">
                                                 <td>รวม</td>
@@ -139,6 +141,7 @@
                                                 <td class="text-center">{{ typeData.process.reduce((a, b) => a + b, 0) }}</td>
                                                 <td class="text-center">{{ typeData.done.reduce((a, b) => a + b, 0) }}</td>
                                                 <td></td>
+                                                <td class="text-center"> - </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -195,7 +198,8 @@
                     name:[],
                     done:[],
                     wait:[],
-                    process:[]
+                    process:[],
+                    avgTime:[]
                 }
             },
             mounted: function() {
@@ -221,6 +225,7 @@
                         app.typeData.done = app.sumData.byType.done;
                         app.typeData.wait = app.sumData.byType.wait;
                         app.typeData.process = app.sumData.byType.process;
+                        app.typeData.avgTime = app.sumData.byType.avgTime;
                         app.typeChart(app.typeData.label, app.typeData.count, app.typeData.done, app.typeData.wait, app.typeData.process);
                         $('.hidden').removeClass('hidden');
                         swal.close();
@@ -237,16 +242,6 @@
                                 label: 'จำนวน',
                                 data: count,
                                 backgroundColor: '#3f87fd'
-                            },
-                            {
-                                label: 'รอดำเนินการ',
-                                data: wait,
-                                backgroundColor: '#f1c31c'
-                            },
-                            {
-                                label: 'ดำเนินการ',
-                                data: process,
-                                backgroundColor: '#19c0ea'
                             },
                             {
                                 label: 'สำเร็จ',

@@ -34,10 +34,29 @@
         return $countDb;
     }
 
-    function countByTypeTime($id){
+    function avgTime($id){
         global $db, $start, $end, $group;
-        $ticked = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_caretaker', $group)->where('tick_status',3)->getOne('ticket'); 
-        return $countDb;
+
+        //$ticked = $db->where('tick_datetime',array($start,$end),"BETWEEN")->where('tick_fix_type',$id)->where('tick_caretaker', $group)->where('tick_status',3)->get('ticket');
+        $ticked = $db->where('tick_id',89)->get('ticket');
+        $keepTime = 0;
+        foreach ($ticked as $t) {
+            $date1=date_create($t['tick_datetime']);
+            $date2=date_create($t['tick_finished']);
+            $diff=date_diff($date1,$date2);
+            $timeDiff = ($diff->days * 24 * 60 * 60) + ($diff->h * 60 * 60) + ($diff->i * 60) + $diff->s;
+            $keepTime += $timeDiff;
+        }
+
+        if (count($ticked) > 0) {
+            $averageTime = $keepTime / count($ticked);
+            $days = floor($averageTime / 86400);
+            $hours = floor(($averageTime % 86400) / 3600);
+            $minutes = floor(($averageTime % 3600) / 60);
+            return "$days:$hours:$minutes";
+        } else {
+            return "ไม่มีข้อมูล";
+        }
     }
 
     $type = $db->where('type_group',$group)->orderBy('type_code',"ASC")->get('fix_type');
@@ -49,6 +68,7 @@
         $api['byType']['done'][] = countByTypeDone($t['type_id']);
         $api['byType']['wait'][] = countByTypeWait($t['type_id']);
         $api['byType']['process'][] = countByTypeProcess($t['type_id']);
+        $api['byType']['avgTime'][] = avgTime($t['type_id']);
     }
 
     $api['byType']['code'][] = 'ไม่ระบุ';
@@ -57,6 +77,7 @@
     $api['byType']['done'][] = countByTypeDone(0);
     $api['byType']['wait'][] = countByTypeWait(0);
     $api['byType']['process'][] = countByTypeProcess(0);
+    $api['byType']['avgTime'][] = avgTime(0);
    
     echo json_encode($api);
     

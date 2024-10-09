@@ -141,7 +141,7 @@
 
                             <div class="export">
                                     <div class="col-12 mb-4">
-                                        <button class="btn btn-outline-primary">นำออกข้อมูล PDF</button>
+                                        <a :href="'/admin/pages/export-asm.php?code='+asm.code" target="_blank" class="btn btn-outline-primary">นำออกข้อมูล PDF</a>
                                     </div>
 
                                     <div class="col-12">
